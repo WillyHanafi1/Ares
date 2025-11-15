@@ -1,0 +1,38 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import ClientProviders from "@/components/ClientProviders";
+import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Seriaflow - AI Automation Agency",
+  description:
+    "Solusi AI kustom untuk mengotomatisasi bisnis Anda dan meningkatkan efisiensi operasional",
+  keywords: [
+    "AI",
+    "Automation",
+    "Business Process Automation",
+    "Chatbot",
+    "AI Agency",
+  ],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="id" className="dark">
+      <body className={`${inter.variable} antialiased bg-gray-900 text-white`}>
+        <ClientProviders />
+        {children}
+      </body>
+    </html>
+  );
+}
