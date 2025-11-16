@@ -147,15 +147,18 @@ Efek cursor trail interaktif dengan physics-based animation:
 **Features:**
 - ✨ 20 animated trails dengan spring physics
 - 🌈 Dynamic HSL color cycling
-- 📱 Touch device support
-- ♿ Reduced motion detection
+- 📱 Auto-disable pada touch devices (mobile/tablet)
+- ♿ Reduced motion detection & respect user preferences
 - 🎯 Performance optimized dengan canvas API
+- 🖱️ Desktop-only experience untuk optimal UX
 
 **Technical Details:**
 - Canvas-based rendering
 - Spring dampening system
 - Quadratic bezier curves
 - RAF (RequestAnimationFrame) optimization
+- Touch device detection (`ontouchstart` & `maxTouchPoints`)
+- Passive event listeners untuk better scroll performance
 
 ### 2. Services Section
 Showcase layanan AI automation:
@@ -312,6 +315,7 @@ npm start
 - [x] Services section
 - [x] Hero section
 - [x] Footer basic
+- [x] Fix mobile scroll issue (v0.1.1 - Nov 16, 2025)
 
 ### Phase 2 - Enhancement (Coming Soon)
 - [ ] Navbar dengan smooth scroll
@@ -422,6 +426,29 @@ Gunakan utility classes berikut untuk konsistensi:
 - **Gradients**: `bg-gradient-to-r from-cyan-400 to-purple-500`
 - **Borders**: `border-gray-700`, `border-cyan-500`
 - **Shadows**: `shadow-cyan-500/20`, `shadow-purple-500/20`
+
+## 📝 Changelog
+
+### v0.1.1 - 2025-11-16
+**🐛 Bug Fixes**
+- Fixed mobile scroll issue caused by cursor trail effect
+- Disabled cursor trail on touch devices for better mobile UX
+- Changed touchmove event listener to passive mode
+- Added reduced motion detection for accessibility
+
+**🔧 Improvements**
+- Better performance on mobile devices
+- Respects user's motion preferences
+- Improved scroll performance with passive listeners
+
+### v0.1.0 - 2025-11-16
+**🎉 Initial Release**
+- Next.js 14 with App Router
+- Interactive cursor trail effect
+- Services showcase section
+- Hero section with gradient text
+- Comprehensive documentation
+- Automated README checks
 
 ## 📄 License
 

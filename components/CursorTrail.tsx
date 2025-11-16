@@ -122,6 +122,17 @@ export default function CursorTrail() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Check for touch devices - disable effect on touch devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -157,7 +168,7 @@ export default function CursorTrail() {
         posRef.current.x = e.touches[0].pageX;
         posRef.current.y = e.touches[0].pageY;
       }
-      e.preventDefault();
+      // Removed e.preventDefault() to allow scrolling
     };
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -192,7 +203,7 @@ export default function CursorTrail() {
     
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchstart', handleTouchStart);
 
     const handleFocus = () => {
