@@ -1,0 +1,36 @@
+# Nama alur kerja yang akan muncul di tab "Actions" GitHub
+name: Deploy to Droplet
+
+# Pemicu: Jalankan ini HANYA saat ada push ke branch 'main'
+on:
+  push:
+    branches:
+      - main # Ganti ini jika branch utama Anda 'master'
+
+# Pekerjaan yang harus dilakukan
+jobs:
+  deploy:
+    # Gunakan server virtual Ubuntu terbaru dari GitHub untuk menjalankan ini
+    runs-on: ubuntu-latest
+
+    # Langkah-langkah yang harus dijalankan
+    steps:
+      - name: 1. Menjalankan Perintah Update di Server
+        # Gunakan Action siap pakai dari 'appleboy' untuk SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # Ambil rahasia yang kita simpan tadi
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22 # Port SSH standar
+
+          # Ini adalah daftar perintah yang akan dijalankan di Droplet Anda
+          # Perhatikan: Kita tidak perlu 'sudo' karena kita login sebagai 'root'
+          script: |
+            cd /var/www/seriaflow.com/html
+            git config --global --add safe.directory /var/www/seriaflow.com/html
+            git pull
+            npm install
+            npm run build
+            pm2 restart seriaflow-app
