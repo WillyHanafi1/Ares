@@ -1,11 +1,22 @@
 ﻿import { Pool } from 'pg';
 import { ContactFormData } from './validation';
 
-// Create PostgreSQL connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-});
+// Lazy initialization of connection pool
+let pool: Pool | null = null;
+
+function getPool(): Pool {
+  if (!pool) {
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL environment variable is not set');
+    }
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    });
+    console.log('✅ Database pool created with:', process.env.DATABASE_URL.replace(/:[^:@]+@/, ':****@'));
+  }
+  return pool;
+}
 
 export interface ContactRecord extends ContactFormData {
   id?: number;
@@ -17,7 +28,7 @@ export interface ContactRecord extends ContactFormData {
  * Save contact form submission to database
  */
 export async function saveContact(data: ContactFormData, ipAddress: string): Promise<number> {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   
   try {
     const query = `
@@ -40,7 +51,7 @@ export async function saveContact(data: ContactFormData, ipAddress: string): Pro
  * Returns true if rate limit exceeded
  */
 export async function checkRateLimit(ipAddress: string): Promise<boolean> {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   
   try {
     const maxRequests = parseInt(process.env.RATE_LIMIT_MAX || '5');
@@ -67,7 +78,7 @@ export async function checkRateLimit(ipAddress: string): Promise<boolean> {
  * Get all contacts (for admin use)
  */
 export async function getContacts(limit: number = 100): Promise<ContactRecord[]> {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   
   try {
     const query = `
@@ -89,7 +100,7 @@ export async function getContacts(limit: number = 100): Promise<ContactRecord[]>
  * Run this once to create the necessary tables
  */
 export async function initDatabase(): Promise<void> {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   
   try {
     await client.query(`

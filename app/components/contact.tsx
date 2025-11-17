@@ -28,6 +28,8 @@ const Contact: React.FC = () => {
     setErrorMessage('');
 
     try {
+      console.log('🚀 Starting form submission...');
+      
       // Get reCAPTCHA token
       const token = await new Promise<string>((resolve, reject) => {
         if (typeof window === 'undefined' || !window.grecaptcha) {
@@ -42,6 +44,8 @@ const Contact: React.FC = () => {
         });
       });
 
+      console.log('✅ reCAPTCHA token received');
+
       // Submit form with reCAPTCHA token
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -54,13 +58,17 @@ const Contact: React.FC = () => {
         }),
       });
 
+      console.log('📡 Response status:', response.status);
+
       const data = await response.json();
+      console.log('📦 Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to send message');
       }
 
       setStatus('success');
+      console.log('✅ Form submitted successfully!');
 
       // Reset form after 3 seconds
       setTimeout(() => {

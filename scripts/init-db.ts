@@ -1,4 +1,9 @@
-﻿import { initDatabase } from './lib/database';
+﻿// Load environment variables FIRST before any imports
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+
+// Now import database module (Pool will use loaded env vars)
+import { initDatabase } from '../lib/database';
 
 async function setup() {
   try {

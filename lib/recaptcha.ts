@@ -17,6 +17,7 @@ export async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 
   try {
+    console.log('🔐 Verifying reCAPTCHA token...');
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: {
@@ -31,15 +32,17 @@ export async function verifyRecaptcha(token: string): Promise<boolean> {
     }
 
     const data = await response.json();
+    console.log('📊 reCAPTCHA response:', JSON.stringify(data, null, 2));
 
     // Check if verification succeeded and score is above threshold
     // Score ranges from 0.0 (bot) to 1.0 (human)
     // 0.5 is recommended threshold for form submissions
     if (data.success && data.score >= 0.5) {
+      console.log('✅ reCAPTCHA verification passed! Score:', data.score);
       return true;
     }
 
-    console.warn('reCAPTCHA verification failed:', {
+    console.warn('❌ reCAPTCHA verification failed:', {
       success: data.success,
       score: data.score,
       action: data.action,
