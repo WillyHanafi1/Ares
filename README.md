@@ -17,7 +17,10 @@
 - 🎯 **SEO Ready** - Metadata optimization & structured data
 - 📋 **4-Step Process** - Proses jelas dari Discovery hingga Support
 - 🚀 **Multiple CTAs** - Lead generation dengan konsultasi & audit gratis
-- 📬 **Contact Form** - Form kontak sederhana dengan validasi
+- 📬 **Secure Contact Form** - Form kontak dengan reCAPTCHA v3 & validasi server-side
+- 🔒 **Backend Security** - XSS prevention, SQL injection protection, rate limiting
+- 📧 **Email Notifications** - Auto-email dengan Resend API
+- 💾 **Database Storage** - PostgreSQL dengan Supabase
 
 ## 🛠️ Tech Stack
 
@@ -30,6 +33,14 @@
 - **[Tailwind CSS 3.4.14](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[Lucide React 0.446.0](https://lucide.dev/)** - Modern icon library
 - **[Inter Font](https://fonts.google.com/specimen/Inter)** - Google Fonts typography
+
+### Backend & Security
+- **[PostgreSQL](https://www.postgresql.org/)** - Relational database
+- **[Supabase](https://supabase.com/)** - Database hosting (recommended)
+- **[Resend](https://resend.com/)** - Email API for notifications
+- **[Google reCAPTCHA v3](https://www.google.com/recaptcha/)** - Bot protection
+- **[DOMPurify](https://github.com/cure53/DOMPurify)** - XSS sanitization
+- **[Validator.js](https://github.com/validatorjs/validator.js)** - Input validation
 
 ### Development Tools
 - **ESLint** - Code linting
@@ -71,21 +82,35 @@ Website-Seriaflow/
 ├── .github/
 │   └── workflows/          # GitHub Actions workflows
 ├── app/
+│   ├── api/
+│   │   └── contact/
+│   │       └── route.ts    # Contact API endpoint
 │   ├── components/         
 │   │   ├── services.tsx    # Services showcase section
 │   │   ├── process.tsx     # 4-step process section
 │   │   ├── cta.tsx         # Call-to-action cards
-│   │   └── contact.tsx     # Contact form
+│   │   └── contact.tsx     # Contact form with reCAPTCHA
 │   ├── globals.css         # Global styles & animations
 │   ├── layout.tsx          # Root layout with metadata
 │   └── page.tsx            # Homepage
 ├── components/
 │   ├── ClientProviders.tsx # Client-side components wrapper
 │   └── CursorTrail.tsx     # Interactive cursor trail effect
-│   └── CursorTrail.tsx     # Interactive cursor trail effect
+├── lib/
+│   ├── validation.ts       # Input validation & sanitization
+│   ├── recaptcha.ts        # reCAPTCHA v3 verification
+│   ├── database.ts         # PostgreSQL operations
+│   └── email.ts            # Email notifications
+├── scripts/
+│   └── init-db.ts          # Database initialization
+├── types/
+│   └── recaptcha.d.ts      # TypeScript declarations
 ├── public/                 # Static assets
+├── .env.example            # Environment variables template
+├── .env.local              # Local environment (not committed)
 ├── .eslintrc.json          # ESLint configuration
 ├── .gitignore              # Git ignore rules
+├── BACKEND_SETUP.md        # Backend setup guide
 ├── next.config.js          # Next.js configuration
 ├── package.json            # Dependencies & scripts
 ├── postcss.config.mjs      # PostCSS configuration
@@ -126,7 +151,18 @@ yarn dev
 pnpm dev
 ```
 
-4. **Buka browser**
+4. **Setup Backend (Optional - untuk contact form)**
+
+   Ikuti panduan lengkap di [BACKEND_SETUP.md](BACKEND_SETUP.md)
+   
+   **Quick version:**
+   - Setup Supabase database (free)
+   - Setup Google reCAPTCHA v3 (free)
+   - Setup Resend email (free)
+   - Configure `.env.local`
+   - Run `npm run db:init`
+
+5. **Buka browser**
    
    Akses [http://localhost:3000](http://localhost:3000)
 
@@ -145,6 +181,46 @@ npm start
 ```bash
 npm run lint
 ```
+
+### Database Management
+
+```bash
+# Initialize database tables
+npm run db:init
+```
+
+## 🔒 Backend Setup
+
+The contact form includes a secure backend with reCAPTCHA v3, database storage, and email notifications.
+
+**📖 Full Setup Guide**: [BACKEND_SETUP.md](BACKEND_SETUP.md)
+
+**Quick Setup:**
+1. **Database**: Create free Supabase account → Get connection string
+2. **reCAPTCHA**: Register site at Google → Get site key + secret key
+3. **Email**: Create Resend account → Get API key
+4. **Configure**: Fill `.env.local` with your credentials
+5. **Initialize**: Run `npm run db:init` to create tables
+6. **Test**: Submit contact form → Check database & email
+
+**Environment Variables Required:**
+```env
+DATABASE_URL=postgresql://...
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=...
+RECAPTCHA_SECRET_KEY=...
+RESEND_API_KEY=...
+NOTIFICATION_EMAIL=your@email.com
+```
+
+**Security Features:**
+- 🛡️ reCAPTCHA v3 (0.5 score threshold)
+- 🧹 XSS prevention (DOMPurify)
+- 💉 SQL injection prevention
+- ⏱️ Rate limiting (5/hour per IP)
+- ✉️ Auto email notifications
+- 💾 PostgreSQL storage
+
+**Cost:** $0/month for up to 3,000 leads (all free tiers)
 
 ## 💻 Komponen Utama
 
@@ -221,22 +297,40 @@ Showcase layanan AI automation:
 - Guarantee badge
 
 ### 5. Contact Form
-Form kontak sederhana dengan 4 field saja:
+Form kontak dengan backend security & reCAPTCHA v3:
 
 **Fields:**
-- Nama Lengkap (required)
-- Email (required)
-- Perusahaan (required)
-- Pesan (required)
+- Nama Lengkap (required, 2-100 chars)
+- Email (required, RFC-compliant validation)
+- Perusahaan (required, 2-200 chars)
+- Pesan (required, 10-2000 chars)
 
-**Features:**
+**Frontend Features:**
 - Icon indicators per field
-- Real-time validation
+- Real-time client validation
 - Loading state saat submit
-- Success message dengan animation
-- Privacy note
+- Success/error messages dengan animation
+- reCAPTCHA v3 integration (invisible)
+- Privacy note dengan Google policy links
 - Contact info sidebar
 - Benefits checklist
+
+**Backend Security:**
+- ✅ Google reCAPTCHA v3 verification (0.5 threshold)
+- ✅ Server-side validation & sanitization
+- ✅ XSS prevention dengan DOMPurify
+- ✅ SQL injection prevention (parameterized queries)
+- ✅ Rate limiting (5 per hour per IP)
+- ✅ PostgreSQL database storage
+- ✅ Email notifications (admin + customer)
+- ✅ Error handling & logging
+
+**Tech Stack:**
+- API: Next.js Route Handlers
+- Database: PostgreSQL (Supabase)
+- Email: Resend API
+- Validation: validator.js + DOMPurify
+- Security: reCAPTCHA v3
 
 ### 6. Hero Section
 Landing hero dengan gradient text:

@@ -29,6 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className="dark">
+      <head>
+        <script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          async
+          defer
+        />
+      </head>
       <body className={`${inter.variable} antialiased bg-gray-900 text-white`}>
         <ClientProviders />
         {children}

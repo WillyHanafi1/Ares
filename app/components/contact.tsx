@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send, CheckCircle2, Mail, Building2, User } from 'lucide-react';
+import { Send, CheckCircle2, Mail, Building2, User, AlertCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ const Contact: React.FC = () => {
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -24,18 +25,60 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
+    setErrorMessage('');
 
-    // Simulate API call - Replace with actual implementation
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
+    try {
+      // Get reCAPTCHA token
+      const token = await new Promise<string>((resolve, reject) => {
+        if (typeof window === 'undefined' || !window.grecaptcha) {
+          reject(new Error('reCAPTCHA not loaded'));
+          return;
+        }
+        window.grecaptcha.ready(() => {
+          window.grecaptcha
+            .execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!, { action: 'contact' })
+            .then(resolve)
+            .catch(reject);
+        });
+      });
+
+      // Submit form with reCAPTCHA token
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken: token,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
       setStatus('success');
-      
+
       // Reset form after 3 seconds
       setTimeout(() => {
         setFormData({ name: '', email: '', company: '', message: '' });
         setStatus('idle');
       }, 3000);
-    }, 1000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setStatus('error');
+      setErrorMessage(
+        error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.'
+      );
+      // Reset error after 5 seconds
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorMessage('');
+      }, 5000);
+    }
   };
 
   return (
@@ -87,6 +130,12 @@ const Contact: React.FC = () => {
 
           {/* Right Column - Form */}
           <div className="bg-gray-900 border border-gray-800 rounded-lg p-8">
+            {status === 'error' && errorMessage && (
+              <div className="mb-6 p-4 bg-red-900/20 border border-red-500/50 rounded-lg flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <p className="text-red-300 text-sm">{errorMessage}</p>
+              </div>
+            )}
             {status === 'success' ? (
               <div className="text-center py-12">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 mb-6">
@@ -198,6 +247,16 @@ const Contact: React.FC = () => {
                 {/* Privacy Note */}
                 <p className="text-xs text-gray-500 text-center">
                   Dengan mengirim form ini, Anda menyetujui bahwa kami akan menghubungi Anda terkait layanan kami.
+                  <br />
+                  Dilindungi oleh reCAPTCHA dan{' '}
+                  <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">
+                    Privacy Policy
+                  </a>{' '}
+                  dan{' '}
+                  <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">
+                    Terms of Service
+                  </a>{' '}
+                  Google.
                 </p>
               </form>
             )}
