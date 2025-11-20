@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ClientProviders from "@/components/ClientProviders";
+import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,8 +31,10 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-gray-900 text-white font-sans">
-        <ClientProviders />
-        {children}
+        <ThemeProvider>
+          <ClientProviders />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

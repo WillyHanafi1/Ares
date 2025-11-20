@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import { Search, Lightbulb, Cog, HeadphonesIcon } from 'lucide-react';
+import { Card, CardContent, Typography, Box, Container, Avatar, Button } from '@mui/material';
 
 interface ProcessStep {
   number: string;
@@ -43,84 +46,138 @@ const Process: React.FC = () => {
 
   return (
     <section className="py-20 px-4 bg-black">
-      <div className="max-w-7xl mx-auto">
+      <Container maxWidth="lg">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+        <Box textAlign="center" mb={8}>
+          <Typography
+            variant="h2"
+            className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+            gutterBottom
+          >
             Proses Kami
-          </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          </Typography>
+          <Typography variant="h6" color="text.secondary" maxWidth="md" mx="auto">
             AI tidak harus rumit. Kami membuat prosesnya sederhana, jelas, dan bebas risiko untuk bisnis Anda.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Process Steps */}
-        <div className="relative">
-          {/* Connection Line - Hidden on mobile */}
-          <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 opacity-20" 
-               style={{ top: '6rem' }} />
-
+        <Box position="relative">
           {/* Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
+              gap: 4,
+            }}
+          >
             {steps.map((step, index) => (
-              <div
+              <Card
                 key={index}
-                className="relative group"
+                className="glass-dark glass-hover h-full"
+                sx={{
+                  position: 'relative',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                  },
+                }}
               >
-                {/* Step Card */}
-                <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 h-full transition-all duration-300 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-2">
-                  {/* Number Badge */}
-                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-cyan-500/50 z-10">
-                    {step.number}
-                  </div>
+                  <CardContent sx={{ p: 4, pt: 6 }}>
+                    {/* Number Badge */}
+                    <Avatar
+                      sx={{
+                        position: 'absolute',
+                        top: -20,
+                        left: -20,
+                        width: 48,
+                        height: 48,
+                        background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)',
+                        fontSize: '1.125rem',
+                        fontWeight: 700,
+                        boxShadow: '0 10px 30px rgba(6, 182, 212, 0.5)',
+                      }}
+                    >
+                      {step.number}
+                    </Avatar>
 
-                  {/* Icon */}
-                  <div className="mb-6 pt-4 transform transition-transform duration-300 group-hover:scale-110">
-                    {step.icon}
-                  </div>
+                    {/* Icon */}
+                    <Box
+                      mb={3}
+                      sx={{
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.1)',
+                        },
+                      }}
+                    >
+                      {step.icon}
+                    </Box>
 
-                  {/* Title */}
-                  <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors duration-300">
-                    {step.title}
-                  </h3>
-                  
-                  {/* Subtitle */}
-                  <p className="text-sm text-cyan-400 mb-4 font-medium">
-                    {step.subtitle}
-                  </p>
+                    {/* Title */}
+                    <Typography
+                      variant="h5"
+                      component="h3"
+                      gutterBottom
+                      sx={{
+                        fontWeight: 700,
+                        transition: 'color 0.3s ease',
+                        '&:hover': {
+                          color: '#22d3ee',
+                        },
+                      }}
+                    >
+                      {step.title}
+                    </Typography>
 
-                  {/* Description */}
-                  <p className="text-gray-400 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
+                    {/* Subtitle */}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: '#22d3ee',
+                        fontWeight: 500,
+                        mb: 2,
+                      }}
+                    >
+                      {step.subtitle}
+                    </Typography>
 
-                {/* Arrow - Hidden on mobile and last item */}
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-24 -right-4 text-cyan-500 opacity-30 z-20">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                )}
-              </div>
+                    {/* Description */}
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                      {step.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Bottom CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-gray-400 mb-6 text-lg">
+        <Box mt={8} textAlign="center">
+          <Typography variant="h6" color="text.secondary" mb={3}>
             Siap untuk memulai transformasi AI di bisnis Anda?
-          </p>
-          <a
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
             href="#contact"
-            className="inline-block bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:-translate-y-1"
+            sx={{
+              background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)',
+              px: 4,
+              py: 1.5,
+              fontSize: '1rem',
+              fontWeight: 600,
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 10px 30px rgba(6, 182, 212, 0.5)',
+              },
+              transition: 'all 0.3s ease',
+            }}
           >
             Jadwalkan Konsultasi Gratis
-          </a>
-        </div>
-      </div>
+          </Button>
+        </Box>
+      </Container>
     </section>
   );
 };

@@ -1,27 +1,68 @@
+'use client';
+
 import Services from "./components/services";
 import Process from "./components/process";
 import CTA from "./components/cta";
 import Contact from "./components/contact";
+import { Button, Container, Box, Typography } from "@mui/material";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-900">
-      {/* Hero Section - Placeholder */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            Seriaflow
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
-            AI Automation Agency untuk Bisnis Modern
-          </p>
-          <a
-            href="#contact"
-            className="inline-block bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:-translate-y-1"
+      {/* Hero Section */}
+      <section className="py-20 px-4 relative overflow-hidden">
+        {/* Background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 via-purple-500/10 to-transparent pointer-events-none" />
+        
+        <Container maxWidth="lg">
+          <Box
+            textAlign="center"
+            position="relative"
+            zIndex={1}
+            className="glass-strong"
+            sx={{
+              p: { xs: 4, md: 8 },
+              borderRadius: 4,
+              maxWidth: '900px',
+              mx: 'auto',
+            }}
           >
-            Jadwalkan Konsultasi Gratis
-          </a>
-        </div>
+            <Typography
+              variant="h1"
+              className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+              gutterBottom
+            >
+              Seriaflow
+            </Typography>
+            <Typography
+              variant="h4"
+              color="text.secondary"
+              mb={4}
+              sx={{ fontSize: { xs: '1.25rem', md: '1.875rem' } }}
+            >
+              AI Automation Agency untuk Bisnis Modern
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              href="#contact"
+              sx={{
+                background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)',
+                px: 4,
+                py: 2,
+                fontSize: '1.125rem',
+                fontWeight: 600,
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 15px 40px rgba(6, 182, 212, 0.5)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Jadwalkan Konsultasi Gratis
+            </Button>
+          </Box>
+        </Container>
       </section>
 
       {/* Services Section */}
@@ -36,11 +77,13 @@ export default function Home() {
       {/* Contact Section */}
       <Contact />
 
-      {/* Footer Placeholder */}
+      {/* Footer */}
       <footer className="py-8 px-4 border-t border-gray-800 bg-black">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 Seriaflow. All rights reserved.</p>
-        </div>
+        <Container maxWidth="lg">
+          <Typography variant="body2" color="text.secondary" textAlign="center">
+            &copy; 2025 Seriaflow. All rights reserved.
+          </Typography>
+        </Container>
       </footer>
     </main>
   );
