@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import { Cpu, Bot, BarChart } from 'lucide-react';
+import { Card, CardContent, Typography, Box, Container } from '@mui/material';
 
 // Interface untuk tipe data service item
 interface ServiceItem {
@@ -30,42 +33,80 @@ const Services: React.FC = () => {
 
   return (
     <section className="py-20 px-4 bg-gray-900">
-      <div className="max-w-7xl mx-auto">
+      <Container maxWidth="lg">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+        <Box textAlign="center" mb={8}>
+          <Typography
+            variant="h2"
+            className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+            gutterBottom
+          >
             Solusi AI untuk Setiap Kebutuhan
-          </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          </Typography>
+          <Typography variant="h6" color="text.secondary" maxWidth="md" mx="auto">
             Kami merancang dan mengimplementasikan solusi AI kustom yang mendorong efisiensi nyata bagi bisnis Anda.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+            gap: 4,
+          }}
+        >
           {services.map((service, index) => (
-            <div
+            <Card
               key={index}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-6 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 hover:border-cyan-500/50 hover:-translate-y-2 group"
+              className="glass glass-hover h-full"
+              sx={{
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                },
+              }}
             >
-              {/* Icon */}
-              <div className="mb-5 transform transition-transform duration-300 group-hover:scale-110">
-                {service.icon}
-              </div>
+                <CardContent sx={{ p: 4 }}>
+                  {/* Icon */}
+                  <Box
+                    mb={3}
+                    sx={{
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.1)',
+                      },
+                    }}
+                  >
+                    {service.icon}
+                  </Box>
 
-              {/* Title */}
-              <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors duration-300">
-                {service.title}
-              </h3>
+                  {/* Title */}
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    gutterBottom
+                    sx={{
+                      fontWeight: 700,
+                      mb: 2,
+                      transition: 'color 0.3s ease',
+                      '&:hover': {
+                        color: '#22d3ee',
+                      },
+                    }}
+                  >
+                    {service.title}
+                  </Typography>
 
-              {/* Description */}
-              <p className="text-gray-400 leading-relaxed">
-                {service.description}
-              </p>
-            </div>
+                  {/* Description */}
+                  <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                    {service.description}
+                  </Typography>
+                </CardContent>
+              </Card>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Container>
     </section>
   );
 };

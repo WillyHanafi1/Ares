@@ -1,12 +1,15 @@
+'use client';
+
 import React from 'react';
 import { Rocket, Calendar, FileSearch } from 'lucide-react';
+import { Card, CardContent, Typography, Box, Container, Avatar, Button, Chip } from '@mui/material';
 
 interface CTAOption {
   title: string;
   description: string;
   icon: React.ReactNode;
   buttonText: string;
-  buttonColor: string;
+  gradient: string;
   href: string;
 }
 
@@ -17,7 +20,7 @@ const CTA: React.FC = () => {
       description: "Diskusikan kebutuhan AI Anda dengan expert kami selama 30 menit",
       icon: <Calendar className="w-8 h-8" />,
       buttonText: "Jadwalkan Konsultasi Gratis",
-      buttonColor: "from-cyan-500 to-blue-600",
+      gradient: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)",
       href: "#contact"
     },
     {
@@ -25,7 +28,7 @@ const CTA: React.FC = () => {
       description: "Dapatkan analisis mendalam tentang peluang automasi di bisnis Anda",
       icon: <FileSearch className="w-8 h-8" />,
       buttonText: "Dapatkan Audit Gratis",
-      buttonColor: "from-purple-500 to-pink-600",
+      gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
       href: "#contact"
     },
     {
@@ -33,68 +36,135 @@ const CTA: React.FC = () => {
       description: "Sudah tahu apa yang Anda butuhkan? Mari langsung mulai!",
       icon: <Rocket className="w-8 h-8" />,
       buttonText: "Mulai Proyek Anda",
-      buttonColor: "from-cyan-500 to-purple-600",
+      gradient: "linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)",
       href: "#contact"
     }
   ];
 
   return (
     <section className="py-20 px-4 bg-gray-900">
-      <div className="max-w-7xl mx-auto">
+      <Container maxWidth="lg">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+        <Box textAlign="center" mb={8}>
+          <Typography
+            variant="h2"
+            className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+            gutterBottom
+          >
             Siap Untuk Memulai?
-          </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          </Typography>
+          <Typography variant="h6" color="text.secondary" maxWidth="md" mx="auto">
             Pilih langkah pertama Anda menuju transformasi AI yang menguntungkan
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* CTA Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+            gap: 4,
+            mb: 6,
+          }}
+        >
           {ctaOptions.map((option, index) => (
-            <div
+            <Card
               key={index}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-8 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 hover:-translate-y-2 group text-center"
+              className="glass glass-hover h-full"
+              sx={{
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                },
+              }}
             >
-              {/* Icon */}
-              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br ${option.buttonColor} mb-6 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
-                <div className="text-white">
-                  {option.icon}
-                </div>
-              </div>
+                <CardContent sx={{ p: 4 }}>
+                  {/* Icon */}
+                  <Avatar
+                    sx={{
+                      width: 64,
+                      height: 64,
+                      margin: '0 auto 24px',
+                      background: option.gradient,
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.1) rotate(6deg)',
+                      },
+                    }}
+                  >
+                    {option.icon}
+                  </Avatar>
 
-              {/* Title */}
-              <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors duration-300">
-                {option.title}
-              </h3>
+                  {/* Title */}
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    gutterBottom
+                    sx={{
+                      fontWeight: 700,
+                      mb: 2,
+                      transition: 'color 0.3s ease',
+                      '&:hover': {
+                        color: '#22d3ee',
+                      },
+                    }}
+                  >
+                    {option.title}
+                  </Typography>
 
-              {/* Description */}
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                {option.description}
-              </p>
+                  {/* Description */}
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    sx={{ mb: 3, lineHeight: 1.7 }}
+                  >
+                    {option.description}
+                  </Typography>
 
-              {/* Button */}
-              <a
-                href={option.href}
-                className={`inline-block w-full bg-gradient-to-r ${option.buttonColor} text-white font-semibold px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
-              >
-                {option.buttonText}
-              </a>
-            </div>
+                  {/* Button */}
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    href={option.href}
+                    sx={{
+                      background: option.gradient,
+                      py: 1.5,
+                      fontWeight: 600,
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 10px 30px rgba(6, 182, 212, 0.4)',
+                      },
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    {option.buttonText}
+                  </Button>
+                </CardContent>
+              </Card>
           ))}
-        </div>
+        </Box>
 
         {/* Guarantee Badge */}
-        <div className="text-center">
-          <div className="inline-block bg-gray-800 border border-cyan-500/30 rounded-full px-8 py-4">
-            <p className="text-cyan-400 font-medium">
-              ✨ 100% Gratis, Tanpa Komitmen - Konsultasi pertama tidak mengikat
-            </p>
-          </div>
-        </div>
-      </div>
+        <Box textAlign="center">
+          <Chip
+            label="✨ 100% Gratis, Tanpa Komitmen - Konsultasi pertama tidak mengikat"
+            className="glass"
+            sx={{
+              px: 4,
+              py: 3,
+              fontSize: '1rem',
+              fontWeight: 500,
+              color: '#22d3ee',
+              height: 'auto',
+              '& .MuiChip-label': {
+                px: 2,
+                py: 1,
+              },
+            }}
+          />
+        </Box>
+      </Container>
     </section>
   );
 };

@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import ClientProviders from "@/components/ClientProviders";
+import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Seriaflow - AI Automation Agency",
@@ -36,9 +30,11 @@ export default function RootLayout({
           defer
         />
       </head>
-      <body className={`${inter.variable} antialiased bg-gray-900 text-white`}>
-        <ClientProviders />
-        {children}
+      <body className="antialiased bg-gray-900 text-white font-sans">
+        <ThemeProvider>
+          <ClientProviders />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
