@@ -39,14 +39,20 @@ const CTA: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-gray-900">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 px-4">
+      {/* Gradient Background Orbs */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            Siap Untuk Memulai?
+        <div className="text-center mb-16 fade-in-up">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+            <span className="gradient-text">Siap Untuk Memulai?</span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
             Pilih langkah pertama Anda menuju transformasi AI yang menguntungkan
           </p>
         </div>
@@ -56,41 +62,49 @@ const CTA: React.FC = () => {
           {ctaOptions.map((option, index) => (
             <div
               key={index}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-8 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 hover:-translate-y-2 group text-center"
+              className="group text-center"
             >
-              {/* Icon */}
-              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br ${option.buttonColor} mb-6 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
-                <div className="text-white">
-                  {option.icon}
+              <div className="glass-strong rounded-2xl p-8 transition-all duration-500 hover:-translate-y-3 hover:glow-purple-sm relative overflow-hidden h-full flex flex-col">
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Icon */}
+                <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${option.buttonColor} mb-6 mx-auto animate-pulse-glow group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
+                  <div className="text-white">
+                    {option.icon}
+                  </div>
                 </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold mb-4 text-white group-hover:gradient-text transition-all duration-300">
+                  {option.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-400 mb-6 leading-relaxed flex-grow">
+                  {option.description}
+                </p>
+
+                {/* Button */}
+                <a
+                  href={option.href}
+                  className={`relative inline-block w-full bg-gradient-to-r ${option.buttonColor} text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl overflow-hidden group/btn`}
+                >
+                  <span className="relative z-10">{option.buttonText}</span>
+                  {/* Button shimmer */}
+                  <div className="absolute inset-0 shimmer opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                </a>
               </div>
-
-              {/* Title */}
-              <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors duration-300">
-                {option.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                {option.description}
-              </p>
-
-              {/* Button */}
-              <a
-                href={option.href}
-                className={`inline-block w-full bg-gradient-to-r ${option.buttonColor} text-white font-semibold px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
-              >
-                {option.buttonText}
-              </a>
             </div>
           ))}
         </div>
 
         {/* Guarantee Badge */}
-        <div className="text-center">
-          <div className="inline-block bg-gray-800 border border-cyan-500/30 rounded-full px-8 py-4">
+        <div className="text-center fade-in-up">
+          <div className="inline-flex items-center gap-3 glass-strong px-8 py-5 rounded-full border border-cyan-500/30 hover-lift">
+            <span className="text-2xl">✨</span>
             <p className="text-cyan-400 font-medium">
-              ✨ 100% Gratis, Tanpa Komitmen - Konsultasi pertama tidak mengikat
+              100% Gratis, Tanpa Komitmen - Konsultasi pertama tidak mengikat
             </p>
           </div>
         </div>

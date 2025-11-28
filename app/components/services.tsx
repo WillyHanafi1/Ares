@@ -29,14 +29,18 @@ const Services: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-gray-900">
-      <div className="max-w-7xl mx-auto">
+    <section id="services" className="relative py-24 px-4">
+      {/* Grid Pattern Background */}
+      <div className="absolute inset-0 grid-pattern opacity-50" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            Solusi AI untuk Setiap Kebutuhan
+        <div className="text-center mb-16 fade-in-up">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+            <span className="gradient-text">Solusi AI</span>
+            <span className="block text-gray-300 mt-2">untuk Setiap Kebutuhan</span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
             Kami merancang dan mengimplementasikan solusi AI kustom yang mendorong efisiensi nyata bagi bisnis Anda.
           </p>
         </div>
@@ -46,22 +50,35 @@ const Services: React.FC = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-6 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 hover:border-cyan-500/50 hover:-translate-y-2 group"
+              className="group perspective-1000"
             >
-              {/* Icon */}
-              <div className="mb-5 transform transition-transform duration-300 group-hover:scale-110">
-                {service.icon}
+              <div className="glass-strong rounded-2xl p-8 transition-all duration-500 hover:-translate-y-3 hover:glow-cyan-sm transform-3d hover:rotate-y-5 relative overflow-hidden">
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Icon Container */}
+                <div className="relative mb-6 inline-flex p-4 rounded-xl glass transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  {service.icon}
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold mb-4 text-white group-hover:gradient-text transition-all duration-300">
+                  {service.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                  {service.description}
+                </p>
+
+                {/* Hover Border Glow */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)',
+                    border: '1px solid rgba(6, 182, 212, 0.3)'
+                  }}
+                />
               </div>
-
-              {/* Title */}
-              <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors duration-300">
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-400 leading-relaxed">
-                {service.description}
-              </p>
             </div>
           ))}
         </div>
