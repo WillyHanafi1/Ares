@@ -23,80 +23,61 @@ interface CaseStudy {
 export default function CaseStudiesPage() {
     const caseStudies: CaseStudy[] = [
         {
-            company: "TechMart Indonesia",
+            company: "Toko Sepatu Online (Jakarta)",
             industry: "E-Commerce",
             industryIcon: <ShoppingCart className="w-6 h-6" />,
-            challenge: "Customer service team kewalahan handle 500+ daily inquiries tentang product info, order status, dan return policy. Response time rata-rata 4 jam, menyebabkan customer frustration dan cart abandonment yang tinggi.",
-            solution: "Implemented AI-powered chatbot yang terintegrasi dengan inventory system dan order management. Chatbot handle FAQ, product recommendations, dan order tracking secara real-time dengan natural conversation flow.",
+            challenge: "Owner sibuk ngurus packing & gudang, sering telat bales WA customer yang nanya 'Ready stok berapa?' atau 'Ongkir ke Bandung berapa?'. Banyak yang akhirnya beli di toko lain karena slow response.",
+            solution: "Buatin WhatsApp Bot yang connect ke Google Sheet inventory-nya. Customer bisa nanya stok real-time, cek ongkir otomatis, dan bot langsung bikinin nota pembayaran. Owner tinggal approve order yang masuk.",
             results: [
-                { metric: "Response Time", value: "4 jam → 30 detik", icon: <Clock className="w-6 h-6" /> },
-                { metric: "Customer Satisfaction", value: "+45%", icon: <Users className="w-6 h-6" /> },
-                { metric: "Conversion Rate", value: "+32%", icon: <TrendingUp className="w-6 h-6" /> },
-                { metric: "Cost Savings", value: "Rp 35 Juta/bulan", icon: <DollarSign className="w-6 h-6" /> }
+                { metric: "Response Time", value: "2-3 jam → 1 menit", icon: <Clock className="w-6 h-6" /> },
+                { metric: "Chat Handled", value: "~50-70 chat/hari", icon: <Users className="w-6 h-6" /> },
+                { metric: "Time Saved", value: "~3 jam/hari", icon: <TrendingUp className="w-6 h-6" /> },
+                { metric: "Owner Review", value: "&quot;Worth it banget!&quot;", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
-                quote: "Seriaflow chatbot transform customer experience kami completely. Customer sekarang dapat instant answers 24/7, dan team bisa fokus pada complex issues. ROI tercapai dalam 3 bulan!",
-                author: "Michael Tan",
-                position: "CTO, TechMart Indonesia"
+                quote: "Dulu capek banget bales chat satu-satu, sekarang bot yang handle. Gue fokus packing aja. Customer juga happy karena jawaban langsung. Recommended!",
+                author: "Budi (Owner)",
+                position: "Toko Sepatu Online Jakarta"
             },
-            tags: ["Chatbot", "E-Commerce", "Customer Service"]
+            tags: ["WhatsApp Bot", "E-Commerce", "Inventory Check"]
         },
         {
-            company: "FinCorp Asia",
-            industry: "Financial Services",
-            industryIcon: <Building2 className="w-6 h-6" />,
-            challenge: "Manual processing 1,000+ loan applications per week memakan waktu 5-7 hari. Data entry errors mencapai 15%, menyebabkan delays dan customer complaints.",
-            solution: "Deployed AI document processing system dengan OCR untuk extract data dari aplikasi, automated validation rules, dan intelligent routing ke appropriate officers. Predictive model assess risk scores automatically.",
-            results: [
-                { metric: "Processing Time", value: "7 hari → 4 jam", icon: <Clock className="w-6 h-6" /> },
-                { metric: "Error Rate", value: "-92%", icon: <TrendingUp className="w-6 h-6" /> },
-                { metric: "Approval Rate", value: "+28%", icon: <Users className="w-6 h-6" /> },
-                { metric: "Operational Cost", value: "-65%", icon: <DollarSign className="w-6 h-6" /> }
-            ],
-            testimonial: {
-                quote: "Game changer untuk operations kami. Processing time drop drastis, accuracy meningkat, dan customer dapat approval jauh lebih cepat. Team sekarang handle 3x lebih banyak applications dengan resource yang sama.",
-                author: "Sarah Lim",
-                position: "Operations Director, FinCorp Asia"
-            },
-            tags: ["Automation", "Document Processing", "Finance"]
-        },
-        {
-            company: "HealthPlus Clinics",
-            industry: "Healthcare",
+            company: "Barbershop & Salon (Surabaya)",
+            industry: "Jasa Kecantikan",
             industryIcon: <Heart className="w-6 h-6" />,
-            challenge: "Appointment no-shows mencapai 30% karena reminder manual yang tidak efektif. Staff menghabiskan 3 jam/hari untuk appointment coordination dan follow-ups.",
-            solution: "Implemented intelligent appointment management system dengan multi-channel automated reminders (WhatsApp, SMS, Email), predictive no-show alerts, dan smart rescheduling recommendations berdasarkan patient history.",
+            challenge: "Reception sering missed call karena lagi sibuk potong rambut. Double booking sering terjadi karena pencatatan manual di buku. Customer juga suka lupa jadwal dan no-show.",
+            solution: "Bikinin sistem booking via WhatsApp yang sync ke Google Calendar. Customer tinggal chat 'Mau book besok jam 3', bot cek slot kosong dan langsung booking. H-1 auto reminder via WA.",
             results: [
-                { metric: "No-Show Rate", value: "30% → 8%", icon: <Users className="w-6 h-6" /> },
-                { metric: "Staff Time Saved", value: "15 jam/week", icon: <Clock className="w-6 h-6" /> },
-                { metric: "Patient Satisfaction", value: "+52%", icon: <TrendingUp className="w-6 h-6" /> },
-                { metric: "Revenue Increase", value: "+Rp 125 Juta/bulan", icon: <DollarSign className="w-6 h-6" /> }
+                { metric: "No-Show Rate", value: "~25% → ~8%", icon: <Users className="w-6 h-6" /> },
+                { metric: "Double Booking", value: "Hampir ilang", icon: <TrendingUp className="w-6 h-6" /> },
+                { metric: "Admin Time", value: "2 jam/hari saved", icon: <Clock className="w-6 h-6" /> },
+                { metric: "Customer Feedback", value: "&quot;Lebih praktis!&quot;", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
-                quote: "Automation ini incredible impact-nya. No-shows turun drastis, patients love automated reminders, dan staff bisa fokus pada patient care instead of administrative tasks. Best investment ever.",
-                author: "Dr. James Wong",
-                position: "Medical Director, HealthPlus Clinics"
+                quote: "Sekarang customer bisa booking sendiri tanpa harus nelpon or dateng langsung. Reminder otomatis bikin mereka ga lupa. Double booking juga udah jarang banget. Thanks!",
+                author: "Rani (Manager)",
+                position: "Salon & Barbershop Surabaya"
             },
-            tags: ["Healthcare", "Automation", "Patient Engagement"]
+            tags: ["Booking System", "WhatsApp", "Google Calendar"]
         },
         {
-            company: "RetailMax Chain",
-            industry: "Retail",
-            industryIcon: <ShoppingCart className="w-6 h-6" />,
-            challenge: "15 stores dengan inventory management manual menyebabkan stockouts frequent dan overstock di berbagai locations. Demand forecasting inaccurate leading to Rp 200 Juta/month waste.",
-            solution: "Built predictive analytics system yang analyze sales patterns, seasonal trends, local events, dan weather data untuk forecast demand per store. Automated inventory reordering dengan smart distribution algorithms.",
+            company: "Freelance Property Agent (Tangerang)",
+            industry: "Real Estate",
+            industryIcon: <Building2 className="w-6 h-6" />,
+            challenge: "Kebanyakan chat WA ternyata cuma 'Nanya-nanya doang' (window shopping). Buang waktu banyak buat qualify lead, jadi yang serius malah missed karena slow response.",
+            solution: "Buatin bot qualifier yang nanya budget, lokasi yang dicari, dan timeline beli. Bot kasih rekomendasi property dari Google Sheet. Kalau prospek serius (budget match), baru auto-forward ke agent-nya.",
             results: [
-                { metric: "Stockout Incidents", value: "-78%", icon: <TrendingUp className="w-6 h-6" /> },
-                { metric: "Inventory Waste", value: "-68%", icon: <DollarSign className="w-6 h-6" /> },
-                { metric: "Forecast Accuracy", value: "+89%", icon: <TrendingUp className="w-6 h-6" /> },
-                { metric: "Revenue Impact", value: "+Rp 450 Juta/bulan", icon: <DollarSign className="w-6 h-6" /> }
+                { metric: "Lead Filtered", value: "~40-50 chat/minggu", icon: <Users className="w-6 h-6" /> },
+                { metric: "Serious Leads", value: "~10-15 qualified", icon: <TrendingUp className="w-6 h-6" /> },
+                { metric: "Time Saved", value: "5-7 jam/minggu", icon: <Clock className="w-6 h-6" /> },
+                { metric: "Closing Rate", value: "Lebih fokus ke hot leads", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
-                quote: "Kami sekarang punya crystal ball untuk inventory management. System predict demand dengan accuracy yang amazing, stockouts turun drastis, dan waste berkurang significantly. Profitability naik double digit!",
-                author: "Linda Chen",
-                position: "COO, RetailMax Chain"
+                quote: "Bot ini bantu banget filter mana yang beneran mau beli, mana yang iseng. Gue jadi bisa fokus follow-up yang serius. Hemat waktu dan tenaga!",
+                author: "Agus (Agent)",
+                position: "Freelance Property Agent Tangerang"
             },
-            tags: ["Predictive Analytics", "Inventory", "Retail"]
+            tags: ["Lead Qualification", "WhatsApp", "CRM"]
         }
     ];
 
@@ -105,22 +86,21 @@ export default function CaseStudiesPage() {
             {/* Hero Section */}
             <section className="max-w-7xl mx-auto text-center mb-20">
                 <h1 className="text-6xl md:text-7xl font-bold mb-6">
-                    <span className="gradient-text">Success Stories</span>
+                    <span className="gradient-text">Freelance Projects</span>
                     <span className="block text-gray-300 text-3xl md:text-4xl mt-4">
-                        Real Results from Real Businesses
+                        Real Projects, Real Solutions
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                    Lihat bagaimana businesses across industries transform operations mereka dengan AI automation solutions kami
+                    Berikut beberapa project freelance yang udah gue kerjain. Simple tapi ngebantu banget buat client-client kecil yang butuh otomasi
                 </p>
 
                 {/* Overall Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                     {[
-                        { number: "50+", label: "Successful Projects" },
-                        { number: "Rp 2B+", label: "Cost Savings Generated" },
-                        { number: "95%", label: "Client Retention" },
-                        { number: "4.9/5", label: "Satisfaction Score" }
+                        { number: "5+", label: "Projects Delivered" },
+                        { number: "100%", label: "Client Satisfaction" },
+                        { number: "~1 Tahun", label: "Experience" }
                     ].map((stat, index) => (
                         <div key={index} className="glass-strong p-6 rounded-2xl">
                             <div className="text-4xl font-bold gradient-text mb-2">{stat.number}</div>

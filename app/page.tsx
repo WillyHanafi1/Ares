@@ -22,7 +22,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full mb-8 hover-lift">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <span className="text-sm font-medium bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                AI Automation Agency #1 di Indonesia
+                AI Automation Freelancer
               </span>
             </div>
 
@@ -65,9 +65,9 @@ export default function Home() {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-20">
             {[
-              { number: "50+", label: "Proyek Selesai" },
-              { number: "98%", label: "Kepuasan Klien" },
-              { number: "24/7", label: "Support" }
+              { number: "5+", label: "Projects Delivered" },
+              { number: "100%", label: "Satisfied Clients" },
+              { number: "~1 Tahun", label: "Experience" }
             ].map((stat, index) => (
               <div key={index} className="glass text-center p-6 rounded-2xl hover-lift">
                 <div className="text-4xl font-bold gradient-text mb-2">{stat.number}</div>
