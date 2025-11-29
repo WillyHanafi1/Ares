@@ -78,6 +78,44 @@ export default function CaseStudiesPage() {
                 position: "Freelance Property Agent Tangerang"
             },
             tags: ["Lead Qualification", "WhatsApp", "CRM"]
+        },
+        {
+            company: "SaaS Startup (Remote Team)",
+            industry: "Tech/SaaS",
+            industryIcon: <Building2 className="w-6 h-6" />,
+            challenge: "Tim CS kewalahan onboarding user baru setiap hari. Harus manual explain fitur via email, setup account, dan follow-up satu per satu. User baru sering bingung dan churn rate tinggi karena onboarding yang lambat.",
+            solution: "Membuat automation flow di Slack yang auto-trigger begitu ada user baru signup. Bot langsung kirim welcome message, setup checklist, assign ke CS yang available, dan schedule follow-up reminder. Integration ke CRM untuk tracking.",
+            results: [
+                { metric: "Onboarding Time", value: "2 hari → 4 jam", icon: <Clock className="w-6 h-6" /> },
+                { metric: "User Activation", value: "+35% improvement", icon: <TrendingUp className="w-6 h-6" /> },
+                { metric: "CS Workload", value: "60% lebih efisien", icon: <Users className="w-6 h-6" /> },
+                { metric: "Churn Rate", value: "Turun signifikan", icon: <DollarSign className="w-6 h-6" /> }
+            ],
+            testimonial: {
+                quote: "Game changer untuk tim kami. Dulu CS spend banyak waktu untuk hal repetitif, sekarang mereka fokus ke user yang butuh bantuan lebih dalam. Onboarding jadi lebih konsisten dan cepat.",
+                author: "Sarah (Head of CS)",
+                position: "SaaS Startup"
+            },
+            tags: ["Slack Automation", "Onboarding", "SaaS"]
+        },
+        {
+            company: "Digital Marketing Agency (Bandung)",
+            industry: "Professional Services",
+            industryIcon: <TrendingUp className="w-6 h-6" />,
+            challenge: "Setiap bulan harus compile report manual dari 5-7 platform berbeda (Google Ads, Meta Ads, Analytics, dll) untuk 10+ klien. Butuh 2-3 hari penuh setiap bulannya, prone to human error, dan client suka komplain datanya telat.",
+            solution: "Membuat automation script yang auto-pull data dari semua platform via API, aggregate ke Google Sheets, dan generate report template otomatis. Tinggal review dan kirim. Setup alert kalau ada anomaly di campaign performance.",
+            results: [
+                { metric: "Report Time", value: "3 hari → 2 jam", icon: <Clock className="w-6 h-6" /> },
+                { metric: "Accuracy", value: "Zero manual errors", icon: <TrendingUp className="w-6 h-6" /> },
+                { metric: "Client Satisfaction", value: "Reports on-time", icon: <Users className="w-6 h-6" /> },
+                { metric: "Capacity", value: "Bisa handle 2x klien", icon: <DollarSign className="w-6 h-6" /> }
+            ],
+            testimonial: {
+                quote: "Ini literally save our sanity. Dulu end of month selalu chaos karena compile report, sekarang semua auto. We can take more clients tanpa hire staff baru. ROI dari automation ini insane.",
+                author: "David (Founder)",
+                position: "Digital Marketing Agency Bandung"
+            },
+            tags: ["API Integration", "Reporting Automation", "Marketing"]
         }
     ];
 
@@ -86,21 +124,21 @@ export default function CaseStudiesPage() {
             {/* Hero Section */}
             <section className="max-w-7xl mx-auto text-center mb-20">
                 <h1 className="text-6xl md:text-7xl font-bold mb-6">
-                    <span className="gradient-text">Freelance Projects</span>
+                    <span className="gradient-text">Portfolio Projects</span>
                     <span className="block text-gray-300 text-3xl md:text-4xl mt-4">
-                        Real Projects, Real Solutions
+                        Real Solutions, Measurable Impact
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                    Berikut beberapa project freelance yang saya kerjakan. Sederhana namun sangat membantu klien kecil yang membutuhkan otomasi
+                    Berbagai automation projects yang saya kerjakan untuk klien di berbagai industri—dari e-commerce, SaaS, sampai professional services
                 </p>
 
                 {/* Overall Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                     {[
-                        { number: "5+", label: "Projects Delivered" },
-                        { number: "100%", label: "Client Satisfaction" },
-                        { number: "~1 Tahun", label: "Experience" }
+                        { number: "20+", label: "Automations Deployed" },
+                        { number: "500+", label: "Hours Saved" },
+                        { number: "5", label: "Industries" }
                     ].map((stat, index) => (
                         <div key={index} className="glass-strong p-6 rounded-2xl">
                             <div className="text-4xl font-bold gradient-text mb-2">{stat.number}</div>
@@ -183,7 +221,7 @@ export default function CaseStudiesPage() {
                     <span className="gradient-text">Siap Jadi Success Story Berikutnya?</span>
                 </h2>
                 <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                    Konsultasi gratis untuk explore bagaimana AI automation bisa transform bisnis Anda
+                    Diskusi gratis untuk explore automation opportunities di bisnis Anda—apapun industri atau skalanya
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link

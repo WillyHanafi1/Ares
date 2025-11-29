@@ -5,18 +5,18 @@ export default function AboutPage() {
     const values = [
         {
             icon: <Zap className="w-8 h-8" />,
-            title: "Fokus pada Hasil",
-            description: "Saya tidak hanya membuat bot, tapi memastikan solusi benar-benar menyelesaikan masalah bisnis Anda"
+            title: "Fokus pada Impact",
+            description: "Bukan hanya membuat automation, tapi memastikan setiap solusi deliver real value dan measurable results untuk bisnis Anda"
         },
         {
             icon: <Heart className="w-8 h-8" />,
-            title: "Komunikasi Jelas",
-            description: "Tidak ada istilah teknis yang membingungkan. Saya menjelaskan semuanya dengan bahasa yang mudah dipahami"
+            title: "Practical & Scalable",
+            description: "Solusi yang tidak hanya work hari ini, tapi bisa scale seiring bisnis Anda berkembang—tanpa perlu rebuild dari nol"
         },
         {
             icon: <Target className="w-8 h-8" />,
-            title: "Harga Terjangkau",
-            description: "Solusi AI automation tidak harus mahal. Cocok untuk bisnis kecil yang ingin berkembang dengan teknologi"
+            title: "Quality over Quantity",
+            description: "Saya selektif dengan project yang diambil untuk memastikan hasil maksimal. Setiap client mendapat perhatian penuh"
         }
     ];
 
@@ -27,32 +27,32 @@ export default function AboutPage() {
                 <h1 className="text-6xl md:text-7xl font-bold mb-6">
                     <span className="gradient-text">Tentang Seriaflow</span>
                     <span className="block text-gray-300 text-3xl md:text-4xl mt-4">
-                        AI Automation untuk Bisnis Kecil
+                        AI Automation untuk Business yang Ingin Scaling
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                    Saya membantu bisnis kecil di Indonesia mengotomatiskan pekerjaan repetitif dengan solusi WhatsApp Bot dan AI yang terjangkau
+                    Saya membantu berbagai bisnis mengotomatiskan proses repetitif dengan solusi AI automation yang praktis dan terjangkau
                 </p>
             </section>
 
-            {/* Story Section */}
             <section className="max-w-4xl mx-auto mb-20">
                 <div className="glass-strong rounded-3xl p-12">
-                    <h2 className="text-4xl font-bold gradient-text mb-6">Cerita Saya</h2>
+                    <h2 className="text-4xl font-bold gradient-text mb-6">Kenapa Seriaflow Ada</h2>
                     <div className="space-y-6 text-gray-400 leading-relaxed text-lg">
                         <p>
-                            Seriaflow dimulai dari pengalaman pribadi saya melihat banyak pemilik bisnis kecil yang kerepotan
-                            dengan chat WhatsApp yang tidak pernah berhenti. Mereka tahu teknologi bisa membantu, tapi
-                            solusi yang ada terlalu mahal atau terlalu rumit.
+                            Terlalu banyak bisnis yang stuck dengan pekerjaan repetitif. Mereka tahu otomasi bisa membantu,
+                            tapi solusi enterprise terlalu mahal, dan agency besar tidak menawarkan solusi untuk kebutuhan yang
+                            lebih sederhana namun tetap efektif.
                         </p>
                         <p>
-                            Saya yakin <span className="text-cyan-400 font-semibold">otomasi AI seharusnya bisa diakses oleh semua orang</span>,
-                            bukan hanya perusahaan besar. Dengan pengalaman belajar mandiri dan tutorial, saya mulai membuat
-                            solusi sederhana yang benar-benar membantu bisnis kecil.
+                            Saya percaya <span className="text-cyan-400 font-semibold">AI automation seharusnya accessible untuk semua bisnis</span>,
+                            bukan hanya untuk korporat dengan budget besar. Itulah kenapa saya fokus membuat solusi praktis yang
+                            benar-benar solve real problems—tanpa over-engineering atau harga yang tidak masuk akal.
                         </p>
                         <p>
-                            Hari ini, saya sudah membantu beberapa klien menghemat waktu dan meningkatkan layanan mereka.
-                            Ini masih permulaan, dan saya terus belajar untuk memberikan solusi yang lebih baik.
+                            Sejauh ini, saya sudah deploy 20+ automation systems untuk berbagai klien di 5 industri berbeda.
+                            Dari e-commerce, professional services, sampai tech startups—semuanya dengan satu tujuan:
+                            <span className="text-purple-400 font-semibold"> save time, increase efficiency, dan let businesses fokus ke hal yang penting</span>.
                         </p>
                     </div>
                 </div>
@@ -66,9 +66,9 @@ export default function AboutPage() {
                     </div>
                     <h2 className="text-3xl font-bold text-white mb-6">Misi Saya</h2>
                     <p className="text-gray-400 leading-relaxed text-lg">
-                        Membuat otomasi AI yang terjangkau dan mudah digunakan untuk bisnis kecil di Indonesia.
-                        Saya ingin membantu pemilik bisnis fokus pada hal yang penting, bukan menghabiskan waktu
-                        untuk pekerjaan berulang yang bisa diotomatisasi.
+                        Membuat AI automation yang powerful, terjangkau, dan mudah diimplementasikan untuk berbagai
+                        jenis bisnis. Saya ingin membantu founders dan business owners fokus pada growth dan strategy,
+                        bukan menghabiskan waktu untuk manual tasks yang seharusnya bisa diotomatisasi.
                     </p>
                 </div>
             </section>
@@ -95,20 +95,20 @@ export default function AboutPage() {
             <section className="max-w-4xl mx-auto mb-20">
                 <div className="glass-strong rounded-3xl p-12">
                     <h2 className="text-3xl font-bold text-center mb-12">
-                        <span className="gradient-text">Pencapaian Sejauh Ini</span>
+                        <span className="gradient-text">Track Record</span>
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center">
-                            <div className="text-5xl font-bold gradient-text mb-2">5+</div>
-                            <div className="text-gray-400">Project Selesai</div>
+                            <div className="text-5xl font-bold gradient-text mb-2">20+</div>
+                            <div className="text-gray-400">Automations Deployed</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-5xl font-bold gradient-text mb-2">100%</div>
-                            <div className="text-gray-400">Klien Puas</div>
+                            <div className="text-5xl font-bold gradient-text mb-2">500+</div>
+                            <div className="text-gray-400">Hours Saved for Clients</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-5xl font-bold gradient-text mb-2">~1 Tahun</div>
-                            <div className="text-gray-400">Pengalaman</div>
+                            <div className="text-5xl font-bold gradient-text mb-2">5</div>
+                            <div className="text-gray-400">Industries Served</div>
                         </div>
                     </div>
                 </div>
