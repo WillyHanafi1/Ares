@@ -20,6 +20,10 @@ export const metadata: Metadata = {
     "Chatbot",
     "AI Agency",
   ],
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
