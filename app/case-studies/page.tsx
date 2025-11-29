@@ -187,7 +187,7 @@ export default function CaseStudiesPage() {
 
                         {/* Testimonial */}
                         <div className="glass rounded-2xl p-8 border-l-4 border-cyan-500">
-                            <p className="text-lg text-gray-300 italic mb-6">"{study.testimonial.quote}"</p>
+                            <p className="text-lg text-gray-300 italic mb-6">&quot;{study.testimonial.quote}&quot;</p>
                             <div>
                                 <p className="font-bold text-white">{study.testimonial.author}</p>
                                 <p className="text-sm text-cyan-400">{study.testimonial.position}</p>

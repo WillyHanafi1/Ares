@@ -28,6 +28,7 @@ jobs:
           # Ini adalah daftar perintah yang akan dijalankan di Droplet Anda
           # Perhatikan: Kita tidak perlu 'sudo' karena kita login sebagai 'root'
           script: |
+            set -e
             cd /var/www/seriaflow.com/html
             git config --global --add safe.directory /var/www/seriaflow.com/html
             
