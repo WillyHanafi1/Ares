@@ -30,7 +30,21 @@ jobs:
           script: |
             cd /var/www/seriaflow.com/html
             git config --global --add safe.directory /var/www/seriaflow.com/html
+            
+            # Pull latest changes
             git pull
+            
+            # Clean Next.js cache and old build artifacts
+            rm -rf .next
+            rm -rf node_modules/.cache
+            
+            # Install dependencies (will use cache if package.json unchanged)
             npm install
+            
+            # Build with fresh cache
             npm run build
-            pm2 restart seriaflow-app
+            
+            # Restart PM2 with delay to ensure build completed
+            pm2 delete seriaflow-app || true
+            pm2 start npm --name "seriaflow-app" -- start
+            pm2 save
