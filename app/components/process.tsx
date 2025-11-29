@@ -15,28 +15,28 @@ const Process: React.FC = () => {
       number: "01",
       title: "Penemuan",
       subtitle: "Discovery",
-      description: "Saya memahami masalah Anda secara mendalam, menganalisis proses bisnis, dan mengidentifikasi peluang automasi yang paling impactful.",
+      description: "Kami memahami masalah Anda secara mendalam, menganalisis proses bisnis, dan mengidentifikasi peluang automasi yang paling impactful.",
       icon: <Search className="w-10 h-10 text-cyan-400" />
     },
     {
       number: "02",
       title: "Strategi",
       subtitle: "Strategy",
-      description: "Saya merancang solusi automation yang sesuai dengan kebutuhan spesifik bisnis Anda dan memetakan roadmap implementasi yang jelas.",
+      description: "Kami merancang solusi automation yang sesuai dengan kebutuhan spesifik bisnis Anda dan memetakan roadmap implementasi yang jelas.",
       icon: <Lightbulb className="w-10 h-10 text-purple-400" />
     },
     {
       number: "03",
       title: "Implementasi",
       subtitle: "Implementation",
-      description: "Saya membangun dan mengintegrasikan solusi ke dalam sistem Anda dengan minimal disruption pada operasional.",
+      description: "Kami membangun dan mengintegrasikan solusi ke dalam sistem Anda dengan minimal disruption pada operasional.",
       icon: <Cog className="w-10 h-10 text-cyan-400" />
     },
     {
       number: "04",
       title: "Dukungan",
       subtitle: "Support",
-      description: "Saya memastikan semuanya berjalan lancar dengan monitoring berkelanjutan dan support responsif untuk menjaga performa optimal.",
+      description: "Kami memastikan semuanya berjalan lancar dengan monitoring berkelanjutan dan support responsif untuk menjaga performa optimal.",
       icon: <HeadphonesIcon className="w-10 h-10 text-purple-400" />
     }
   ];
@@ -47,7 +47,7 @@ const Process: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-16 fade-in-up">
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">Bagaimana Saya Bekerja</span>
+            <span className="gradient-text">Proses Kami</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
             Automation tidak harus rumit. Proses yang sederhana, jelas, dan terukur untuk bisnis Anda
@@ -69,20 +69,20 @@ const Process: React.FC = () => {
                 className="group relative"
               >
                 {/* Step Card */}
-                <div className="glass-strong rounded-2xl p-8 min-h-[320px] h-full flex flex-col transition-all duration-500 hover:-translate-y-3 hover:glow-purple-sm relative overflow-hidden">
+                <div className="glass-strong rounded-2xl p-8 min-h-[320px] h-full flex flex-col transition-all duration-500 group-hover:-translate-y-3 group-hover:glow-purple-sm relative overflow-hidden z-10">
                   {/* Shimmer Effect */}
                   <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Number Badge */}
-                  <div className="absolute -top-8 -left-8 w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-2xl z-10 animate-pulse-glow"
-                    style={{
-                      background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)'
-                    }}>
-                    {step.number}
+                  {/* Number Badge - Top Right Inside */}
+                  <div className="absolute top-0 right-0 w-20 h-20 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 blur-xl rounded-bl-3xl"></div>
+                    <span className="text-4xl font-bold bg-gradient-to-br from-cyan-400 to-purple-400 bg-clip-text text-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                      {step.number}
+                    </span>
                   </div>
 
                   {/* Icon Container */}
-                  <div className="mb-6 pt-8 relative">
+                  <div className="mb-6 relative">
                     <div className="inline-flex p-3 rounded-xl glass transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
                       {step.icon}
                     </div>
