@@ -1,30 +1,40 @@
 import React from 'react';
-import { Cpu, Bot, BarChart } from 'lucide-react';
+import { MessageSquare, Phone, Rocket, DollarSign } from 'lucide-react';
 
 // Interface untuk tipe data service item
 interface ServiceItem {
   title: string;
-  description: string;
+  problem: string;
+  outcome: string;
   icon: React.ReactNode;
 }
 
 const Services: React.FC = () => {
-  // Data untuk kartu layanan
+  // Data untuk kartu layanan - fokus pada dream outcome
   const services: ServiceItem[] = [
     {
-      title: "Automasi Proses Bisnis (BPA)",
-      description: "Kami mengotomatiskan tugas manual berulang seperti entri data, alur kerja, dan pelaporan, membebaskan waktu tim Anda.",
-      icon: <Cpu className="w-12 h-12 text-cyan-400" />
+      title: "Outbound Messaging",
+      problem: "Pipeline prospek kosong dan outreach manual memakan waktu berlebihan",
+      outcome: "Pipeline penuh dengan qualified leads yang sudah ter-engage dan siap untuk follow-up—tanpa Anda menghabiskan waktu satu per satu",
+      icon: <MessageSquare className="w-12 h-12 text-cyan-400" />
     },
     {
-      title: "Chatbot & Asisten Virtual Cerdas",
-      description: "Membangun agen percakapan AI yang memberikan layanan pelanggan 24/7, memahami konteks, dan terintegrasi dengan sistem Anda.",
-      icon: <Bot className="w-12 h-12 text-purple-400" />
+      title: "Lead Qualifying",
+      problem: "Sales team menghabiskan waktu untuk prospek yang tidak qualified dan tidak jadi closing",
+      outcome: "Sales team Anda hanya berbicara dengan prospek yang ready to buy dengan budget yang sesuai. Eliminasi time-wasters sepenuhnya",
+      icon: <Phone className="w-12 h-12 text-purple-400" />
     },
     {
-      title: "Analisis & Prediksi Data",
-      description: "Mengubah tumpukan data Anda menjadi insight yang dapat ditindaklanjuti. Kami membuat model prediktif untuk membantu Anda mengambil keputusan.",
-      icon: <BarChart className="w-12 h-12 text-cyan-400" />
+      title: "Client Onboarding",
+      problem: "Klien churn di bulan pertama karena tidak merasakan value dengan cepat",
+      outcome: "Klien merasakan quick win dalam minggu pertama. Retention meningkat karena mereka sudah invested dari awal",
+      icon: <Rocket className="w-12 h-12 text-cyan-400" />
+    },
+    {
+      title: "Financial Dashboard",
+      problem: "Tidak mengetahui kondisi keuangan real-time, keputusan bisnis dibuat berdasarkan asumsi",
+      outcome: "Anda mengetahui exact cash flow setiap saat. Keputusan bisnis diambil berdasarkan data, bukan perkiraan",
+      icon: <DollarSign className="w-12 h-12 text-purple-400" />
     }
   ];
 
@@ -37,39 +47,50 @@ const Services: React.FC = () => {
         {/* Header Section */}
         <div className="text-center mb-16 fade-in-up">
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">Solusi AI</span>
-            <span className="block text-gray-300 mt-2">untuk Setiap Kebutuhan</span>
+            <span className="gradient-text">Automation Solutions</span>
+            <span className="block text-gray-300 mt-2 text-3xl">Yang Benar-Benar Solve Problems</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
-            Kami merancang dan mengimplementasikan solusi AI kustom yang mendorong efisiensi nyata bagi bisnis Anda.
+            Ini bukan tentang teknologi. Ini tentang hasil yang Anda dapatkan untuk bisnis Anda
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Services Grid - 1x4 horizontal */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {services.map((service, index) => (
             <div
               key={index}
               className="group perspective-1000"
             >
-              <div className="glass-strong rounded-2xl p-8 transition-all duration-500 hover:-translate-y-3 hover:glow-cyan-sm transform-3d hover:rotate-y-5 relative overflow-hidden">
+              <div className="glass-strong rounded-2xl p-8 transition-all duration-500 hover:-translate-y-3 hover:glow-cyan-sm relative overflow-hidden h-full flex flex-col">
                 {/* Shimmer Effect */}
                 <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Icon Container */}
-                <div className="relative mb-6 inline-flex p-4 rounded-xl glass transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                <div className="relative mb-6 inline-flex p-4 rounded-xl glass transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 w-fit">
                   {service.icon}
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold mb-4 text-white group-hover:gradient-text transition-all duration-300">
+                <h3 className="text-2xl font-bold mb-6 text-white group-hover:gradient-text transition-all duration-300">
                   {service.title}
                 </h3>
 
-                {/* Description */}
-                <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-                  {service.description}
-                </p>
+                {/* Problem */}
+                <div className="mb-6">
+                  <span className="text-sm font-semibold text-red-400 uppercase tracking-wide">❌ Masalah</span>
+                  <p className="text-gray-400 mt-2 leading-relaxed">
+                    {service.problem}
+                  </p>
+                </div>
+
+                {/* Dream Outcome */}
+                <div className="mt-auto">
+                  <span className="text-sm font-semibold text-cyan-400 uppercase tracking-wide">✨ Hasil yang Anda Dapatkan</span>
+                  <p className="text-gray-100 mt-2 leading-relaxed font-medium">
+                    {service.outcome}
+                  </p>
+                </div>
 
                 {/* Hover Border Glow */}
                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"

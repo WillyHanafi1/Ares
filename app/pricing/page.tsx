@@ -89,7 +89,7 @@ export default function PricingPage() {
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                    Mulai dari small business hingga enterprise, kami punya solusi yang fit untuk setiap tahap growth Anda
+                    Pilih paket yang sesuai dengan kebutuhan dan budget bisnis Anda—bisa adjust kapan saja
                 </p>
 
                 {/* Value Proposition */}
@@ -118,8 +118,8 @@ export default function PricingPage() {
                         <div
                             key={index}
                             className={`relative group ${tier.highlighted
-                                    ? 'lg:-mt-8 glass-strong border-2 border-purple-500/50 shadow-2xl shadow-purple-500/20'
-                                    : 'glass-strong'
+                                ? 'lg:-mt-8 glass-strong border-2 border-purple-500/50 shadow-2xl shadow-purple-500/20'
+                                : 'glass-strong'
                                 } rounded-3xl p-8 hover-lift transition-all duration-500`}
                         >
                             {/* Popular Badge */}
@@ -154,8 +154,8 @@ export default function PricingPage() {
                             <Link
                                 href="/contact"
                                 className={`block w-full text-center py-4 rounded-xl font-bold transition-all duration-300 mb-8 ${tier.highlighted
-                                        ? `bg-gradient-to-r ${tier.gradient} text-white hover:shadow-2xl hover:-translate-y-1`
-                                        : 'glass border border-cyan-500/30 text-cyan-400 hover:border-cyan-500 hover:text-white'
+                                    ? `bg-gradient-to-r ${tier.gradient} text-white hover:shadow-2xl hover:-translate-y-1`
+                                    : 'glass border border-cyan-500/30 text-cyan-400 hover:border-cyan-500 hover:text-white'
                                     }`}
                             >
                                 {tier.cta}
@@ -222,13 +222,13 @@ export default function PricingPage() {
                     <span className="gradient-text">Masih Bingung Pilih Yang Mana?</span>
                 </h2>
                 <p className="text-xl text-gray-400 mb-8">
-                    Schedule konsultasi gratis dan kami akan bantu pilih plan yang paling sesuai dengan kebutuhan bisnis Anda
+                    Schedule diskusi gratis dan saya akan bantu pilih plan yang paling sesuai dengan kebutuhan bisnis Anda
                 </p>
                 <Link
                     href="/contact"
                     className="inline-block px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-2xl hover:glow-cyan transition-all duration-300 hover:-translate-y-1"
                 >
-                    Talk to Sales Team
+                    Hubungi Saya
                 </Link>
             </section>
         </main>

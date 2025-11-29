@@ -127,16 +127,15 @@ export default function ServicesPage() {
                         </span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
-                        Dari chatbot intelligent hingga predictive analytics, kami menyediakan solusi AI end-to-end
-                        yang transform cara bisnis Anda beroperasi.
+                        Berbagai solusi automation yang saya tawarkan untuk membantu bisnis Anda lebih efisien—dari chatbot sampai data processing
                     </p>
 
                     {/* Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
                         {[
-                            { number: "50+", label: "AI Solutions Delivered" },
-                            { number: "85%", label: "Avg. Cost Reduction" },
-                            { number: "24/7", label: "AI-Powered Support" }
+                            { number: "20+", label: "Automations Deployed" },
+                            { number: "500+", label: "Hours Saved for Clients" },
+                            { number: "5", label: "Industries Served" }
                         ].map((stat, index) => (
                             <div key={index} className="glass-strong p-6 rounded-2xl">
                                 <div className="text-5xl font-bold gradient-text mb-2">{stat.number}</div>
@@ -210,14 +209,14 @@ export default function ServicesPage() {
                         <span className="gradient-text">Siap Transform Bisnis Anda?</span>
                     </h2>
                     <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                        Konsultasi gratis untuk diskusikan solusi AI yang paling cocok untuk bisnis Anda
+                        Diskusi gratis untuk explore solusi automation yang paling cocok untuk bisnis Anda
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
                             href="/contact"
                             className="px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-2xl hover:glow-cyan transition-all duration-300 hover:-translate-y-1"
                         >
-                            Jadwalkan Konsultasi Gratis
+                            Hubungi Saya
                         </Link>
                         <Link
                             href="/pricing"

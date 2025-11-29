@@ -15,28 +15,28 @@ const Process: React.FC = () => {
       number: "01",
       title: "Penemuan",
       subtitle: "Discovery",
-      description: "Kami memahami masalah Anda secara mendalam, menganalisis proses bisnis, dan mengidentifikasi peluang automasi terbaik.",
+      description: "Saya memahami masalah Anda secara mendalam, menganalisis proses bisnis, dan mengidentifikasi peluang automasi yang paling impactful.",
       icon: <Search className="w-10 h-10 text-cyan-400" />
     },
     {
       number: "02",
       title: "Strategi",
       subtitle: "Strategy",
-      description: "Kami merancang solusi AI yang disesuaikan dengan kebutuhan spesifik bisnis Anda dan memetakan roadmap implementasi.",
+      description: "Saya merancang solusi automation yang sesuai dengan kebutuhan spesifik bisnis Anda dan memetakan roadmap implementasi yang jelas.",
       icon: <Lightbulb className="w-10 h-10 text-purple-400" />
     },
     {
       number: "03",
       title: "Implementasi",
       subtitle: "Implementation",
-      description: "Kami membangun dan mengintegrasikan solusi AI ke dalam sistem Anda dengan minimal disruption pada operasional.",
+      description: "Saya membangun dan mengintegrasikan solusi ke dalam sistem Anda dengan minimal disruption pada operasional.",
       icon: <Cog className="w-10 h-10 text-cyan-400" />
     },
     {
       number: "04",
       title: "Dukungan",
       subtitle: "Support",
-      description: "Kami memastikan semuanya berjalan lancar dengan monitoring berkelanjutan, training, dan support teknis 24/7.",
+      description: "Saya memastikan semuanya berjalan lancar dengan monitoring berkelanjutan dan support responsif untuk menjaga performa optimal.",
       icon: <HeadphonesIcon className="w-10 h-10 text-purple-400" />
     }
   ];
@@ -47,10 +47,10 @@ const Process: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-16 fade-in-up">
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">Proses Kami</span>
+            <span className="gradient-text">Bagaimana Saya Bekerja</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
-            AI tidak harus rumit. Kami membuat prosesnya sederhana, jelas, dan bebas risiko untuk bisnis Anda.
+            Automation tidak harus rumit. Proses yang sederhana, jelas, dan terukur untuk bisnis Anda
           </p>
         </div>
 
@@ -69,12 +69,12 @@ const Process: React.FC = () => {
                 className="group relative"
               >
                 {/* Step Card */}
-                <div className="glass-strong rounded-2xl p-8 h-full transition-all duration-500 hover:-translate-y-3 hover:glow-purple-sm relative overflow-hidden">
+                <div className="glass-strong rounded-2xl p-8 min-h-[320px] h-full flex flex-col transition-all duration-500 hover:-translate-y-3 hover:glow-purple-sm relative overflow-hidden">
                   {/* Shimmer Effect */}
                   <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                   {/* Number Badge */}
-                  <div className="absolute -top-6 -left-6 w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-2xl z-10 animate-pulse-glow"
+                  <div className="absolute -top-8 -left-8 w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-2xl z-10 animate-pulse-glow"
                     style={{
                       background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)'
                     }}>
@@ -99,7 +99,7 @@ const Process: React.FC = () => {
                   </p>
 
                   {/* Description */}
-                  <p className="text-gray-400 leading-relaxed relative z-10">
+                  <p className="text-gray-400 leading-relaxed relative z-10 flex-grow">
                     {step.description}
                   </p>
 
@@ -128,14 +128,14 @@ const Process: React.FC = () => {
         {/* Bottom CTA */}
         <div className="mt-20 text-center fade-in-up">
           <p className="text-gray-400 mb-6 text-lg">
-            Siap untuk memulai transformasi AI di bisnis Anda?
+            Siap untuk memulai automation di bisnis Anda?
           </p>
           <a
             href="#contact"
             className="inline-flex items-center gap-2 glass-strong px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:-translate-y-1 glow-cyan-sm hover:glow-cyan"
           >
             <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Jadwalkan Konsultasi Gratis
+              Diskusi Project Anda
             </span>
           </a>
         </div>
