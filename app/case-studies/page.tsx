@@ -182,46 +182,33 @@ export default function CaseStudiesPage() {
                                         <div className="text-2xl font-bold gradient-text">{result.value}</div>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
+                            </section>
 
-                        {/* Testimonial */}
-                        <div className="glass rounded-2xl p-8 border-l-4 border-cyan-500">
-                            <p className="text-lg text-gray-300 italic mb-6">"{study.testimonial.quote}"</p>
-                            <div>
-                                <p className="font-bold text-white">{study.testimonial.author}</p>
-                                <p className="text-sm text-cyan-400">{study.testimonial.position}</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </section>
-
-            {/* CTA Section */}
-            <section className="max-w-4xl mx-auto glass-strong rounded-3xl p-12 text-center">
-                <h2 className="text-4xl font-bold mb-6">
-                    <span className="gradient-text">Siap Jadi Success Story Berikutnya?</span>
-                </h2>
-                <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                    Konsultasi gratis untuk explore bagaimana AI automation bisa transform bisnis Anda
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-2xl hover:glow-cyan transition-all duration-300 hover:-translate-y-1"
-                    >
-                        Schedule Consultation
-                        <ArrowRight className="w-5 h-5" />
-                    </Link>
-                    <Link
-                        href="/services"
-                        className="px-8 py-4 rounded-xl font-semibold glass-strong border border-cyan-500/30 text-white hover:border-cyan-500 transition-all duration-300"
-                    >
-                        Explore Services
-                    </Link>
-                </div>
-            </section>
-        </main>
-    );
+                            {/* CTA Section */}
+                            <section className="max-w-4xl mx-auto glass-strong rounded-3xl p-12 text-center">
+                                <h2 className="text-4xl font-bold mb-6">
+                                    <span className="gradient-text">Siap Jadi Success Story Berikutnya?</span>
+                                </h2>
+                                <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                                    Konsultasi gratis untuk explore bagaimana AI automation bisa transform bisnis Anda
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                    <Link
+                                        href="/contact"
+                                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-2xl hover:glow-cyan transition-all duration-300 hover:-translate-y-1"
+                                    >
+                                        Schedule Consultation
+                                        <ArrowRight className="w-5 h-5" />
+                                    </Link>
+                                    <Link
+                                        href="/services"
+                                        className="px-8 py-4 rounded-xl font-semibold glass-strong border border-cyan-500/30 text-white hover:border-cyan-500 transition-all duration-300"
+                                    >
+                                        Explore Services
+                                    </Link>
+                                </div>
+                            </section>
+                        </main>
+                        );
 }
 
