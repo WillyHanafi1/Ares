@@ -32,7 +32,7 @@ export default function CaseStudiesPage() {
                 { metric: "Response Time", value: "2-3 jam → 1 menit", icon: <Clock className="w-6 h-6" /> },
                 { metric: "Chat Handled", value: "~50-70 chat/hari", icon: <Users className="w-6 h-6" /> },
                 { metric: "Time Saved", value: "~3 jam/hari", icon: <TrendingUp className="w-6 h-6" /> },
-                { metric: "Owner Review", value: "&quot;Worth it banget!&quot;", icon: <DollarSign className="w-6 h-6" /> }
+                { metric: "Owner Review", value: "Worth it!", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
                 quote: "Sebelumnya sangat lelah membalas chat satu per satu, sekarang bot yang menanganinya. Saya fokus packing saja. Customer juga senang karena jawaban langsung. Sangat direkomendasikan!",
@@ -51,7 +51,7 @@ export default function CaseStudiesPage() {
                 { metric: "No-Show Rate", value: "~25% → ~8%", icon: <Users className="w-6 h-6" /> },
                 { metric: "Double Booking", value: "Hampir ilang", icon: <TrendingUp className="w-6 h-6" /> },
                 { metric: "Admin Time", value: "2 jam/hari saved", icon: <Clock className="w-6 h-6" /> },
-                { metric: "Customer Feedback", value: "&quot;Lebih praktis!&quot;", icon: <DollarSign className="w-6 h-6" /> }
+                { metric: "Customer Feedback", value: "Lebih praktis!", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
                 quote: "Sekarang customer bisa booking sendiri tanpa harus menelepon atau datang langsung. Reminder otomatis membuat mereka tidak lupa. Double booking juga sudah jarang sekali. Terima kasih!",
