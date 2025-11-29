@@ -35,9 +35,6 @@ jobs:
             # Pull latest changes
             git pull
             
-            # Stop all PM2 processes first
-            pm2 delete all || true
-            
             # Clean Next.js cache and old build artifacts
             rm -rf .next
             rm -rf node_modules/.cache
@@ -47,6 +44,13 @@ jobs:
             
             # Build with fresh cache
             npm run build
+            
+            # Wait for build artifacts to be fully written
+            sleep 3
+            
+            # Stop old processes
+            pm2 delete seriaflow-web || true
+            pm2 delete seriaflow-app || true
             
             # Start the new app
             pm2 start npm --name "seriaflow-app" -- start
