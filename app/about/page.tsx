@@ -71,7 +71,7 @@ export default function AboutPage() {
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                    We're on a mission to make AI automation accessible dan affordable untuk every business di Indonesia,
+                    We&apos;re on a mission to make AI automation accessible dan affordable untuk every business di Indonesia,
                     regardless of size atau industry
                 </p>
             </section>
@@ -85,7 +85,7 @@ export default function AboutPage() {
                             Seriaflow lahir dari frustration terhadap gap yang besar antara kekuatan AI technology dan implementation-nya di Indonesian businesses. Banyak companies tahu mereka butuh AI automation, tapi overwhelmed dengan complexity, cost, dan lack of expertise.
                         </p>
                         <p>
-                            Kami founded Seriaflow dengan simple belief: <span className="text-cyan-400 font-semibold">AI automation shouldn't be privilege of tech giants</span>. Every business, dari startup hingga enterprise, deserve access to tools yang sama powerful untuk compete dan grow.
+                            Kami founded Seriaflow dengan simple belief: <span className="text-cyan-400 font-semibold">AI automation shouldn&apos;t be privilege of tech giants</span>. Every business, dari startup hingga enterprise, deserve access to tools yang sama powerful untuk compete dan grow.
                         </p>
                         <p>
                             Today, kami proud telah help 50+ businesses transform operations mereka, save millions in costs, dan unlock new growth opportunities yang previously impossible. Tapi ini baru permulaan.

@@ -64,8 +64,8 @@ export default function ContactPage() {
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                    Whether you're ready to start building atau just exploring possibilities,
-                    kami here to help. Reach out dan let's transform your business bersama.
+                    Whether you&apos;re ready to start building atau just exploring possibilities,
+                    kami here to help. Reach out dan let&apos;s transform your business bersama.
                 </p>
             </section>
 
