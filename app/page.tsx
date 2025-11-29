@@ -117,8 +117,8 @@ export default function Home() {
               <h4 className="font-semibold text-white mb-3">Hubungi Kami</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li>
-                  <a href="mailto:hello@seriaflow.com" className="hover:text-cyan-400 transition-colors">
-                    hello@seriaflow.com
+                  <a href="mailto:willy@seriaflow.com" className="hover:text-cyan-400 transition-colors">
+                    willy@seriaflow.com
                   </a>
                 </li>
                 <li>Indonesia</li>

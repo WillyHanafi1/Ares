@@ -26,8 +26,8 @@ export default function CaseStudiesPage() {
             company: "Toko Sepatu Online (Jakarta)",
             industry: "E-Commerce",
             industryIcon: <ShoppingCart className="w-6 h-6" />,
-            challenge: "Owner sibuk ngurus packing & gudang, sering telat bales WA customer yang nanya 'Ready stok berapa?' atau 'Ongkir ke Bandung berapa?'. Banyak yang akhirnya beli di toko lain karena slow response.",
-            solution: "Buatin WhatsApp Bot yang connect ke Google Sheet inventory-nya. Customer bisa nanya stok real-time, cek ongkir otomatis, dan bot langsung bikinin nota pembayaran. Owner tinggal approve order yang masuk.",
+            challenge: "Owner sibuk mengurus packing dan gudang, sering terlambat membalas WhatsApp customer yang bertanya 'Ready stok berapa?' atau 'Ongkir ke Bandung berapa?'. Banyak yang akhirnya beli di toko lain karena respons lambat.",
+            solution: "Membuat WhatsApp Bot yang terhubung ke Google Sheet inventory. Customer bisa menanyakan stok real-time, cek ongkir otomatis, dan bot langsung membuatkan nota pembayaran. Owner tinggal approve order yang masuk.",
             results: [
                 { metric: "Response Time", value: "2-3 jam → 1 menit", icon: <Clock className="w-6 h-6" /> },
                 { metric: "Chat Handled", value: "~50-70 chat/hari", icon: <Users className="w-6 h-6" /> },
@@ -35,7 +35,7 @@ export default function CaseStudiesPage() {
                 { metric: "Owner Review", value: "&quot;Worth it banget!&quot;", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
-                quote: "Dulu capek banget bales chat satu-satu, sekarang bot yang handle. Gue fokus packing aja. Customer juga happy karena jawaban langsung. Recommended!",
+                quote: "Sebelumnya sangat lelah membalas chat satu per satu, sekarang bot yang menanganinya. Saya fokus packing saja. Customer juga senang karena jawaban langsung. Sangat direkomendasikan!",
                 author: "Budi (Owner)",
                 position: "Toko Sepatu Online Jakarta"
             },
@@ -45,8 +45,8 @@ export default function CaseStudiesPage() {
             company: "Barbershop & Salon (Surabaya)",
             industry: "Jasa Kecantikan",
             industryIcon: <Heart className="w-6 h-6" />,
-            challenge: "Reception sering missed call karena lagi sibuk potong rambut. Double booking sering terjadi karena pencatatan manual di buku. Customer juga suka lupa jadwal dan no-show.",
-            solution: "Bikinin sistem booking via WhatsApp yang sync ke Google Calendar. Customer tinggal chat 'Mau book besok jam 3', bot cek slot kosong dan langsung booking. H-1 auto reminder via WA.",
+            challenge: "Resepsionis sering missed call karena sedang sibuk memotong rambut. Double booking sering terjadi karena pencatatan manual di buku. Customer juga suka lupa jadwal dan tidak datang.",
+            solution: "Membuat sistem booking via WhatsApp yang sync ke Google Calendar. Customer tinggal chat 'Mau book besok jam 3', bot mengecek slot kosong dan langsung booking. H-1 otomatis mengirim reminder via WhatsApp.",
             results: [
                 { metric: "No-Show Rate", value: "~25% → ~8%", icon: <Users className="w-6 h-6" /> },
                 { metric: "Double Booking", value: "Hampir ilang", icon: <TrendingUp className="w-6 h-6" /> },
@@ -54,7 +54,7 @@ export default function CaseStudiesPage() {
                 { metric: "Customer Feedback", value: "&quot;Lebih praktis!&quot;", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
-                quote: "Sekarang customer bisa booking sendiri tanpa harus nelpon or dateng langsung. Reminder otomatis bikin mereka ga lupa. Double booking juga udah jarang banget. Thanks!",
+                quote: "Sekarang customer bisa booking sendiri tanpa harus menelepon atau datang langsung. Reminder otomatis membuat mereka tidak lupa. Double booking juga sudah jarang sekali. Terima kasih!",
                 author: "Rani (Manager)",
                 position: "Salon & Barbershop Surabaya"
             },
@@ -64,8 +64,8 @@ export default function CaseStudiesPage() {
             company: "Freelance Property Agent (Tangerang)",
             industry: "Real Estate",
             industryIcon: <Building2 className="w-6 h-6" />,
-            challenge: "Kebanyakan chat WA ternyata cuma 'Nanya-nanya doang' (window shopping). Buang waktu banyak buat qualify lead, jadi yang serius malah missed karena slow response.",
-            solution: "Buatin bot qualifier yang nanya budget, lokasi yang dicari, dan timeline beli. Bot kasih rekomendasi property dari Google Sheet. Kalau prospek serius (budget match), baru auto-forward ke agent-nya.",
+            challenge: "Kebanyakan chat WhatsApp ternyata hanya 'Nanya-nanya saja' (window shopping). Buang waktu banyak untuk qualify lead, jadi yang serius malah terlewat karena respons lambat.",
+            solution: "Membuat bot qualifier yang menanyakan budget, lokasi yang dicari, dan timeline beli. Bot memberikan rekomendasi property dari Google Sheet. Kalau prospek serius (budget cocok), baru otomatis diteruskan ke agent.",
             results: [
                 { metric: "Lead Filtered", value: "~40-50 chat/minggu", icon: <Users className="w-6 h-6" /> },
                 { metric: "Serious Leads", value: "~10-15 qualified", icon: <TrendingUp className="w-6 h-6" /> },
@@ -73,7 +73,7 @@ export default function CaseStudiesPage() {
                 { metric: "Closing Rate", value: "Lebih fokus ke hot leads", icon: <DollarSign className="w-6 h-6" /> }
             ],
             testimonial: {
-                quote: "Bot ini bantu banget filter mana yang beneran mau beli, mana yang iseng. Gue jadi bisa fokus follow-up yang serius. Hemat waktu dan tenaga!",
+                quote: "Bot ini sangat membantu memfilter mana yang benar-benar mau beli, mana yang iseng. Saya jadi bisa fokus follow-up yang serius. Hemat waktu dan tenaga!",
                 author: "Agus (Agent)",
                 position: "Freelance Property Agent Tangerang"
             },
@@ -92,7 +92,7 @@ export default function CaseStudiesPage() {
                     </span>
                 </h1>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                    Berikut beberapa project freelance yang udah gue kerjain. Simple tapi ngebantu banget buat client-client kecil yang butuh otomasi
+                    Berikut beberapa project freelance yang saya kerjakan. Sederhana namun sangat membantu klien kecil yang membutuhkan otomasi
                 </p>
 
                 {/* Overall Stats */}

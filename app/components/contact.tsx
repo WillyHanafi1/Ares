@@ -129,8 +129,8 @@ const Contact: React.FC = () => {
                   <div className="glass p-2 rounded-lg">
                     <Mail className="w-5 h-5 text-cyan-400" />
                   </div>
-                  <a href="mailto:hello@seriaflow.com" className="hover:text-cyan-400 transition-colors">
-                    hello@seriaflow.com
+                  <a href="mailto:willy@seriaflow.com" className="hover:text-cyan-400 transition-colors">
+                    willy@seriaflow.com
                   </a>
                 </p>
                 <p className="flex items-center gap-3">
