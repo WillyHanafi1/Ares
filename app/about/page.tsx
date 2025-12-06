@@ -1,5 +1,16 @@
 import { Target, Heart, Zap } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { SEO } from '@/lib/constants';
+
+export const metadata: Metadata = {
+    title: SEO.about.title,
+    description: SEO.about.description,
+    openGraph: {
+        title: SEO.about.title,
+        description: SEO.about.description,
+    },
+};
 
 export default function AboutPage() {
     const values = [

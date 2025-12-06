@@ -1,5 +1,16 @@
 import { Check, X, Sparkles, Zap, Rocket } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { SEO } from '@/lib/constants';
+
+export const metadata: Metadata = {
+    title: SEO.pricing.title,
+    description: SEO.pricing.description,
+    openGraph: {
+        title: SEO.pricing.title,
+        description: SEO.pricing.description,
+    },
+};
 
 interface PricingTier {
     name: string;

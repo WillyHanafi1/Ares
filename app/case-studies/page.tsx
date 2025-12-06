@@ -1,5 +1,16 @@
 import { TrendingUp, Users, Clock, DollarSign, ArrowRight, Building2, ShoppingCart, Heart } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { SEO } from '@/lib/constants';
+
+export const metadata: Metadata = {
+    title: SEO.caseStudies.title,
+    description: SEO.caseStudies.description,
+    openGraph: {
+        title: SEO.caseStudies.title,
+        description: SEO.caseStudies.description,
+    },
+};
 
 interface CaseStudy {
     company: string;

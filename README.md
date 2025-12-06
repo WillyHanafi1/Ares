@@ -574,6 +574,37 @@ Gunakan utility classes berikut untuk konsistensi:
 
 ## 📝 Changelog
 
+### v0.3.0 - 2025-12-07
+**✨ Major Website Improvements**
+- Added DOE Framework (`.agent/`) for AI-assisted development
+- Added centralized constants (`lib/constants.ts`) for DRY code
+- Added reusable components (`Stats.tsx`, `CTASection.tsx`)
+- Added per-page SEO metadata with unique titles/descriptions
+- Added OpenGraph and Twitter Card support
+- Added JSON-LD structured data (Organization, LocalBusiness)
+- Added skip-to-content accessibility link
+- Added `prefers-reduced-motion` CSS support
+
+**🔧 Bug Fixes**
+- Fixed logo.png 404 error (moved to `public/` folder)
+- Fixed JSON-LD hydration warning (using Next.js Script component)
+- Fixed non-functional contact buttons (now link to WhatsApp/Email)
+
+**⚡ Performance**
+- Optimized ParticlesBackground for mobile (fewer particles)
+- Added frame skipping for low-end devices
+- Added `will-change` CSS properties for smooth animations
+
+**♿ Accessibility**
+- Added `.sr-only` utility for screen readers
+- Added focus-visible styles for keyboard navigation
+- Disabled animations when reduced motion preferred
+- Added `aria-hidden` to decorative elements
+
+**💾 Database**
+- Added `is_read` and `status` columns to contacts table
+- Added indexes for efficient querying
+
 ### v0.2.0 - 2025-11-16
 **✨ New Features**
 - Added Process section with 4-step explanation (Discovery → Strategy → Implementation → Support)

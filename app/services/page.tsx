@@ -1,5 +1,16 @@
 import { Cpu, Bot, BarChart, Workflow, Database, Brain, Zap, MessageSquare, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { SEO } from '@/lib/constants';
+
+export const metadata: Metadata = {
+    title: SEO.services.title,
+    description: SEO.services.description,
+    openGraph: {
+        title: SEO.services.title,
+        description: SEO.services.description,
+    },
+};
 
 interface Service {
     icon: React.ReactNode;
