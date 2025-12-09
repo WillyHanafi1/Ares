@@ -57,12 +57,22 @@ RECAPTCHA_SECRET_KEY=your_secret_key_here
 RESEND_API_KEY=re_your_api_key_here
 NOTIFICATION_EMAIL=your@email.com
 
+# Automation (n8n Webhook)
+N8N_WEBHOOK_URL=https://n8n.your-domain.com/webhook/contact-form
+
 # Security (default values are fine)
 RATE_LIMIT_MAX=5
 RATE_LIMIT_WINDOW=3600000
 ```
 
-### Step 5: Initialize Database & Test
+### Step 5: Setup n8n Workflow (Optional)
+
+1. Create a `Webhook` node in n8n (POST method)
+2. Copy the Production URL
+3. Set `N8N_WEBHOOK_URL` in `.env.local`
+4. The API will now forward validated leads to your workflow!
+
+### Step 6: Initialize Database & Test
 
 ```powershell
 # Install dependencies (already done)

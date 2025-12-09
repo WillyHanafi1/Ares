@@ -63,7 +63,7 @@ export default function AboutPage() {
                         <p>
                             Sejauh ini, saya sudah deploy 20+ automation systems untuk berbagai klien di 5 industri berbeda.
                             Dari e-commerce, professional services, sampai tech startups—semuanya dengan satu tujuan:
-                            <span className="text-purple-400 font-semibold"> save time, increase efficiency, dan let businesses fokus ke hal yang penting</span>.
+                            <span className="text-purple-400 font-semibold">menghemat waktu, meningkatkan efisiensi, dan membantu bisnis fokus ke hal yang penting</span>.
                         </p>
                     </div>
                 </div>

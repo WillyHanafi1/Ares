@@ -1,8 +1,8 @@
 import Contact from '../components/contact';
-import { MapPin, Phone, Mail, Clock, MessageSquare, Calendar } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { SEO, CONTACT_INFO, SOCIAL_LINKS, STRUCTURED_DATA } from '@/lib/constants';
+import { SEO, CONTACT_INFO, STRUCTURED_DATA } from '@/lib/constants';
 
 export const metadata: Metadata = {
     title: SEO.contact.title,
@@ -60,65 +60,9 @@ export default function ContactPage() {
                         </span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                        Whether you&apos;re ready to start building atau just exploring possibilities,
-                        saya here to help. Reach out dan let&apos;s transform your business bersama.
+                        Siap untuk memulai atau masih eksplorasi? Saya siap membantu.
+                        Hubungi saya dan mari transformasi bisnis Anda bersama.
                     </p>
-                </section>
-
-                {/* Contact Methods - Now with functional links */}
-                <section className="max-w-7xl mx-auto mb-20" aria-labelledby="contact-methods-title">
-                    <h2 id="contact-methods-title" className="sr-only">Contact Methods</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* WhatsApp Chat */}
-                        <div className="glass-strong rounded-2xl p-8 text-center hover-lift group">
-                            <div className="inline-flex p-4 rounded-xl bg-gradient-to-br from-green-500 to-green-600 text-white mb-6 group-hover:scale-110 transition-all duration-300">
-                                <MessageSquare className="w-8 h-8" aria-hidden="true" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">WhatsApp Chat</h3>
-                            <p className="text-gray-400 mb-6 leading-relaxed">Chat langsung via WhatsApp untuk quick questions dan consultation</p>
-                            <a
-                                href={SOCIAL_LINKS.whatsappWithMessage("Halo, saya tertarik dengan layanan AI automation Seriaflow.")}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block w-full px-6 py-3 rounded-xl font-semibold glass border border-green-500/30 text-green-400 hover:border-green-500 hover:text-white hover:bg-green-500/20 transition-all duration-300"
-                                aria-label="Start WhatsApp chat"
-                            >
-                                Chat via WhatsApp
-                            </a>
-                        </div>
-
-                        {/* Schedule Meeting */}
-                        <div className="glass-strong rounded-2xl p-8 text-center hover-lift group">
-                            <div className="inline-flex p-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 text-white mb-6 group-hover:scale-110 transition-all duration-300">
-                                <Calendar className="w-8 h-8" aria-hidden="true" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">Schedule Meeting</h3>
-                            <p className="text-gray-400 mb-6 leading-relaxed">Book 30-min consultation call untuk discuss kebutuhan automation Anda</p>
-                            <a
-                                href={SOCIAL_LINKS.emailWithSubject("Booking Consultation - Seriaflow")}
-                                className="block w-full px-6 py-3 rounded-xl font-semibold glass border border-purple-500/30 text-purple-400 hover:border-purple-500 hover:text-white hover:bg-purple-500/20 transition-all duration-300"
-                                aria-label="Schedule a meeting via email"
-                            >
-                                Book via Email
-                            </a>
-                        </div>
-
-                        {/* Email */}
-                        <div className="glass-strong rounded-2xl p-8 text-center hover-lift group">
-                            <div className="inline-flex p-4 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 text-white mb-6 group-hover:scale-110 transition-all duration-300">
-                                <Mail className="w-8 h-8" aria-hidden="true" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">Email Us</h3>
-                            <p className="text-gray-400 mb-6 leading-relaxed">Send detailed inquiry dan saya akan respond within {CONTACT_INFO.responseTime}</p>
-                            <a
-                                href={SOCIAL_LINKS.emailWithSubject("Inquiry - Seriaflow AI Automation")}
-                                className="block w-full px-6 py-3 rounded-xl font-semibold glass border border-cyan-500/30 text-cyan-400 hover:border-cyan-500 hover:text-white hover:bg-cyan-500/20 transition-all duration-300"
-                                aria-label="Send email inquiry"
-                            >
-                                Send Email
-                            </a>
-                        </div>
-                    </div>
                 </section>
 
                 {/* Contact Info Cards */}
@@ -143,25 +87,25 @@ export default function ContactPage() {
                 {/* FAQ Section */}
                 <section className="max-w-4xl mx-auto mt-20">
                     <h2 className="text-4xl font-bold text-center mb-12">
-                        <span className="gradient-text">Quick Answers</span>
+                        <span className="gradient-text">Pertanyaan Umum</span>
                     </h2>
                     <div className="space-y-6">
                         {[
                             {
-                                q: "How long does it take to implement AI solution?",
-                                a: "Typically 4-8 weeks dari initial consultation hingga full deployment, depending on complexity. We provide detailed timeline dalam proposal."
+                                q: "Berapa lama waktu implementasi solusi AI?",
+                                a: "Umumnya 4-8 minggu dari konsultasi awal hingga deployment penuh, tergantung kompleksitas. Kami akan berikan timeline detail dalam proposal."
                             },
                             {
-                                q: "Do you offer free consultation?",
-                                a: "Yes! Kami provide free 30-minute consultation untuk understand your needs dan explore potential solutions."
+                                q: "Apakah ada konsultasi gratis?",
+                                a: "Ya! Kami menyediakan konsultasi gratis 30 menit untuk memahami kebutuhan Anda dan mengeksplorasi solusi yang tepat."
                             },
                             {
-                                q: "What industries do you serve?",
-                                a: "Kami serve berbagai industries termasuk E-Commerce, Finance, Healthcare, Retail, dan lebih. Our AI solutions adaptable untuk specific industry needs."
+                                q: "Industri apa saja yang dilayani?",
+                                a: "Kami melayani berbagai industri termasuk E-Commerce, Finance, Healthcare, Retail, dan lainnya. Solusi AI kami dapat disesuaikan untuk kebutuhan spesifik industri Anda."
                             },
                             {
-                                q: "Is there ongoing support after implementation?",
-                                a: "Absolutely! Semua plans include ongoing support, maintenance, dan optimization untuk ensure long-term success."
+                                q: "Apakah ada support setelah implementasi?",
+                                a: "Tentu! Semua paket sudah termasuk ongoing support, maintenance, dan optimisasi untuk memastikan kesuksesan jangka panjang."
                             }
                         ].map((faq, index) => (
                             <div key={index} className="glass-strong rounded-2xl p-6">
