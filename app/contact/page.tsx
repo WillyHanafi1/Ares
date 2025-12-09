@@ -1,4 +1,4 @@
-import Contact from '../components/contact';
+import { Contact } from '@/components/sections';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 import Script from 'next/script';

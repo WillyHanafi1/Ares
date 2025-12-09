@@ -1,7 +1,4 @@
-import Services from "./components/services";
-import Process from "./components/process";
-import CTA from "./components/cta";
-import Contact from "./components/contact";
+import { Services, Process, CTA, Contact } from "@/components/sections";
 import ParticlesBackground from "@/components/ParticlesBackground";
 import { Sparkles, ArrowRight } from "lucide-react";
 
