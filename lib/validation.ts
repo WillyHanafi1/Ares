@@ -1,5 +1,14 @@
 ﻿import validator from 'validator';
-import DOMPurify from 'isomorphic-dompurify';
+
+// Simple HTML entity escaping for server-side (replaces isomorphic-dompurify)
+function sanitizeText(input: string): string {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
 
 export interface ContactFormData {
   name: string;
@@ -26,7 +35,7 @@ function detectXSS(input: string): boolean {
     /eval\(/gi,
     /expression\(/gi,
   ];
-  
+
   return xssPatterns.some(pattern => pattern.test(input));
 }
 
@@ -40,7 +49,7 @@ function detectSQLInjection(input: string): boolean {
     /(\bOR\b|\bAND\b)\s+\d+\s*=\s*\d+/gi,
     /(\bUNION\b|\bJOIN\b)/gi,
   ];
-  
+
   return sqlPatterns.some(pattern => pattern.test(input));
 }
 
@@ -110,12 +119,12 @@ export function validateContactForm(data: any): ValidationResult {
     };
   }
 
-  // Sanitize all inputs using DOMPurify
+  // Sanitize all inputs
   const sanitizedData: ContactFormData = {
-    name: DOMPurify.sanitize(data.name.trim(), { ALLOWED_TAGS: [] }),
-    email: DOMPurify.sanitize(data.email.trim().toLowerCase(), { ALLOWED_TAGS: [] }),
-    company: DOMPurify.sanitize(data.company.trim(), { ALLOWED_TAGS: [] }),
-    message: DOMPurify.sanitize(data.message.trim(), { ALLOWED_TAGS: [] }),
+    name: sanitizeText(data.name.trim()),
+    email: sanitizeText(data.email.trim().toLowerCase()),
+    company: sanitizeText(data.company.trim()),
+    message: sanitizeText(data.message.trim()),
   };
 
   return {
