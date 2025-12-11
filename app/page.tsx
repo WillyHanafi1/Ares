@@ -9,9 +9,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative py-32 px-4 overflow-hidden">
-        {/* Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        {/* Gradient Orbs - Static for better performance */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12 fade-in-up">

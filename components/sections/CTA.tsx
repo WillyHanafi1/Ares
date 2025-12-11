@@ -69,7 +69,7 @@ const CTA: React.FC = () => {
                                 <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                                 {/* Icon */}
-                                <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${option.buttonColor} mb-6 mx-auto animate-pulse-glow group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
+                                <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${option.buttonColor} mb-6 mx-auto group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
                                     <div className="text-white">
                                         {option.icon}
                                     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Sparkles } from 'lucide-react';
@@ -9,6 +9,7 @@ const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
+    const lastScrollY = useRef(0);
 
     // Navigation items
     const navItems = [
@@ -19,12 +20,23 @@ const Header = () => {
         { name: 'About', href: '/about' },
     ];
 
-    // Handle scroll effect
+    // Throttled scroll handler for better performance
     useEffect(() => {
+        let ticking = false;
+
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            lastScrollY.current = window.scrollY;
+
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    setIsScrolled(lastScrollY.current > 20);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
-        window.addEventListener('scroll', handleScroll);
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -58,8 +70,8 @@ const Header = () => {
                                 key={item.name}
                                 href={item.href}
                                 className={`relative text-sm font-medium transition-colors duration-300 ${isActive(item.href)
-                                        ? 'text-cyan-400'
-                                        : 'text-gray-300 hover:text-white'
+                                    ? 'text-cyan-400'
+                                    : 'text-gray-300 hover:text-white'
                                     }`}
                             >
                                 {item.name}
@@ -104,8 +116,8 @@ const Header = () => {
                                 key={item.name}
                                 href={item.href}
                                 className={`block px-4 py-3 rounded-lg transition-all duration-300 ${isActive(item.href)
-                                        ? 'glass-strong text-cyan-400 border-l-4 border-cyan-400'
-                                        : 'text-gray-300 hover:glass hover:text-white'
+                                    ? 'glass-strong text-cyan-400 border-l-4 border-cyan-400'
+                                    : 'text-gray-300 hover:glass hover:text-white'
                                     }`}
                             >
                                 {item.name}
