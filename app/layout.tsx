@@ -104,6 +104,14 @@ export default function RootLayout({
             __html: JSON.stringify(STRUCTURED_DATA.organization),
           }}
         />
+        <Script
+          id="website-jsonld"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(STRUCTURED_DATA.website),
+          }}
+        />
       </body>
     </html>
   );

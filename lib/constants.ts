@@ -103,10 +103,17 @@ export const STRUCTURED_DATA = {
     organization: {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": `${SITE_CONFIG.url}/#organization`,
         name: SITE_CONFIG.name,
         description: SITE_CONFIG.description,
         url: SITE_CONFIG.url,
-        logo: `${SITE_CONFIG.url}/logo.png`,
+        logo: {
+            "@type": "ImageObject",
+            url: `${SITE_CONFIG.url}/logo.png`,
+            width: 512,
+            height: 512,
+        },
+        image: `${SITE_CONFIG.url}/logo.png`,
         founder: {
             "@type": "Person",
             name: SITE_CONFIG.creator,
@@ -120,12 +127,31 @@ export const STRUCTURED_DATA = {
         sameAs: [],
     },
 
+    website: {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${SITE_CONFIG.url}/#website`,
+        name: SITE_CONFIG.name,
+        url: SITE_CONFIG.url,
+        publisher: {
+            "@id": `${SITE_CONFIG.url}/#organization`,
+        },
+        potentialAction: {
+            "@type": "SearchAction",
+            target: `${SITE_CONFIG.url}/search?q={search_term_string}`,
+            "query-input": "required name=search_term_string",
+        },
+    },
+
     localBusiness: {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
+        "@id": `${SITE_CONFIG.url}/#localbusiness`,
         name: SITE_CONFIG.name,
         description: SITE_CONFIG.description,
         url: SITE_CONFIG.url,
+        image: `${SITE_CONFIG.url}/logo.png`,
+        logo: `${SITE_CONFIG.url}/logo.png`,
         telephone: CONTACT_INFO.phone,
         email: CONTACT_INFO.email,
         address: {
