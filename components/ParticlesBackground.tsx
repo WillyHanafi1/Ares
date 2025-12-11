@@ -15,9 +15,9 @@ interface Particle {
 export default function ParticlesBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const isScrollingRef = useRef(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [isDisabled, setIsDisabled] = useState(false);
 
   // Throttled scroll handler to pause animation during scroll
