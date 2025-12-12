@@ -1,17 +1,38 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { validateContactForm } from '@/lib/validation';
 import { verifyRecaptcha } from '@/lib/recaptcha';
-import { saveContact, checkRateLimit } from '@/lib/database';
 import { sendContactNotification, sendContactConfirmation } from '@/lib/email';
+
+// Simple in-memory rate limiting (resets on server restart)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+
+  if (record.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+
+  record.count++;
+  return false;
+}
 
 /**
  * POST /api/contact
  * Handle contact form submissions with security features:
  * 1. reCAPTCHA v3 verification
  * 2. Input validation and sanitization
- * 3. Rate limiting
- * 4. Database storage
- * 5. Email notifications
+ * 3. In-memory rate limiting
+ * 4. Webhook forwarding (primary)
+ * 5. Email notifications (backup)
  */
 export async function POST(request: NextRequest) {
   try {
@@ -49,8 +70,8 @@ export async function POST(request: NextRequest) {
       request.headers.get('x-real-ip') ||
       'unknown';
 
-    // Step 4: Check rate limit
-    const isRateLimited = await checkRateLimit(ipAddress);
+    // Step 4: Check rate limit (in-memory)
+    const isRateLimited = checkRateLimit(ipAddress);
     if (isRateLimited) {
       return NextResponse.json(
         {
@@ -61,15 +82,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 5: Save to database (Primary Source of Truth & Failover)
-    const contactId = await saveContact(validation.sanitizedData!, ipAddress);
+    // Generate unique ID for this submission
+    const submissionId = `SF-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    // Step 6: Forward to n8n Webhook (Automation Layer)
-    // We send payload to n8n for "Heavy Lifting" (CRM, Email, Slack, etc.)
+    // Step 5: Forward to Webhook (Primary Data Handler)
+    let webhookSuccess = false;
     if (process.env.N8N_WEBHOOK_URL) {
       try {
-        console.log('🚀 Forwarding to n8n webhook...');
-        const n8nResponse = await fetch(process.env.N8N_WEBHOOK_URL, {
+        console.log('🚀 Forwarding to webhook...');
+        const webhookResponse = await fetch(process.env.N8N_WEBHOOK_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -77,38 +98,52 @@ export async function POST(request: NextRequest) {
           },
           body: JSON.stringify({
             ...validation.sanitizedData,
-            id: contactId,
+            id: submissionId,
             ip: ipAddress,
             submittedAt: new Date().toISOString(),
           }),
         });
 
-        if (n8nResponse.ok) {
-          console.log('✅ forwarded to n8n successfully');
+        if (webhookResponse.ok) {
+          console.log('✅ Forwarded to webhook successfully');
+          webhookSuccess = true;
         } else {
-          console.error('❌ n8n webhook error:', n8nResponse.statusText);
+          console.error('❌ Webhook error:', webhookResponse.statusText);
         }
       } catch (error) {
-        console.error('❌ Failed to forward to n8n:', error);
-        // We do NOT fail the request here, because data is already saved in DB
+        console.error('❌ Failed to forward to webhook:', error);
       }
     }
 
-    // Step 7: Send email notifications (Legacy/Backup)
-    // You can disable this if n8n handles all emails
-    Promise.all([
-      sendContactNotification(validation.sanitizedData!),
-      sendContactConfirmation(validation.sanitizedData!),
-    ]).catch(error => {
-      console.error('Email notification error:', error);
-    });
+    // Step 6: Send email notifications (Backup if webhook fails or as additional notification)
+    try {
+      await Promise.all([
+        sendContactNotification(validation.sanitizedData!),
+        sendContactConfirmation(validation.sanitizedData!),
+      ]);
+      console.log('✅ Email notifications sent');
+    } catch (error) {
+      console.error('❌ Email notification error:', error);
+      // Don't fail the request if email fails but webhook succeeded
+    }
+
+    // If neither webhook nor email worked
+    if (!webhookSuccess && !process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Unable to process your request. Please try again later.'
+        },
+        { status: 500 }
+      );
+    }
 
     // Return success response
     return NextResponse.json(
       {
         success: true,
         message: 'Thank you for your message! We will get back to you soon.',
-        id: contactId,
+        id: submissionId,
       },
       { status: 201 }
     );
@@ -133,5 +168,7 @@ export async function GET() {
   return NextResponse.json({
     status: 'ok',
     message: 'Contact API is running',
+    webhookConfigured: !!process.env.N8N_WEBHOOK_URL,
+    emailConfigured: !!process.env.RESEND_API_KEY,
   });
 }
