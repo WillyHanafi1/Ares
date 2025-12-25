@@ -1,0 +1,142 @@
+---
+// Scroll Animation Script - Add to Layout for global animations
+---
+
+<script>
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+    };
+
+    const animateOnScroll = () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate-visible");
+                    // Optional: unobserve after animation (for one-time animation)
+                    // observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+            observer.observe(el);
+        });
+    };
+
+    // Run on DOM ready
+    document.addEventListener("DOMContentLoaded", animateOnScroll);
+
+    // Also run on page load for Astro view transitions
+    document.addEventListener("astro:page-load", animateOnScroll);
+</script>
+
+<style is:global>
+    /* Base state for animated elements - hidden */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    /* Visible state */
+    .animate-on-scroll.animate-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Fade in from left */
+    .animate-from-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    .animate-from-left.animate-visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Fade in from right */
+    .animate-from-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    .animate-from-right.animate-visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Scale up */
+    .animate-scale {
+        opacity: 0;
+        transform: scale(0.9);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    .animate-scale.animate-visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* Fade in from bottom */
+    .animate-from-bottom {
+        opacity: 0;
+        transform: translateY(50px);
+        transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+    }
+
+    .animate-from-bottom.animate-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Staggered delays for cards */
+    .animate-delay-100 {
+        transition-delay: 0.1s;
+    }
+    .animate-delay-200 {
+        transition-delay: 0.2s;
+    }
+    .animate-delay-300 {
+        transition-delay: 0.3s;
+    }
+    .animate-delay-400 {
+        transition-delay: 0.4s;
+    }
+    .animate-delay-500 {
+        transition-delay: 0.5s;
+    }
+
+    /* Blur in effect */
+    .animate-blur-in {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateY(20px);
+        transition:
+            opacity 0.8s ease-out,
+            filter 0.8s ease-out,
+            transform 0.8s ease-out;
+    }
+
+    .animate-blur-in.animate-visible {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+    }
+</style>

@@ -1,0 +1,88 @@
+---
+const painPoints = [
+    {
+        icon: "schedule",
+        title: "Admin Lambat",
+        description:
+            "Waktu berharga terbuang hanya untuk input data manual yang repetitif dan membosankan, menghambat inovasi tim Anda.",
+        color: "red",
+    },
+    {
+        icon: "warning",
+        title: "Human Error",
+        description:
+            "Kesalahan kecil dalam input data atau perhitungan yang dapat merugikan finansial dan reputasi profesional perusahaan.",
+        color: "orange",
+    },
+    {
+        icon: "headset_mic",
+        title: "CS Kewalahan",
+        description:
+            "Chat pelanggan menumpuk, respon lambat, dan peluang closing hilang karena tim CS tidak mampu menangani volume.",
+        color: "yellow",
+    },
+];
+
+const colorMap: Record<string, { bg: string; text: string; border: string }> = {
+    red: {
+        bg: "bg-red-500/10",
+        text: "text-red-500",
+        border: "hover:border-red-500/30",
+    },
+    orange: {
+        bg: "bg-orange-500/10",
+        text: "text-orange-500",
+        border: "hover:border-orange-500/30",
+    },
+    yellow: {
+        bg: "bg-yellow-500/10",
+        text: "text-yellow-500",
+        border: "hover:border-yellow-500/30",
+    },
+};
+
+const delays = ["animate-delay-100", "animate-delay-200", "animate-delay-300"];
+---
+
+<section class="py-24 relative overflow-hidden">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <!-- Header - Animate from bottom -->
+        <div class="mb-16 text-center">
+            <h2
+                class="animate-on-scroll animate-from-bottom mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl"
+            >
+                Masalah Yang Sering Dihadapi
+            </h2>
+            <p
+                class="animate-on-scroll animate-from-bottom animate-delay-100 text-gray-400"
+            >
+                Apakah bisnis Anda terhambat oleh hal-hal berikut?
+            </p>
+        </div>
+
+        <!-- Cards Grid - Staggered animations from left/right -->
+        <div class="grid gap-6 md:grid-cols-3">
+            {
+                painPoints.map((item, index) => (
+                    <div
+                        class={`animate-on-scroll ${index === 0 ? "animate-from-left" : index === 2 ? "animate-from-right" : "animate-from-bottom"} ${delays[index]} group relative rounded-xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:bg-white/[0.04] ${colorMap[item.color].border}`}
+                    >
+                        <div
+                            class={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg ${colorMap[item.color].bg} ${colorMap[item.color].text}`}
+                        >
+                            <span class="material-symbols-outlined">
+                                {item.icon}
+                            </span>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold text-white">
+                            {item.title}
+                        </h3>
+                        <p class="text-sm leading-relaxed text-gray-400">
+                            {item.description}
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>

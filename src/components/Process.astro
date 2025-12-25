@@ -1,0 +1,58 @@
+---
+const steps = [
+  {
+    icon: 'analytics',
+    title: '1. Audit',
+    description: 'Kami menganalisa proses bisnis Anda saat ini untuk menemukan celah yang bisa diotomatisasi.',
+    gradient: 'from-gray-800 to-black',
+    shadow: 'shadow-primary/20',
+  },
+  {
+    icon: 'construction',
+    title: '2. Implementasi',
+    description: 'Tim kami membangun dan mengintegrasikan sistem AI & otomatisasi sesuai kebutuhan spesifik Anda.',
+    gradient: 'from-primary to-blue-600',
+    shadow: 'shadow-primary/40',
+  },
+  {
+    icon: 'rocket_launch',
+    title: '3. Scaling',
+    description: 'Bisnis berjalan autopilot, Anda bisa fokus pada strategi ekspansi dan pertumbuhan profit.',
+    gradient: 'from-secondary to-purple-600',
+    shadow: 'shadow-secondary/40',
+  },
+];
+
+const delays = ['animate-delay-100', 'animate-delay-300', 'animate-delay-500'];
+---
+
+<section id="proses" class="py-24 relative">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-16 text-center">
+      <h2 class="animate-on-scroll animate-blur-in text-3xl font-bold tracking-tight text-white md:text-4xl">Bagaimana Kami Bekerja</h2>
+      <p class="animate-on-scroll animate-blur-in animate-delay-100 mt-4 text-gray-400">Proses simpel untuk hasil maksimal.</p>
+    </div>
+    
+    <div class="relative">
+      <!-- Connecting Line (Desktop) -->
+      <div class="absolute left-0 top-1/2 hidden h-0.5 w-full -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/50 to-transparent md:block"></div>
+      
+      <!-- Steps Grid -->
+      <div class="grid gap-12 md:grid-cols-3">
+        {steps.map((step, index) => (
+          <div class={`animate-on-scroll animate-from-bottom ${delays[index]} relative flex flex-col items-center text-center`}>
+            <!-- Icon Circle -->
+            <div class={`relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-4 border-[#0B0B15] bg-gradient-to-br ${step.gradient} shadow-lg ${step.shadow}`}>
+              <span class="material-symbols-outlined text-2xl text-white">{step.icon}</span>
+            </div>
+            
+            <!-- Content -->
+            <h3 class="mb-2 text-xl font-bold text-white">{step.title}</h3>
+            <p class="text-sm text-gray-400">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

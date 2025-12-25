@@ -1,0 +1,13 @@
+{
+    "css.validate": true,
+    "css.lint.unknownAtRules": "ignore",
+    "files.associations": {
+        "*.astro": "astro"
+    },
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "tailwindCSS.includeLanguages": {
+        "astro": "html"
+    }
+}
