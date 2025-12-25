@@ -22,6 +22,6 @@ export default defineConfig({
   }),
   server: {
     host: true, // Listen on all addresses (0.0.0.0)
-    port: 3000, // Defaut port (can be overridden by PORT env)
+    port: 4321, // Custom port requested by user
   }
 });
