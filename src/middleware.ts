@@ -5,22 +5,28 @@ import { defineMiddleware } from "astro:middleware";
 export const onRequest = defineMiddleware(async (context, next) => {
     const response = await next();
 
-    const html = await response.text();
+    // Clone headers to add security headers
+    const newHeaders = new Headers(response.headers);
 
     // HSTS: Enforce HTTPS for 1 year
-    response.headers.set(
+    newHeaders.set(
         "Strict-Transport-Security",
         "max-age=31536000; includeSubDomains"
     );
 
     // X-Content-Type-Options: Prevent MIME type sniffing
-    response.headers.set("X-Content-Type-Options", "nosniff");
+    newHeaders.set("X-Content-Type-Options", "nosniff");
 
     // X-Frame-Options: Prevent Clickjacking (allow same origin for iframes if needed)
-    response.headers.set("X-Frame-Options", "SAMEORIGIN");
+    newHeaders.set("X-Frame-Options", "SAMEORIGIN");
 
     // Referrer-Policy: Control referrer information
-    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    newHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
-    return response;
+    // Return a new response with the same body but updated headers
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders,
+    });
 });

@@ -7,6 +7,8 @@ const rateLimitMap = new Map<string, number>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const MAX_REQUESTS_PER_WINDOW = 5; // 5 requests per minute per IP
 
+import "dotenv/config";
+
 export const POST: APIRoute = async ({ request, clientAddress }) => {
     try {
         // === 1. IP-Based Rate Limiting ===
@@ -118,11 +120,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         }
 
         // === 4. Forward to n8n Webhook ===
-        const webhookUrl =
-            import.meta.env.PUBLIC_WEBHOOK_URL;
+        // Try to get from Astro env, fallback to process.env (Node runtime)
+        const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL || process.env.PUBLIC_WEBHOOK_URL;
 
         if (!webhookUrl) {
-            throw new Error("PUBLIC_WEBHOOK_URL is not defined in environment variables");
+            console.error("DEBUG: ENV VARS:", process.env); // Log environment variables for debugging
+            throw new Error("PUBLIC_WEBHOOK_URL is not defined. Check .env file.");
         }
 
         const n8nPayload = {
