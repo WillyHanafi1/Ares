@@ -22,9 +22,42 @@ const {
     <title>{title}</title>
 
     <!-- Favicon -->
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/Logo.png" />
-    <link rel="apple-touch-icon" href="/Logo.png" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://seriaflow.com/logo.png" />
+    <meta property="og:url" content="https://seriaflow.com" />
+    <meta property="og:site_name" content="Seriaflow" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://seriaflow.com/logo.png" />
+
+    <!-- Structured Data for Google Search (Organization with Logo) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Seriaflow",
+        "url": "https://seriaflow.com",
+        "logo": "https://seriaflow.com/logo.png",
+        "description": "AI Automation Agency Indonesia - Hemat waktu dan biaya operasional bisnis Anda dengan AI automation.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+62-851-1762-3819",
+          "contactType": "sales",
+          "areaServed": "ID",
+          "availableLanguage": ["Indonesian", "English"]
+        },
+        "sameAs": []
+      }
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

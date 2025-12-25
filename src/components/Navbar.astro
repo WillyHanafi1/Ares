@@ -88,18 +88,5 @@ const navLinks = [
     </div>
 </nav>
 
-<script>
-    const btn = document.getElementById("mobile-menu-btn");
-    const menu = document.getElementById("mobile-menu");
-
-    btn?.addEventListener("click", () => {
-        menu?.classList.toggle("hidden");
-    });
-
-    // Close menu when clicking on a link
-    menu?.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-            menu?.classList.add("hidden");
-        });
-    });
-</script>
+<!-- External Navbar Script -->
+<script src="/scripts/navbar.js" defer></script>

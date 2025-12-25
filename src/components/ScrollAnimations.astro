@@ -2,37 +2,8 @@
 // Scroll Animation Script - Add to Layout for global animations
 ---
 
-<script>
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.1,
-    };
-
-    const animateOnScroll = () => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("animate-visible");
-                    // Optional: unobserve after animation (for one-time animation)
-                    // observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Observe all elements with animation classes
-        document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-            observer.observe(el);
-        });
-    };
-
-    // Run on DOM ready
-    document.addEventListener("DOMContentLoaded", animateOnScroll);
-
-    // Also run on page load for Astro view transitions
-    document.addEventListener("astro:page-load", animateOnScroll);
-</script>
+<!-- External Scroll Animations Script -->
+<script src="/scripts/scroll-animations.js" defer></script>
 
 <style is:global>
     /* Base state for animated elements - hidden */
