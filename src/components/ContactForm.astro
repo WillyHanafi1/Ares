@@ -133,7 +133,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                         <div class="flex gap-2">
                             <!-- Custom Country Code Dropdown -->
                             <div
-                                class="relative w-36 flex-shrink-0"
+                                class="relative w-36 flex-shrink-0 z-10"
                                 id="custom-country-dropdown"
                             >
                                 <input
@@ -222,9 +222,6 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                                 class="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                             />
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">
-                            Masukkan nomor tanpa awalan 0
-                        </p>
                     </div>
 
                     <!-- Challenge Dropdown -->
@@ -398,12 +395,10 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
             challengeSelect?.options[challengeSelect.selectedIndex]?.text ||
             challenge;
 
-        // Get country name
-        const countrySelect = document.getElementById(
-            "country-code",
-        ) as HTMLSelectElement;
+        // Get country display text (from selected display)
+        const countryDisplayEl = document.getElementById("selected-display");
         const countryText =
-            countrySelect?.options[countrySelect.selectedIndex]?.text || "";
+            countryDisplayEl?.textContent?.trim() || `+${countryCode}`;
 
         // Get reCAPTCHA token
         let recaptchaToken = "";
