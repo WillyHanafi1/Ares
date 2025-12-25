@@ -7,6 +7,40 @@ const challenges = [
     { value: "other", label: "Lainnya" },
 ];
 
+// Country codes with flags
+const countries = [
+    { code: "62", name: "Indonesia", flag: "🇮🇩" },
+    { code: "1", name: "United States", flag: "🇺🇸" },
+    { code: "44", name: "United Kingdom", flag: "🇬🇧" },
+    { code: "60", name: "Malaysia", flag: "🇲🇾" },
+    { code: "65", name: "Singapore", flag: "🇸🇬" },
+    { code: "66", name: "Thailand", flag: "🇹🇭" },
+    { code: "84", name: "Vietnam", flag: "🇻🇳" },
+    { code: "63", name: "Philippines", flag: "🇵🇭" },
+    { code: "61", name: "Australia", flag: "🇦🇺" },
+    { code: "81", name: "Japan", flag: "🇯🇵" },
+    { code: "82", name: "South Korea", flag: "🇰🇷" },
+    { code: "86", name: "China", flag: "🇨🇳" },
+    { code: "91", name: "India", flag: "🇮🇳" },
+    { code: "49", name: "Germany", flag: "🇩🇪" },
+    { code: "33", name: "France", flag: "🇫🇷" },
+    { code: "39", name: "Italy", flag: "🇮🇹" },
+    { code: "34", name: "Spain", flag: "🇪🇸" },
+    { code: "31", name: "Netherlands", flag: "🇳🇱" },
+    { code: "971", name: "UAE", flag: "🇦🇪" },
+    { code: "966", name: "Saudi Arabia", flag: "🇸🇦" },
+    { code: "90", name: "Turkey", flag: "🇹🇷" },
+    { code: "7", name: "Russia", flag: "🇷🇺" },
+    { code: "55", name: "Brazil", flag: "🇧🇷" },
+    { code: "52", name: "Mexico", flag: "🇲🇽" },
+    { code: "27", name: "South Africa", flag: "🇿🇦" },
+    { code: "234", name: "Nigeria", flag: "🇳🇬" },
+    { code: "20", name: "Egypt", flag: "🇪🇬" },
+    { code: "880", name: "Bangladesh", flag: "🇧🇩" },
+    { code: "92", name: "Pakistan", flag: "🇵🇰" },
+    { code: "64", name: "New Zealand", flag: "🇳🇿" },
+];
+
 // Get environment variables (with fallbacks)
 const webhookUrl =
     import.meta.env.PUBLIC_WEBHOOK_URL ||
@@ -84,7 +118,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                         />
                     </div>
 
-                    <!-- WhatsApp -->
+                    <!-- WhatsApp with Country Code -->
                     <div
                         class="animate-on-scroll animate-from-left animate-delay-300"
                     >
@@ -96,14 +130,47 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                                 >*</span
                             >
                         </label>
-                        <input
-                            type="tel"
-                            id="whatsapp"
-                            name="whatsapp"
-                            placeholder="0812xxxxxxxx (Pastikan nomor terhubung ke WA)"
-                            required
-                            class="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                        />
+                        <div class="flex gap-2">
+                            <!-- Country Code Dropdown -->
+                            <div class="relative w-32 flex-shrink-0">
+                                <select
+                                    id="country-code"
+                                    name="country_code"
+                                    class="block w-full h-full appearance-none rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer text-sm"
+                                >
+                                    {
+                                        countries.map((country) => (
+                                            <option
+                                                value={country.code}
+                                                selected={country.code === "62"}
+                                            >
+                                                {country.flag} +{country.code}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400"
+                                >
+                                    <span
+                                        class="material-symbols-outlined text-sm"
+                                        >expand_more</span
+                                    >
+                                </div>
+                            </div>
+                            <!-- Phone Number Input -->
+                            <input
+                                type="tel"
+                                id="whatsapp"
+                                name="whatsapp"
+                                placeholder="812xxxxxxxx"
+                                required
+                                class="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                            />
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Masukkan nomor tanpa awalan 0
+                        </p>
                     </div>
 
                     <!-- Challenge Dropdown -->
@@ -247,8 +314,16 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
         const formData = new FormData(form as HTMLFormElement);
         const name = formData.get("name") || "";
         const business = formData.get("business") || "";
-        const whatsapp = formData.get("whatsapp") || "";
+        const countryCode = formData.get("country_code") || "62";
+        const phoneNumber = (formData.get("whatsapp") as string) || "";
         const challenge = formData.get("challenge") || "";
+
+        // Format phone number: remove leading 0 if exists, then prepend country code
+        let cleanedPhone = phoneNumber.replace(/\D/g, ""); // Remove non-digits
+        if (cleanedPhone.startsWith("0")) {
+            cleanedPhone = cleanedPhone.substring(1);
+        }
+        const whatsapp = `${countryCode}${cleanedPhone}`;
 
         // Get challenge label
         const challengeSelect = document.getElementById(
@@ -257,6 +332,13 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
         const challengeLabel =
             challengeSelect?.options[challengeSelect.selectedIndex]?.text ||
             challenge;
+
+        // Get country name
+        const countrySelect = document.getElementById(
+            "country-code",
+        ) as HTMLSelectElement;
+        const countryText =
+            countrySelect?.options[countrySelect.selectedIndex]?.text || "";
 
         // Get reCAPTCHA token
         let recaptchaToken = "";
@@ -280,6 +362,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
             name: name,
             business: business,
             whatsapp: whatsapp,
+            country: countryText,
             challenge: challenge,
             challenge_label: challengeLabel,
             source: "website",
