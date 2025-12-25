@@ -11,7 +11,6 @@ const challenges = [
 const webhookUrl =
     import.meta.env.PUBLIC_WEBHOOK_URL ||
     "https://n8n.seriaflow.com/webhook/Website-Leads-Seriaflow";
-const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
 const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 ---
 
@@ -19,7 +18,6 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
     id="kontak"
     class="relative py-24"
     data-webhook={webhookUrl}
-    data-wa={waNumber}
     data-recaptcha={recaptchaSiteKey}
 >
     <div class="mx-auto max-w-3xl px-6 lg:px-8">
@@ -147,10 +145,11 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                     <!-- Submit Button -->
                     <button
                         type="submit"
+                        id="submit-btn"
                         class="animate-on-scroll animate-from-bottom animate-delay-500 w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-8 py-4 text-base font-bold text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(19,19,236,0.5)] mt-6"
                     >
-                        <span class="material-symbols-outlined">chat</span>
-                        Hubungi Saya via WhatsApp
+                        <span class="material-symbols-outlined">send</span>
+                        Kirim Data Saya
                     </button>
 
                     <!-- reCAPTCHA Notice -->
@@ -168,6 +167,34 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                         >
                     </p>
                 </form>
+
+                <!-- Success Message (hidden by default) -->
+                <div id="success-message" class="hidden text-center py-8">
+                    <div class="mb-6">
+                        <span
+                            class="material-symbols-outlined text-6xl text-green-400"
+                            >check_circle</span
+                        >
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">
+                        Data Berhasil Dikirim! 🎉
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Terima kasih telah menghubungi kami.<br />
+                        Tim kami akan segera menghubungi Anda via <strong
+                            class="text-green-400">WhatsApp</strong
+                        >.
+                    </p>
+                    <p class="text-sm text-gray-500">
+                        Biasanya kami merespon dalam waktu 1x24 jam.
+                    </p>
+                    <button
+                        id="reset-form-btn"
+                        class="mt-6 px-6 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/5 transition-all"
+                    >
+                        Kirim Data Lagi
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -198,12 +225,13 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 <script>
     const section = document.getElementById("kontak");
     const form = document.getElementById("contact-form");
-    const submitBtn = form?.querySelector('button[type="submit"]');
+    const submitBtn = document.getElementById("submit-btn");
+    const successMessage = document.getElementById("success-message");
+    const resetFormBtn = document.getElementById("reset-form-btn");
     const originalBtnText = submitBtn?.innerHTML || "";
 
     // Get config from data attributes
     const webhookUrl = section?.dataset.webhook || "";
-    const waNumber = section?.dataset.wa || "";
     const recaptchaSiteKey = section?.dataset.recaptcha || "";
 
     form?.addEventListener("submit", async (e) => {
@@ -256,7 +284,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
             challenge_label: challengeLabel,
             source: "website",
             submitted_at: new Date().toISOString(),
-            recaptcha_token: recaptchaToken, // For verification in n8n
+            recaptcha_token: recaptchaToken,
         };
 
         try {
@@ -268,40 +296,28 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                 },
                 body: JSON.stringify(leadData),
             });
+
+            // Show success message
+            form.classList.add("hidden");
+            successMessage?.classList.remove("hidden");
         } catch (error) {
             console.error("Webhook error:", error);
-            // Continue even if webhook fails - don't block user
+            // Still show success to user (don't block UX)
+            form.classList.add("hidden");
+            successMessage?.classList.remove("hidden");
         }
 
-        // Reset button
+        // Reset button state for next time
         if (submitBtn) {
-            submitBtn.innerHTML =
-                '<span class="material-symbols-outlined">check_circle</span> Terkirim!';
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.removeAttribute("disabled");
         }
+    });
 
-        // Create WhatsApp message
-        const message = `Halo Seriaflow! 👋
-
-Saya ingin konsultasi mengenai potensi AI untuk bisnis saya.
-
-📋 *Detail:*
-• Nama: ${name}
-• Bisnis: ${business}
-• Tantangan: ${challengeLabel}
-
-Mohon bantuannya! 🙏`;
-
-        // Delay then open WhatsApp with pre-filled message
-        setTimeout(() => {
-            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
-            window.open(waUrl, "_blank");
-
-            // Reset form and button after redirect
-            (form as HTMLFormElement).reset();
-            if (submitBtn) {
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.removeAttribute("disabled");
-            }
-        }, 1000);
+    // Reset form button
+    resetFormBtn?.addEventListener("click", () => {
+        (form as HTMLFormElement).reset();
+        form?.classList.remove("hidden");
+        successMessage?.classList.add("hidden");
     });
 </script>
