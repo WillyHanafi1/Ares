@@ -1,4 +1,4 @@
-# Deploy Seriaflow Astro Website to Droplet
+# Deploy Seriaflow Astro Website to Droplet (Static)
 name: Deploy to Droplet
 
 on:
@@ -25,12 +25,12 @@ jobs:
             git config --global --add safe.directory /var/www/seriaflow.com/html
             
             # Pull latest changes
-            git pull
+            git fetch origin
+            git reset --hard origin/main
             
             # Clean Astro build artifacts
             rm -rf dist
             rm -rf .astro
-            rm -rf node_modules/.cache
             
             # Install dependencies
             npm install
@@ -38,15 +38,7 @@ jobs:
             # Build Astro site (static)
             npm run build
             
-            # Wait for build to complete
-            sleep 2
+            # Reload Nginx (optional, for config changes)
+            sudo systemctl reload nginx || true
             
-            # Stop old PM2 processes (if any)
-            pm2 delete seriaflow-web || true
-            pm2 delete seriaflow-app || true
-            
-            # Start Astro preview server
-            pm2 start npm --name "seriaflow-app" -- run preview
-            pm2 save
-            
-            echo "✅ Deploy completed successfully!"
+            echo "✅ Deploy completed! Static files served from dist/"
