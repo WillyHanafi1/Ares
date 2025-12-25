@@ -56,7 +56,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 >
     <div class="mx-auto max-w-3xl px-6 lg:px-8">
         <div
-            class="animate-on-scroll animate-scale glass-panel rounded-2xl p-8 md:p-12 relative overflow-hidden"
+            class="animate-on-scroll animate-scale glass-panel rounded-2xl p-8 md:p-12 relative overflow-visible"
         >
             <!-- Gradient overlay -->
             <div
@@ -120,7 +120,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 
                     <!-- WhatsApp with Country Code -->
                     <div
-                        class="animate-on-scroll animate-from-left animate-delay-300"
+                        class="relative z-20 animate-on-scroll animate-from-left animate-delay-300"
                     >
                         <label
                             for="whatsapp"
