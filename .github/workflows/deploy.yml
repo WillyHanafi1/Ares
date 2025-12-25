@@ -1,32 +1,24 @@
-# Nama alur kerja yang akan muncul di tab "Actions" GitHub
+# Deploy Seriaflow Astro Website to Droplet
 name: Deploy to Droplet
 
-# Pemicu: Jalankan ini HANYA saat ada push ke branch 'main'
 on:
   push:
     branches:
-      - main # Ganti ini jika branch utama Anda 'master'
+      - main
 
-# Pekerjaan yang harus dilakukan
 jobs:
   deploy:
-    # Gunakan server virtual Ubuntu terbaru dari GitHub untuk menjalankan ini
     runs-on: ubuntu-latest
 
-    # Langkah-langkah yang harus dijalankan
     steps:
-      - name: 1. Menjalankan Perintah Update di Server
-        # Gunakan Action siap pakai dari 'appleboy' untuk SSH
+      - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          # Ambil rahasia yang kita simpan tadi
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22 # Port SSH standar
+          port: 22
 
-          # Ini adalah daftar perintah yang akan dijalankan di Droplet Anda
-          # Perhatikan: Kita tidak perlu 'sudo' karena kita login sebagai 'root'
           script: |
             set -e
             cd /var/www/seriaflow.com/html
@@ -35,23 +27,26 @@ jobs:
             # Pull latest changes
             git pull
             
-            # Clean Next.js cache and old build artifacts
-            rm -rf .next
+            # Clean Astro build artifacts
+            rm -rf dist
+            rm -rf .astro
             rm -rf node_modules/.cache
             
-            # Install dependencies (will use cache if package.json unchanged)
+            # Install dependencies
             npm install
             
-            # Build with fresh cache
+            # Build Astro site (static)
             npm run build
             
-            # Wait for build artifacts to be fully written
-            sleep 3
+            # Wait for build to complete
+            sleep 2
             
-            # Stop old processes
+            # Stop old PM2 processes (if any)
             pm2 delete seriaflow-web || true
             pm2 delete seriaflow-app || true
             
-            # Start the new app
-            pm2 start npm --name "seriaflow-app" -- start
+            # Start Astro preview server
+            pm2 start npm --name "seriaflow-app" -- run preview
             pm2 save
+            
+            echo "✅ Deploy completed successfully!"
