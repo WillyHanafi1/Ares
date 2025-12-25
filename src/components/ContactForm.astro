@@ -7,38 +7,38 @@ const challenges = [
     { value: "other", label: "Lainnya" },
 ];
 
-// Country codes with flags
+// Country codes with flags and ISO codes
 const countries = [
-    { code: "62", name: "Indonesia", flag: "🇮🇩" },
-    { code: "1", name: "United States", flag: "🇺🇸" },
-    { code: "44", name: "United Kingdom", flag: "🇬🇧" },
-    { code: "60", name: "Malaysia", flag: "🇲🇾" },
-    { code: "65", name: "Singapore", flag: "🇸🇬" },
-    { code: "66", name: "Thailand", flag: "🇹🇭" },
-    { code: "84", name: "Vietnam", flag: "🇻🇳" },
-    { code: "63", name: "Philippines", flag: "🇵🇭" },
-    { code: "61", name: "Australia", flag: "🇦🇺" },
-    { code: "81", name: "Japan", flag: "🇯🇵" },
-    { code: "82", name: "South Korea", flag: "🇰🇷" },
-    { code: "86", name: "China", flag: "🇨🇳" },
-    { code: "91", name: "India", flag: "🇮🇳" },
-    { code: "49", name: "Germany", flag: "🇩🇪" },
-    { code: "33", name: "France", flag: "🇫🇷" },
-    { code: "39", name: "Italy", flag: "🇮🇹" },
-    { code: "34", name: "Spain", flag: "🇪🇸" },
-    { code: "31", name: "Netherlands", flag: "🇳🇱" },
-    { code: "971", name: "UAE", flag: "🇦🇪" },
-    { code: "966", name: "Saudi Arabia", flag: "🇸🇦" },
-    { code: "90", name: "Turkey", flag: "🇹🇷" },
-    { code: "7", name: "Russia", flag: "🇷🇺" },
-    { code: "55", name: "Brazil", flag: "🇧🇷" },
-    { code: "52", name: "Mexico", flag: "🇲🇽" },
-    { code: "27", name: "South Africa", flag: "🇿🇦" },
-    { code: "234", name: "Nigeria", flag: "🇳🇬" },
-    { code: "20", name: "Egypt", flag: "🇪🇬" },
-    { code: "880", name: "Bangladesh", flag: "🇧🇩" },
-    { code: "92", name: "Pakistan", flag: "🇵🇰" },
-    { code: "64", name: "New Zealand", flag: "🇳🇿" },
+    { code: "62", iso: "ID", name: "Indonesia", flag: "🇮🇩" },
+    { code: "1", iso: "US", name: "United States", flag: "🇺🇸" },
+    { code: "44", iso: "GB", name: "United Kingdom", flag: "🇬🇧" },
+    { code: "60", iso: "MY", name: "Malaysia", flag: "🇲🇾" },
+    { code: "65", iso: "SG", name: "Singapore", flag: "🇸🇬" },
+    { code: "66", iso: "TH", name: "Thailand", flag: "🇹🇭" },
+    { code: "84", iso: "VN", name: "Vietnam", flag: "🇻🇳" },
+    { code: "63", iso: "PH", name: "Philippines", flag: "🇵🇭" },
+    { code: "61", iso: "AU", name: "Australia", flag: "🇦🇺" },
+    { code: "81", iso: "JP", name: "Japan", flag: "🇯🇵" },
+    { code: "82", iso: "KR", name: "South Korea", flag: "🇰🇷" },
+    { code: "86", iso: "CN", name: "China", flag: "🇨🇳" },
+    { code: "91", iso: "IN", name: "India", flag: "🇮🇳" },
+    { code: "49", iso: "DE", name: "Germany", flag: "🇩🇪" },
+    { code: "33", iso: "FR", name: "France", flag: "🇫🇷" },
+    { code: "39", iso: "IT", name: "Italy", flag: "🇮🇹" },
+    { code: "34", iso: "ES", name: "Spain", flag: "🇪🇸" },
+    { code: "31", iso: "NL", name: "Netherlands", flag: "🇳🇱" },
+    { code: "971", iso: "AE", name: "UAE", flag: "🇦🇪" },
+    { code: "966", iso: "SA", name: "Saudi Arabia", flag: "🇸🇦" },
+    { code: "90", iso: "TR", name: "Turkey", flag: "🇹🇷" },
+    { code: "7", iso: "RU", name: "Russia", flag: "🇷🇺" },
+    { code: "55", iso: "BR", name: "Brazil", flag: "🇧🇷" },
+    { code: "52", iso: "MX", name: "Mexico", flag: "🇲🇽" },
+    { code: "27", iso: "ZA", name: "South Africa", flag: "🇿🇦" },
+    { code: "234", iso: "NG", name: "Nigeria", flag: "🇳🇬" },
+    { code: "20", iso: "EG", name: "Egypt", flag: "🇪🇬" },
+    { code: "880", iso: "BD", name: "Bangladesh", flag: "🇧🇩" },
+    { code: "92", iso: "PK", name: "Pakistan", flag: "🇵🇰" },
+    { code: "64", iso: "NZ", name: "New Zealand", flag: "🇳🇿" },
 ];
 
 // Get environment variables (with fallbacks)
@@ -144,7 +144,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                                                 value={country.code}
                                                 selected={country.code === "62"}
                                             >
-                                                {country.flag} {country.code}
+                                                {country.flag} {country.iso}
                                             </option>
                                         ))
                                     }
