@@ -6,10 +6,10 @@ export default defineConfig({
     integrations: [tailwind()],
     vite: {
         server: {
-            allowedHosts: ['seriaflow.com', 'www.seriaflow.com', 'localhost'],
+            allowedHosts: true,
         },
         preview: {
-            allowedHosts: ['seriaflow.com', 'www.seriaflow.com', 'localhost'],
+            allowedHosts: true,
         },
     },
 });
