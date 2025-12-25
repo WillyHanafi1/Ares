@@ -95,9 +95,9 @@ interface RateLimitEntry {
 // In-memory rate limit storage
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
-// Configuration
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute window
-const MAX_REQUESTS_PER_WINDOW = 5; // 5 requests per minute
+// Configuration from environment variables (with defaults: 5 requests per 10 minutes)
+const RATE_LIMIT_WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '600000', 10); // Default: 10 minutes
+const MAX_REQUESTS_PER_WINDOW = parseInt(process.env.RATE_LIMIT_MAX || '5', 10); // Default: 5 requests
 const BACKUP_FILE = join(process.cwd(), 'data', 'rate-limit-backup.json');
 
 // Load from backup on startup
