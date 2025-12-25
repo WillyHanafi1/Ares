@@ -124,8 +124,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL || process.env.PUBLIC_WEBHOOK_URL;
 
         if (!webhookUrl) {
-            console.error("DEBUG: ENV VARS:", process.env); // Log environment variables for debugging
-            throw new Error("PUBLIC_WEBHOOK_URL is not defined. Check .env file.");
+            console.error("PUBLIC_WEBHOOK_URL is not defined. Check .env file.");
+            throw new Error("Webhook URL configuration error.");
         }
 
         const n8nPayload = {

@@ -23,6 +23,24 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // Referrer-Policy: Control referrer information
     newHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
+    // Content-Security-Policy: Protect against XSS and other injection attacks
+    newHeaders.set(
+        "Content-Security-Policy",
+        [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.googletagmanager.com",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "font-src 'self' https://fonts.gstatic.com",
+            "img-src 'self' data: https: blob:",
+            "connect-src 'self' https://www.google.com https://www.gstatic.com",
+            "frame-src 'self' https://www.google.com",
+            "object-src 'none'",
+            "base-uri 'self'",
+            "form-action 'self'",
+            "upgrade-insecure-requests",
+        ].join("; ")
+    );
+
     // Return a new response with the same body but updated headers
     return new Response(response.body, {
         status: response.status,
