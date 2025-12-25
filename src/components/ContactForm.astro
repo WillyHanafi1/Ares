@@ -96,6 +96,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                             id="name"
                             name="name"
                             placeholder="Contoh: Budi Santoso"
+                            maxlength="100"
                             class="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                         />
                     </div>
@@ -114,6 +115,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                             id="business"
                             name="business"
                             placeholder="Contoh: Seriaflow Agency"
+                            maxlength="150"
                             class="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                         />
                     </div>
@@ -219,8 +221,18 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                                 name="whatsapp"
                                 placeholder="812xxxxxxxx"
                                 required
+                                minlength="8"
+                                maxlength="15"
+                                pattern="[0-9]*"
+                                inputmode="numeric"
                                 class="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                             />
+                            <p
+                                id="phone-error"
+                                class="hidden text-red-400 text-xs mt-1 absolute -bottom-5"
+                            >
+                                Nomor tidak valid (8-15 digit)
+                            </p>
                         </div>
                     </div>
 
@@ -357,14 +369,75 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
     const submitBtn = document.getElementById("submit-btn");
     const successMessage = document.getElementById("success-message");
     const resetFormBtn = document.getElementById("reset-form-btn");
+    const phoneError = document.getElementById("phone-error");
     const originalBtnText = submitBtn?.innerHTML || "";
 
     // Get config from data attributes
     const webhookUrl = section?.dataset.webhook || "";
     const recaptchaSiteKey = section?.dataset.recaptcha || "";
 
+    // === SECURITY: Rate Limiting ===
+    let lastSubmitTime = 0;
+    const RATE_LIMIT_MS = 30000; // 30 seconds between submissions
+
+    // === SECURITY: Input Sanitization (XSS Protection) ===
+    function sanitizeInput(str: string): string {
+        return str
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#x27;")
+            .replace(/\//g, "&#x2F;")
+            .trim()
+            .substring(0, 500); // Max length safety
+    }
+
+    // === SECURITY: Phone Validation ===
+    function isValidPhone(phone: string): boolean {
+        const cleaned = phone.replace(/\D/g, "");
+        return cleaned.length >= 8 && cleaned.length <= 15;
+    }
+
+    // Real-time phone validation
+    const whatsappInput = document.getElementById(
+        "whatsapp",
+    ) as HTMLInputElement;
+    whatsappInput?.addEventListener("input", () => {
+        const value = whatsappInput.value.replace(/\D/g, "");
+        whatsappInput.value = value; // Only allow digits
+
+        if (value.length > 0 && !isValidPhone(value)) {
+            phoneError?.classList.remove("hidden");
+            whatsappInput.classList.add("border-red-500");
+        } else {
+            phoneError?.classList.add("hidden");
+            whatsappInput.classList.remove("border-red-500");
+        }
+    });
+
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // === SECURITY: Rate Limiting Check ===
+        const now = Date.now();
+        if (now - lastSubmitTime < RATE_LIMIT_MS) {
+            const waitSeconds = Math.ceil(
+                (RATE_LIMIT_MS - (now - lastSubmitTime)) / 1000,
+            );
+            alert(`Mohon tunggu ${waitSeconds} detik sebelum mengirim lagi.`);
+            return;
+        }
+
+        const formData = new FormData(form as HTMLFormElement);
+        const phoneNumber = (formData.get("whatsapp") as string) || "";
+
+        // === SECURITY: Phone Validation ===
+        if (!isValidPhone(phoneNumber)) {
+            phoneError?.classList.remove("hidden");
+            whatsappInput?.classList.add("border-red-500");
+            whatsappInput?.focus();
+            return;
+        }
 
         // Show loading state
         if (submitBtn) {
@@ -373,11 +446,12 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
             submitBtn.setAttribute("disabled", "true");
         }
 
-        const formData = new FormData(form as HTMLFormElement);
-        const name = formData.get("name") || "";
-        const business = formData.get("business") || "";
+        // === SECURITY: Sanitize all inputs ===
+        const name = sanitizeInput((formData.get("name") as string) || "");
+        const business = sanitizeInput(
+            (formData.get("business") as string) || "",
+        );
         const countryCode = formData.get("country_code") || "62";
-        const phoneNumber = (formData.get("whatsapp") as string) || "";
         const challenge = formData.get("challenge") || "";
 
         // Format phone number: remove leading 0 if exists, then prepend country code
@@ -417,7 +491,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
             }
         }
 
-        // Prepare data for webhook
+        // Prepare data for webhook (all sanitized)
         const leadData = {
             name: name,
             business: business,
@@ -432,7 +506,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 
         try {
             // Send data to n8n webhook
-            await fetch(webhookUrl, {
+            const response = await fetch(webhookUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -440,14 +514,16 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                 body: JSON.stringify(leadData),
             });
 
+            // === SECURITY: Update rate limit timestamp on success ===
+            lastSubmitTime = Date.now();
+
             // Show success message
             form.classList.add("hidden");
             successMessage?.classList.remove("hidden");
         } catch (error) {
             console.error("Webhook error:", error);
-            // Still show success to user (don't block UX)
-            form.classList.add("hidden");
-            successMessage?.classList.remove("hidden");
+            // Show error to user instead of fake success
+            alert("Terjadi kesalahan saat mengirim data. Silakan coba lagi.");
         }
 
         // Reset button state for next time
