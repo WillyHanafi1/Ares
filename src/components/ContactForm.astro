@@ -12,6 +12,7 @@ const webhookUrl =
     import.meta.env.PUBLIC_WEBHOOK_URL ||
     "https://n8n.seriaflow.com/webhook/Website-Leads-Seriaflow";
 const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
+const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 ---
 
 <section
@@ -19,6 +20,7 @@ const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
     class="relative py-24"
     data-webhook={webhookUrl}
     data-wa={waNumber}
+    data-recaptcha={recaptchaSiteKey}
 >
     <div class="mx-auto max-w-3xl px-6 lg:px-8">
         <div
@@ -150,6 +152,21 @@ const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
                         <span class="material-symbols-outlined">chat</span>
                         Hubungi Saya via WhatsApp
                     </button>
+
+                    <!-- reCAPTCHA Notice -->
+                    <p class="text-xs text-gray-500 text-center mt-4">
+                        Dilindungi oleh reCAPTCHA.
+                        <a
+                            href="https://policies.google.com/privacy"
+                            target="_blank"
+                            class="underline hover:text-gray-400">Privacy</a
+                        > &
+                        <a
+                            href="https://policies.google.com/terms"
+                            target="_blank"
+                            class="underline hover:text-gray-400">Terms</a
+                        >
+                    </p>
                 </form>
             </div>
         </div>
@@ -161,7 +178,22 @@ const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
         background-color: #13132b;
         color: white;
     }
+    /* Hide reCAPTCHA badge - we show text notice instead */
+    .grecaptcha-badge {
+        visibility: hidden !important;
+    }
 </style>
+
+<!-- Load reCAPTCHA v3 Script -->
+<script is:inline define:vars={{ recaptchaSiteKey }}>
+    // Load reCAPTCHA script if site key exists
+    if (recaptchaSiteKey && recaptchaSiteKey !== "your_site_key_here") {
+        const script = document.createElement("script");
+        script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
+        script.async = true;
+        document.head.appendChild(script);
+    }
+</script>
 
 <script>
     const section = document.getElementById("kontak");
@@ -172,6 +204,7 @@ const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
     // Get config from data attributes
     const webhookUrl = section?.dataset.webhook || "";
     const waNumber = section?.dataset.wa || "";
+    const recaptchaSiteKey = section?.dataset.recaptcha || "";
 
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -197,6 +230,23 @@ const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
             challengeSelect?.options[challengeSelect.selectedIndex]?.text ||
             challenge;
 
+        // Get reCAPTCHA token
+        let recaptchaToken = "";
+        if (
+            recaptchaSiteKey &&
+            recaptchaSiteKey !== "your_site_key_here" &&
+            (window as any).grecaptcha
+        ) {
+            try {
+                recaptchaToken = await (window as any).grecaptcha.execute(
+                    recaptchaSiteKey,
+                    { action: "submit_lead" },
+                );
+            } catch (error) {
+                console.error("reCAPTCHA error:", error);
+            }
+        }
+
         // Prepare data for webhook
         const leadData = {
             name: name,
@@ -206,6 +256,7 @@ const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "6285117623819";
             challenge_label: challengeLabel,
             source: "website",
             submitted_at: new Date().toISOString(),
+            recaptcha_token: recaptchaToken, // For verification in n8n
         };
 
         try {
