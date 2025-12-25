@@ -119,8 +119,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
         // === 4. Forward to n8n Webhook ===
         const webhookUrl =
-            import.meta.env.PUBLIC_WEBHOOK_URL ||
-            "https://n8n.seriaflow.com/webhook/Website-Leads-Seriaflow";
+            import.meta.env.PUBLIC_WEBHOOK_URL;
+
+        if (!webhookUrl) {
+            throw new Error("PUBLIC_WEBHOOK_URL is not defined in environment variables");
+        }
 
         const n8nPayload = {
             name: name.substring(0, 100), // Enforce truncation just in case
