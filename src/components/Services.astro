@@ -32,36 +32,36 @@ const colorMap: Record<string, { bg: string; text: string; hoverBg: string }> = 
 const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300'];
 ---
 
-<section id="layanan" class="py-24 relative bg-[#0f0f1a]">
+<section id="layanan" class="py-24 relative bg-gray-50 dark:bg-[#0f0f1a]">
   <!-- Subtle Grid Background -->
-  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 24px 24px;"></div>
+  <div class="absolute inset-0 opacity-[0.05] dark:opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
   
   <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
     <!-- Header -->
     <div class="mb-16 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
       <div>
         <span class="animate-on-scroll animate-from-left mb-2 block text-sm font-semibold uppercase tracking-wider text-primary">Solusi Kami</span>
-        <h2 class="animate-on-scroll animate-from-left animate-delay-100 text-3xl font-bold tracking-tight text-white md:text-4xl">Layanan Otomatisasi</h2>
+        <h2 class="animate-on-scroll animate-from-left animate-delay-100 text-3xl font-bold tracking-tight text-gray-900 dark:text-white md:text-4xl">Layanan Otomatisasi</h2>
       </div>
-      <p class="animate-on-scroll animate-from-right max-w-md text-gray-400">Teknologi canggih yang dirancang untuk meningkatkan efisiensi operasional bisnis Anda secara instan.</p>
+      <p class="animate-on-scroll animate-from-right max-w-md text-gray-600 dark:text-gray-400">Teknologi canggih yang dirancang untuk meningkatkan efisiensi operasional bisnis Anda secara instan.</p>
     </div>
     
     <!-- Services Grid -->
     <div class="grid gap-8 md:grid-cols-3">
       {services.map((service, index) => (
         <div class={`animate-on-scroll animate-scale ${delays[index]} glass-panel group overflow-hidden rounded-2xl p-1 transition-all hover:border-primary/50`}>
-          <div class="relative h-full rounded-xl bg-[#13132B]/50 p-6 md:p-8">
+          <div class="relative h-full rounded-xl bg-white/50 dark:bg-[#13132B]/50 p-6 md:p-8">
             <!-- Icon -->
             <div class={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full ${colorMap[service.color].bg} ${colorMap[service.color].text} ${colorMap[service.color].hoverBg} group-hover:text-white transition-colors duration-300`}>
               <span class="material-symbols-outlined text-3xl">{service.icon}</span>
             </div>
             
             <!-- Content -->
-            <h3 class="mb-3 text-xl font-bold text-white">{service.title}</h3>
-            <p class="mb-6 text-sm text-gray-400">{service.description}</p>
+            <h3 class="mb-3 text-xl font-bold text-gray-900 dark:text-white">{service.title}</h3>
+            <p class="mb-6 text-sm text-gray-600 dark:text-gray-400">{service.description}</p>
             
             <!-- Features -->
-            <ul class="space-y-2 text-sm text-gray-400">
+            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               {service.features.map((feature) => (
                 <li class="flex items-center gap-2">
                   <span class={`material-symbols-outlined ${colorMap[service.color].text} text-[18px]`}>check_circle</span>

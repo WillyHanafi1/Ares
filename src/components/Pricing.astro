@@ -64,10 +64,10 @@ const benefits = [
     <!-- Header -->
     <div class="text-center mb-12">
       <span class="animate-on-scroll animate-blur-in mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-primary">Harga Transparan</span>
-      <h2 class="animate-on-scroll animate-from-bottom animate-delay-100 text-3xl font-bold tracking-tight text-white md:text-4xl mb-4">
+      <h2 class="animate-on-scroll animate-from-bottom animate-delay-100 text-3xl font-bold tracking-tight text-gray-900 dark:text-white md:text-4xl mb-4">
         Investasi untuk Pertumbuhan Bisnis
       </h2>
-      <p class="animate-on-scroll animate-from-bottom animate-delay-200 text-gray-400 max-w-2xl mx-auto">
+      <p class="animate-on-scroll animate-from-bottom animate-delay-200 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
         Pilih paket yang sesuai dengan kebutuhan bisnis Anda. Semua harga sudah termasuk konsultasi awal gratis.
       </p>
     </div>
@@ -82,8 +82,8 @@ const benefits = [
                 <span class="material-symbols-outlined text-primary">{benefit.icon}</span>
               </div>
               <div>
-                <h4 class="text-white font-bold">{benefit.text}</h4>
-                <p class="text-gray-400 text-sm">{benefit.desc}</p>
+                <h4 class="text-gray-900 dark:text-white font-bold">{benefit.text}</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">{benefit.desc}</p>
               </div>
             </div>
           ))}
@@ -100,7 +100,7 @@ const benefits = [
             <div class="absolute -inset-[1px] bg-gradient-to-r from-primary to-secondary rounded-2xl blur-sm opacity-50 group-hover:opacity-75 transition-opacity"></div>
           )}
           
-          <div class={`relative h-full rounded-2xl p-8 ${plan.highlight ? 'bg-[#13132B] border-0' : 'glass-panel'} flex flex-col`}>
+          <div class={`relative h-full rounded-2xl p-8 ${plan.highlight ? 'bg-white dark:bg-[#13132B] border border-gray-200 dark:border-0' : 'glass-panel'} flex flex-col`}>
             <!-- Popular Badge -->
             {plan.highlight && (
               <div class="absolute -top-4 left-1/2 -translate-x-1/2">
@@ -112,23 +112,23 @@ const benefits = [
             
             <!-- Plan Header -->
             <div class="text-center mb-6">
-              <h3 class="text-xl font-bold text-white mb-2">{plan.name}</h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
               <div class="flex items-baseline justify-center gap-1">
-                <span class={`text-4xl font-black ${plan.highlight ? 'text-gradient-primary' : 'text-white'}`}>{plan.price}</span>
-                <span class="text-gray-400 text-sm">{plan.period}</span>
+                <span class={`text-4xl font-black ${plan.highlight ? 'text-gradient-primary' : 'text-gray-900 dark:text-white'}`}>{plan.price}</span>
+                <span class="text-gray-600 dark:text-gray-400 text-sm">{plan.period}</span>
               </div>
-              <p class="text-gray-400 text-sm mt-3">{plan.description}</p>
+              <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">{plan.description}</p>
             </div>
             
             <!-- Divider -->
-            <div class="h-px bg-white/10 my-6"></div>
+            <div class="h-px bg-gray-200 dark:bg-white/10 my-6"></div>
             
             <!-- Features -->
             <ul class="space-y-3 mb-8 flex-grow">
               {plan.features.map((feature) => (
-                <li class={`flex items-center gap-3 text-sm ${feature.startsWith('🎁') ? 'text-green-400 font-semibold' : 'text-gray-300'}`}>
+                <li class={`flex items-center gap-3 text-sm ${feature.startsWith('🎁') ? 'text-green-500 dark:text-green-400 font-semibold' : 'text-gray-700 dark:text-gray-300'}`}>
                   {!feature.startsWith('🎁') && (
-                    <span class={`material-symbols-outlined text-[18px] ${plan.highlight ? 'text-primary' : 'text-green-400'}`}>check_circle</span>
+                    <span class={`material-symbols-outlined text-[18px] ${plan.highlight ? 'text-primary' : 'text-green-500 dark:text-green-400'}`}>check_circle</span>
                   )}
                   {feature}
                 </li>
@@ -141,7 +141,7 @@ const benefits = [
               class={`w-full flex items-center justify-center py-3 px-6 rounded-lg font-bold text-sm transition-all
                 ${plan.highlight 
                   ? 'bg-gradient-to-r from-primary to-secondary text-white hover:shadow-[0_0_30px_rgba(19,19,236,0.4)] hover:scale-105' 
-                  : 'bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
+                  : 'bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/10 hover:border-gray-300 dark:hover:border-white/20'
                 }`}
             >
               {plan.cta}
@@ -153,8 +153,8 @@ const benefits = [
     
     <!-- Trust Note -->
     <div class="animate-on-scroll animate-from-bottom animate-delay-400 mt-12 text-center space-y-2">
-      <p class="text-gray-400">
-        💰 <span class="text-white font-semibold">Bayar Setelah Project Selesai</span> — Tidak ada DP, bayar setelah Anda puas dengan hasilnya
+      <p class="text-gray-600 dark:text-gray-400">
+        💰 <span class="text-gray-900 dark:text-white font-semibold">Bayar Setelah Project Selesai</span> — Tidak ada DP, bayar setelah Anda puas dengan hasilnya
       </p>
       <p class="text-gray-500 text-sm">
         💡 Belum yakin? Konsultasi awal <span class="text-primary font-semibold">GRATIS</span> tanpa komitmen.
