@@ -1,27 +1,22 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-
+import react from '@astrojs/react';
+import tailwindcss from '@tailwindcss/vite';
 import node from '@astrojs/node';
 
 export default defineConfig({
   output: 'server',
   site: 'https://seriaflow.com',
-  integrations: [tailwind()],
+  integrations: [react()],
 
   vite: {
-    server: {
-      allowedHosts: true,
-    },
-    preview: {
-      allowedHosts: true,
-    },
+    plugins: [tailwindcss()],
   },
 
   adapter: node({
     mode: 'standalone',
   }),
   server: {
-    host: true, // Listen on all addresses (0.0.0.0)
-    port: 4321, // Custom port requested by user
-  }
+    host: true,
+    port: 4321,
+  },
 });

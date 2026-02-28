@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# rate limit data backups
+data/rate-limit-backup.json
+data/auth-rate-limit-backup.json
+
+# build logs
+build-log.txt
+
+# reference folder (not for production)
+seriaflow-astro-reference/
+
+

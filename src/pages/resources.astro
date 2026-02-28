@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Navbar } from "@/components/blocks/navbar";
+import { Footer } from "@/components/blocks/footer";
+import { Resources as ResourcesSection } from "@/components/blocks/resources";
+
+import { Background } from "@/components/background";
+---
+
+<Layout
+    title="Resources — Seriaflow AI Automation Agency"
+    description="Download panduan, template, dan resource gratis dari Seriaflow untuk memulai automasi bisnis Anda."
+>
+    <Navbar client:load />
+
+    <Background className="via-muted to-muted/80">
+        <div data-reveal>
+            <ResourcesSection client:visible />
+        </div>
+    </Background>
+
+    <div data-reveal>
+        <Footer />
+    </div>
+</Layout>

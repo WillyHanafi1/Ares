@@ -1,6 +1,6 @@
 /**
  * Contact Form Script
- * Handles form submission, validation, and CSRF token management
+ * Handles form submission, validation, reCAPTCHA, and country dropdown
  */
 
 (function () {
@@ -13,37 +13,15 @@
     const resetFormBtn = document.getElementById("reset-form-btn");
     const phoneError = document.getElementById("phone-error");
     const originalBtnText = submitBtn?.innerHTML || "";
-    const csrfInput = document.getElementById("csrf-token");
 
     // Get config from data attributes
     const recaptchaSiteKey = section?.dataset.recaptcha || "";
 
-    // === SECURITY: Rate Limiting ===
+    // === Client-side Rate Limiting ===
     let lastSubmitTime = 0;
     const RATE_LIMIT_MS = 30000; // 30 seconds between submissions
 
-    // === CSRF Token Management ===
-    let csrfToken = "";
-
-    async function fetchCSRFToken() {
-        try {
-            const response = await fetch("/api/csrf-token");
-            const data = await response.json();
-            if (data.success && data.token) {
-                csrfToken = data.token;
-                if (csrfInput) {
-                    csrfInput.value = csrfToken;
-                }
-            }
-        } catch (error) {
-            console.error("Failed to fetch CSRF token:", error);
-        }
-    }
-
-    // Fetch CSRF token on page load
-    fetchCSRFToken();
-
-    // === SECURITY: Input Sanitization (XSS Protection) ===
+    // === Input Sanitization (XSS Protection) ===
     function sanitizeInput(str) {
         return str
             .replace(/</g, "&lt;")
@@ -52,10 +30,10 @@
             .replace(/'/g, "&#x27;")
             .replace(/\//g, "&#x2F;")
             .trim()
-            .substring(0, 500); // Max length safety
+            .substring(0, 500);
     }
 
-    // === SECURITY: Phone Validation ===
+    // === Phone Validation ===
     function isValidPhone(phone) {
         const cleaned = phone.replace(/\D/g, "");
         return cleaned.length >= 8 && cleaned.length <= 15;
@@ -79,7 +57,7 @@
     form?.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        // === SECURITY: Rate Limiting Check ===
+        // Client-side rate limiting check
         const now = Date.now();
         if (now - lastSubmitTime < RATE_LIMIT_MS) {
             const waitSeconds = Math.ceil((RATE_LIMIT_MS - (now - lastSubmitTime)) / 1000);
@@ -90,7 +68,7 @@
         const formData = new FormData(form);
         const phoneNumber = formData.get("whatsapp") || "";
 
-        // === SECURITY: Phone Validation ===
+        // Phone Validation
         if (!isValidPhone(phoneNumber)) {
             phoneError?.classList.remove("hidden");
             whatsappInput?.classList.add("border-red-500");
@@ -104,14 +82,14 @@
             submitBtn.setAttribute("disabled", "true");
         }
 
-        // === SECURITY: Sanitize all inputs ===
+        // Sanitize all inputs
         const name = sanitizeInput(formData.get("name") || "");
         const business = sanitizeInput(formData.get("business") || "");
         const countryCode = formData.get("country_code") || "62";
         const challenge = formData.get("challenge") || "";
 
-        // Format phone number: remove leading 0 if exists, then prepend country code
-        let cleanedPhone = phoneNumber.replace(/\D/g, ""); // Remove non-digits
+        // Format phone: strip leading 0, prepend country code
+        let cleanedPhone = phoneNumber.replace(/\D/g, "");
         if (cleanedPhone.startsWith("0")) {
             cleanedPhone = cleanedPhone.substring(1);
         }
@@ -121,7 +99,7 @@
         const challengeSelect = document.getElementById("challenge");
         const challengeLabel = challengeSelect?.options[challengeSelect.selectedIndex]?.text || challenge;
 
-        // Get country display text (from selected display)
+        // Get country display text
         const countryDisplayEl = document.getElementById("selected-display");
         const countryText = countryDisplayEl?.textContent?.trim() || ("+" + countryCode);
 
@@ -135,32 +113,23 @@
             }
         }
 
-        // Prepare data for webhook (all sanitized)
-        const leadData = {
-            name: name,
-            business: business,
-            whatsapp: whatsapp,
+        // Prepare payload
+        const payload = {
+            name,
+            business,
+            whatsapp,
             country: countryText,
-            challenge: challenge,
+            challenge,
             challenge_label: challengeLabel,
-            source: "website",
             submitted_at: new Date().toISOString(),
-            recaptcha_token: recaptchaToken,
+            token: recaptchaToken,
         };
 
         try {
-            // Send data to internal API (The Guard)
             const response = await fetch("/api/submit-lead", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": csrfToken, // CSRF protection
-                },
-                body: JSON.stringify({
-                    ...leadData,
-                    token: recaptchaToken, // Pass raw token for server-side verification
-                    csrf_token: csrfToken, // Also in body for redundancy
-                }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
             });
 
             const result = await response.json();
@@ -169,25 +138,18 @@
                 throw new Error(result.message || "Gagal mengirim data");
             }
 
-            // === SECURITY: Update rate limit timestamp on success ===
+            // Update client-side rate limit timestamp
             lastSubmitTime = Date.now();
-
-            // Refresh CSRF token for next submission
-            await fetchCSRFToken();
 
             // Show success message
             form.classList.add("hidden");
             successMessage?.classList.remove("hidden");
         } catch (error) {
-            console.error("Webhook error:", error);
-            // Show error to user instead of fake success
+            console.error("Submit error:", error);
             alert("Terjadi kesalahan saat mengirim data. Silakan coba lagi.");
-
-            // Refresh CSRF token on error too
-            await fetchCSRFToken();
         }
 
-        // Reset button state for next time
+        // Reset button state
         if (submitBtn) {
             submitBtn.innerHTML = originalBtnText;
             submitBtn.removeAttribute("disabled");
@@ -216,9 +178,6 @@
         if (hiddenInput) {
             hiddenInput.value = "62";
         }
-
-        // Refresh CSRF token
-        fetchCSRFToken();
     });
 
     // Toggle Menu
@@ -236,20 +195,16 @@
             const code = item.getAttribute("data-code");
             const iso = item.getAttribute("data-iso");
 
-            // Update display
             if (selectedDisplay && iso && code) {
                 selectedDisplay.innerHTML = '<img src="https://flagcdn.com/w40/' + iso + '.png" width="20" height="15" alt="' + iso.toUpperCase() + '" class="rounded-sm"> <span>+' + code + '</span>';
             }
 
-            // Update hidden input
             if (hiddenInput && code) {
                 hiddenInput.value = code;
             }
 
-            // Close menu
             optionsMenu?.classList.add("hidden");
 
-            // Clear search
             if (searchInput) {
                 searchInput.value = "";
                 optionItems.forEach(function (opt) {

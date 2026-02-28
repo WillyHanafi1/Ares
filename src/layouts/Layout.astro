@@ -1,6 +1,6 @@
 ---
-import ScrollAnimations from "../components/ScrollAnimations.astro";
-import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import "@/styles/global.css";
 
 export interface Props {
   title?: string;
@@ -8,7 +8,7 @@ export interface Props {
 }
 
 const {
-  title = "Seriaflow - AI Automation Agency",
+  title = "Seriaflow — AI Automation Agency",
   description = "Hemat waktu dan biaya operasional bisnis Anda dengan AI automation dari Seriaflow.",
 } = Astro.props;
 ---
@@ -21,25 +21,35 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
 
-    <!-- Theme initialization script (inline to prevent FOUC) -->
-    <script is:inline>
-      // Check localStorage or system preference for theme
-      const getTheme = () => {
-        const stored = localStorage.getItem("theme");
-        if (stored) return stored;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      };
+    <!-- Astro View Transitions (SPA page transitions) -->
+    <ClientRouter />
 
-      // Apply theme immediately to prevent flash
-      const theme = getTheme();
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      }
+    <!-- Theme initialization: runs immediately to prevent FOUC. Default = dark. -->
+    <script is:inline>
+      const getTheme = () => {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
+          return localStorage.getItem("theme");
+        }
+        return "dark";
+      };
+      const applyTheme = (doc) => {
+        const theme = getTheme();
+        if (theme === "dark") {
+          doc.documentElement.classList.add("dark");
+        } else {
+          doc.documentElement.classList.remove("dark");
+        }
+      };
+      applyTheme(document);
+      document.addEventListener("astro:before-swap", (ev) => {
+        applyTheme(ev.newDocument);
+      });
     </script>
 
-    <!-- Favicon - Optimized for all browsers and Google Search -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -51,7 +61,7 @@ const {
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://seriaflow.com/logo.png" />
+    <meta property="og:image" content="https://seriaflow.com/og-image.png" />
     <meta property="og:url" content="https://seriaflow.com" />
     <meta property="og:site_name" content="Seriaflow" />
 
@@ -59,67 +69,73 @@ const {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://seriaflow.com/logo.png" />
+    <meta name="twitter:image" content="https://seriaflow.com/og-image.png" />
 
-    <!-- Structured Data for Google Search (Organization with Logo) -->
-    <script type="application/ld+json">
+    <!-- JSON-LD Organization -->
+    <script is:inline type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Seriaflow",
         "url": "https://seriaflow.com",
-        "logo": "https://seriaflow.com/logo.png",
-        "description": "AI Automation Agency Indonesia - Hemat waktu dan biaya operasional bisnis Anda dengan AI automation.",
+        "logo": "https://seriaflow.com/favicon.png",
+        "description": "AI Automation Agency Indonesia - Hemat waktu dan biaya operasional bisnis Anda.",
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+62-851-1762-3819",
           "contactType": "sales",
           "areaServed": "ID",
           "availableLanguage": ["Indonesian", "English"]
-        },
-        "sameAs": []
+        }
       }
     </script>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter (body) + Plus Jakarta Sans (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Material Symbols -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="overflow-x-hidden antialiased">
-    <!-- Background Effects -->
-    <div class="bg-animated-gradient"></div>
-    <div class="bg-grid-pattern"></div>
-    <div class="bg-noise"></div>
-
-    <!-- Floating Orbs for extra visual interest -->
-    <div
-      class="fixed top-20 -left-32 w-96 h-96 rounded-full bg-primary/5 dark:bg-primary/10 blur-[150px] animate-float-orb pointer-events-none transition-all duration-500"
-    >
-    </div>
-    <div
-      class="fixed bottom-20 -right-32 w-96 h-96 rounded-full bg-secondary/5 dark:bg-secondary/10 blur-[150px] animate-float-orb pointer-events-none transition-all duration-500"
-      style="animation-delay: -10s;"
-    >
-    </div>
-    <div
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 dark:bg-primary/5 blur-[200px] animate-glow-pulse pointer-events-none transition-all duration-500"
-    >
-    </div>
-
-    <!-- Content -->
+  <body
+    class="min-h-screen bg-background font-sans antialiased overflow-x-hidden"
+  >
     <slot />
 
-    <!-- Scroll Animations -->
-    <ScrollAnimations />
+    <!-- Scroll Reveal Observer — re-runs after every Astro View Transition -->
+    <script>
+      function initScrollReveal() {
+        const targets = document.querySelectorAll(
+          "[data-reveal], [data-reveal-stagger]",
+        );
+        if (!targets.length) return;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const el = entry.target;
+              const rect = entry.boundingClientRect;
+              if (entry.isIntersecting) {
+                el.classList.add("revealed");
+                el.classList.remove("exited");
+              } else if (rect.top < 0) {
+                el.classList.add("exited");
+                el.classList.remove("revealed");
+              } else {
+                el.classList.remove("revealed");
+                el.classList.remove("exited");
+              }
+            });
+          },
+          { threshold: [0, 0.12, 0.5], rootMargin: "0px 0px -40px 0px" },
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      }
+
+      initScrollReveal();
+      document.addEventListener("astro:page-load", initScrollReveal);
+    </script>
   </body>
 </html>

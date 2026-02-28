@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /resources/
+Allow: /
+
+Sitemap: https://seriaflow.com/sitemap.xml

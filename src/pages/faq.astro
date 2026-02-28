@@ -1,0 +1,25 @@
+---
+export const prerender = true;
+import Layout from "@/layouts/Layout.astro";
+import { Navbar } from "@/components/blocks/navbar";
+import { Footer } from "@/components/blocks/footer";
+import { FAQ } from "@/components/blocks/faq";
+import { Background } from "@/components/background";
+---
+
+<Layout
+    title="FAQ — Seriaflow AI Automation Agency"
+    description="Temukan jawaban atas pertanyaan umum tentang layanan AI automation Seriaflow."
+>
+    <Navbar client:load />
+
+    <Background className="via-muted to-muted/80">
+        <div data-reveal>
+            <FAQ client:visible />
+        </div>
+    </Background>
+
+    <div data-reveal>
+        <Footer />
+    </div>
+</Layout>

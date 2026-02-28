@@ -1,0 +1,26 @@
+---
+export const prerender = true;
+import Layout from "@/layouts/Layout.astro";
+import { Navbar } from "@/components/blocks/navbar";
+import { Footer } from "@/components/blocks/footer";
+import { Pricing as PricingSection } from "@/components/blocks/pricing";
+
+import { Background } from "@/components/background";
+---
+
+<Layout
+    title="Harga — Seriaflow AI Automation Agency"
+    description="Lihat paket harga layanan AI automation Seriaflow yang transparan dan fleksibel untuk bisnis Anda."
+>
+    <Navbar client:load />
+
+    <Background className="via-muted to-muted/80">
+        <div data-reveal>
+            <PricingSection client:visible />
+        </div>
+    </Background>
+
+    <div data-reveal>
+        <Footer />
+    </div>
+</Layout>

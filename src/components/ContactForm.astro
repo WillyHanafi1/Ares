@@ -74,14 +74,6 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 
                 <!-- Form -->
                 <form id="contact-form" class="space-y-6">
-                    <!-- CSRF Token (hidden) -->
-                    <input
-                        type="hidden"
-                        id="csrf-token"
-                        name="csrf_token"
-                        value=""
-                    />
-
                     <!-- Name -->
                     <div
                         class="animate-on-scroll animate-from-left animate-delay-100"
@@ -365,4 +357,4 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 </script>
 
 <!-- External Contact Form Script -->
-<script src="/scripts/contact-form.js" defer></script>
+<script is:inline src="/scripts/contact-form.js" defer></script>

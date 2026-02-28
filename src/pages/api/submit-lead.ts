@@ -2,13 +2,12 @@
  * Lead Submission API
  * Handles form submissions with:
  * - Persistent rate limiting (file-backed)
- * - CSRF token validation
  * - reCAPTCHA verification
  * - Input validation
  */
 
 import type { APIRoute } from "astro";
-import { checkRateLimit, verifyCSRFToken } from "../../lib/security";
+import { checkRateLimit } from "../../lib/security";
 import "dotenv/config";
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -29,6 +28,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 {
                     status: 429,
                     headers: {
+                        "Content-Type": "application/json",
                         "Retry-After": String(waitSeconds),
                         "X-RateLimit-Remaining": "0",
                         "X-RateLimit-Reset": String(Math.ceil(rateLimit.resetIn / 1000)),
@@ -40,7 +40,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const data = await request.json();
         const {
             token,
-            csrf_token,
             name,
             business,
             whatsapp,
@@ -50,32 +49,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             submitted_at,
         } = data;
 
-        // === 2. CSRF Token Validation ===
-        const csrfFromHeader = request.headers.get("X-CSRF-Token");
-        const csrfTokenToVerify = csrfFromHeader || csrf_token;
-
-        if (!csrfTokenToVerify || !verifyCSRFToken(csrfTokenToVerify)) {
-            console.warn("CSRF validation failed:", {
-                ip,
-                hasHeader: !!csrfFromHeader,
-                hasBody: !!csrf_token
-            });
-            return new Response(
-                JSON.stringify({
-                    success: false,
-                    message: "Invalid security token. Please refresh the page and try again."
-                }),
-                { status: 403 }
-            );
-        }
-
-        // === 3. Server-Side Input Validation ===
+        // === 2. Server-Side Input Validation ===
 
         // Validate reCAPTCHA Token presence
         if (!token) {
             return new Response(
                 JSON.stringify({ success: false, message: "Missing reCAPTCHA token." }),
-                { status: 400 }
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
@@ -83,28 +63,28 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         if (!name || typeof name !== "string" || name.length > 100 || name.length < 2) {
             return new Response(
                 JSON.stringify({ success: false, message: "Invalid name format." }),
-                { status: 400 }
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        // Validate Business (Max 150 chars, optional but must be string if present)
+        // Validate Business (Max 150 chars, optional)
         if (business && (typeof business !== "string" || business.length > 150)) {
             return new Response(
                 JSON.stringify({ success: false, message: "Invalid business name format." }),
-                { status: 400 }
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        // Validate WhatsApp (Numeric, 8-20 chars to be safe)
+        // Validate WhatsApp (Numeric, 8-20 chars)
         const phoneRegex = /^\+?[0-9]{8,20}$/;
         if (!whatsapp || !phoneRegex.test(whatsapp)) {
             return new Response(
                 JSON.stringify({ success: false, message: "Invalid phone number format." }),
-                { status: 400 }
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        // === 4. Verify with Google reCAPTCHA ===
+        // === 3. Verify with Google reCAPTCHA ===
         const secretKey = import.meta.env.RECAPTCHA_SECRET_KEY;
         if (!secretKey) {
             console.error("RECAPTCHA_SECRET_KEY is missing");
@@ -113,7 +93,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                     success: false,
                     message: "Server configuration error",
                 }),
-                { status: 500 },
+                { status: 500, headers: { "Content-Type": "application/json" } },
             );
         }
 
@@ -147,11 +127,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                     success: false,
                     message: "Spam detected. Please try again.",
                 }),
-                { status: 400 },
+                { status: 400, headers: { "Content-Type": "application/json" } },
             );
         }
 
-        // === 5. Forward to n8n Webhook ===
+        // === 4. Forward to n8n Webhook ===
         const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL || process.env.PUBLIC_WEBHOOK_URL;
 
         if (!webhookUrl) {
@@ -192,6 +172,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             {
                 status: 200,
                 headers: {
+                    "Content-Type": "application/json",
                     "X-RateLimit-Remaining": String(rateLimit.remaining),
                 }
             },
@@ -200,7 +181,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         console.error("API Error:", error);
         return new Response(
             JSON.stringify({ success: false, message: "Internal Server Error" }),
-            { status: 500 },
+            { status: 500, headers: { "Content-Type": "application/json" } },
         );
     }
 };

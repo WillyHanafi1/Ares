@@ -1,11 +1,10 @@
 /**
  * Security Utilities
- * - CSRF Token generation and validation
  * - CSP Nonce generation
  * - Rate limiting with file backup
  */
 
-import { createHash, randomBytes } from 'crypto';
+import { randomBytes } from 'crypto';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
@@ -21,69 +20,6 @@ export function generateNonce(): string {
 }
 
 // ============================================
-// CSRF TOKEN
-// ============================================
-
-// In-memory token store with expiration
-const csrfTokens = new Map<string, { token: string; expires: number }>();
-
-// Clean expired tokens every 5 minutes
-setInterval(() => {
-    const now = Date.now();
-    for (const [key, value] of csrfTokens.entries()) {
-        if (value.expires < now) {
-            csrfTokens.delete(key);
-        }
-    }
-}, 5 * 60 * 1000);
-
-/**
- * Generate a CSRF token tied to a session/IP
- * Token expires after 1 hour
- */
-export function generateCSRFToken(identifier: string): string {
-    const secret = process.env.CSRF_SECRET || 'default-csrf-secret-change-in-production';
-    const timestamp = Date.now();
-    const random = randomBytes(16).toString('hex');
-
-    // Create token: hash of (secret + identifier + timestamp + random)
-    const data = `${secret}:${identifier}:${timestamp}:${random}`;
-    const token = createHash('sha256').update(data).digest('hex').substring(0, 32);
-
-    // Store token with expiration (1 hour)
-    csrfTokens.set(token, {
-        token,
-        expires: timestamp + (60 * 60 * 1000) // 1 hour
-    });
-
-    return token;
-}
-
-/**
- * Verify a CSRF token
- */
-export function verifyCSRFToken(token: string): boolean {
-    if (!token || token.length !== 32) {
-        return false;
-    }
-
-    const stored = csrfTokens.get(token);
-    if (!stored) {
-        return false;
-    }
-
-    // Check expiration
-    if (stored.expires < Date.now()) {
-        csrfTokens.delete(token);
-        return false;
-    }
-
-    // Token is valid - delete it (one-time use)
-    csrfTokens.delete(token);
-    return true;
-}
-
-// ============================================
 // RATE LIMITING WITH FILE BACKUP
 // ============================================
 
@@ -96,8 +32,8 @@ interface RateLimitEntry {
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
 // Configuration from environment variables (with defaults: 5 requests per 10 minutes)
-const RATE_LIMIT_WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '600000', 10); // Default: 10 minutes
-const MAX_REQUESTS_PER_WINDOW = parseInt(process.env.RATE_LIMIT_MAX || '5', 10); // Default: 5 requests
+const RATE_LIMIT_WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '600000', 10);
+const MAX_REQUESTS_PER_WINDOW = parseInt(process.env.RATE_LIMIT_MAX || '5', 10);
 const BACKUP_FILE = join(process.cwd(), 'data', 'rate-limit-backup.json');
 
 // Load from backup on startup
@@ -106,7 +42,6 @@ try {
         const data = JSON.parse(readFileSync(BACKUP_FILE, 'utf-8'));
         const now = Date.now();
 
-        // Only load entries that haven't expired
         for (const [key, value] of Object.entries(data)) {
             const entry = value as RateLimitEntry;
             if (now - entry.windowStart < RATE_LIMIT_WINDOW * 2) {
@@ -125,7 +60,6 @@ setInterval(() => {
         const now = Date.now();
 
         for (const [key, value] of rateLimitStore.entries()) {
-            // Only backup recent entries
             if (now - value.windowStart < RATE_LIMIT_WINDOW * 2) {
                 data[key] = value;
             }
@@ -150,7 +84,6 @@ export function checkRateLimit(ip: string): {
     const entry = rateLimitStore.get(ip);
 
     if (!entry || (now - entry.windowStart >= RATE_LIMIT_WINDOW)) {
-        // New window
         rateLimitStore.set(ip, { count: 1, windowStart: now });
         return {
             allowed: true,
@@ -159,19 +92,13 @@ export function checkRateLimit(ip: string): {
         };
     }
 
-    // Within existing window
     const remaining = MAX_REQUESTS_PER_WINDOW - entry.count - 1;
     const resetIn = RATE_LIMIT_WINDOW - (now - entry.windowStart);
 
     if (entry.count >= MAX_REQUESTS_PER_WINDOW) {
-        return {
-            allowed: false,
-            remaining: 0,
-            resetIn
-        };
+        return { allowed: false, remaining: 0, resetIn };
     }
 
-    // Increment counter
     entry.count++;
     rateLimitStore.set(ip, entry);
 
