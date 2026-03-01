@@ -4,7 +4,7 @@
 // 📁 PANDUAN UPLOAD FILE BARU (sebagai Admin)
 // Akses: /resources?admin=seriaflow-admin-2025
 // Upload & delete langsung dari panel admin di halaman tersebut.
-// Ubah token di file .env (PUBLIC_ADMIN_TOKEN)
+// Ubah token di file .env (ADMIN_TOKEN)
 // ============================================================
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -89,27 +89,15 @@ const STATIC_RESOURCES = [
 ];
 
 // ============================================================
-// Main Component — detects admin mode from URL
+// Main Component — uses server-validated props for admin mode
 // ============================================================
-export function Resources() {
+export function Resources({ isAdmin = false, adminToken = "" }: { isAdmin?: boolean; adminToken?: string }) {
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminToken, setAdminToken] = useState("");
 
   useEffect(() => {
     // Check localStorage for returning visitors
     const savedLead = localStorage.getItem("seriaflow_lead");
     if (savedLead) setIsUnlocked(true);
-
-    // Check URL for admin token
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("admin");
-    const expectedToken = import.meta.env.PUBLIC_ADMIN_TOKEN;
-
-    if (token && token === expectedToken) {
-      setIsAdmin(true);
-      setAdminToken(token);
-    }
   }, []);
 
   if (isAdmin) {
@@ -459,11 +447,10 @@ function AdminPanel({ token }: { token: string }) {
 
         {/* Upload Zone */}
         <div
-          className={`relative mb-8 cursor-pointer rounded-2xl border-2 border-dashed p-10 text-center transition-all ${
-            isDragging
+          className={`relative mb-8 cursor-pointer rounded-2xl border-2 border-dashed p-10 text-center transition-all ${isDragging
               ? "border-primary bg-primary/5 scale-[1.01]"
               : "border-border hover:border-primary/50 hover:bg-muted/50"
-          }`}
+            }`}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={onDrop}
@@ -493,11 +480,10 @@ function AdminPanel({ token }: { token: string }) {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className={`mt-4 rounded-xl px-4 py-2.5 text-sm font-medium ${
-                  uploadStatus.type === "success"
+                className={`mt-4 rounded-xl px-4 py-2.5 text-sm font-medium ${uploadStatus.type === "success"
                     ? "bg-green-500/10 text-green-600 dark:text-green-400"
                     : "bg-red-500/10 text-red-600 dark:text-red-400"
-                }`}
+                  }`}
               >
                 {uploadStatus.type === "success" ? "✅" : "❌"} {uploadStatus.message}
               </motion.div>

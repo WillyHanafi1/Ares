@@ -5,6 +5,13 @@ import { Footer } from "@/components/blocks/footer";
 import { Resources as ResourcesSection } from "@/components/blocks/resources";
 
 import { Background } from "@/components/background";
+
+// Server-side validation (secure, never sent to client bundle)
+const urlToken = Astro.url.searchParams.get("admin") || "";
+const expectedToken = import.meta.env.ADMIN_TOKEN;
+const isAdmin = Boolean(
+    urlToken && expectedToken && urlToken === expectedToken,
+);
 ---
 
 <Layout
@@ -15,7 +22,11 @@ import { Background } from "@/components/background";
 
     <Background className="via-muted to-muted/80">
         <div data-reveal>
-            <ResourcesSection client:visible />
+            <ResourcesSection
+                client:visible
+                isAdmin={isAdmin}
+                adminToken={isAdmin ? urlToken : ""}
+            />
         </div>
     </Background>
 
