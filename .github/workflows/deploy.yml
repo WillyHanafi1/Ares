@@ -40,8 +40,8 @@ jobs:
             
             # Restart PM2 to load new code (with dotenv preload)
             # This ensures zero-downtime update or quick restart
-            # Restart PM2 with fresh configuration (remove -r dotenv/config as it's now in code)
+            # Restart PM2 with dotenv preload so it reads the .env file in production
             pm2 delete seriaflow || true
-            pm2 start dist/server/entry.mjs --name "seriaflow" --node-args="--preserve-symlinks"
+            pm2 start dist/server/entry.mjs --name "seriaflow" --node-args="-r dotenv/config --preserve-symlinks"
             
             echo "✅ Deploy completed! Server restarted on PM2."
