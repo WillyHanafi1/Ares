@@ -9,6 +9,21 @@
 import type { APIRoute } from "astro";
 import { checkRateLimit } from "../../lib/security";
 import "dotenv/config";
+import { z } from "zod";
+
+// Basic HTML sanitization to prevent injection of malicious tags
+const sanitizeHtml = (str: string) => str.replace(/[<>]/g, "");
+
+const leadSchema = z.object({
+    token: z.string().min(1, "Missing reCAPTCHA token."),
+    name: z.string().min(2, "Invalid name format.").max(100, "Invalid name format.").transform(sanitizeHtml),
+    business: z.string().max(150, "Invalid business name format.").optional().transform(v => v ? sanitizeHtml(v) : ""),
+    whatsapp: z.string().regex(/^\+?[0-9]{8,20}$/, "Invalid phone number format."),
+    country: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
+    challenge: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
+    challenge_label: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
+    submitted_at: z.string().optional(),
+});
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
     try {
@@ -37,7 +52,18 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             );
         }
 
-        const data = await request.json();
+        const rawData = await request.json();
+
+        // === 2. Server-Side Input Validation & Sanitization ===
+        const parsed = leadSchema.safeParse(rawData);
+
+        if (!parsed.success) {
+            return new Response(
+                JSON.stringify({ success: false, message: parsed.error.issues[0].message }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
         const {
             token,
             name,
@@ -47,42 +73,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             challenge,
             challenge_label,
             submitted_at,
-        } = data;
-
-        // === 2. Server-Side Input Validation ===
-
-        // Validate reCAPTCHA Token presence
-        if (!token) {
-            return new Response(
-                JSON.stringify({ success: false, message: "Missing reCAPTCHA token." }),
-                { status: 400, headers: { "Content-Type": "application/json" } }
-            );
-        }
-
-        // Validate Name (Max 100 chars, required, min 2 chars)
-        if (!name || typeof name !== "string" || name.length > 100 || name.length < 2) {
-            return new Response(
-                JSON.stringify({ success: false, message: "Invalid name format." }),
-                { status: 400, headers: { "Content-Type": "application/json" } }
-            );
-        }
-
-        // Validate Business (Max 150 chars, optional)
-        if (business && (typeof business !== "string" || business.length > 150)) {
-            return new Response(
-                JSON.stringify({ success: false, message: "Invalid business name format." }),
-                { status: 400, headers: { "Content-Type": "application/json" } }
-            );
-        }
-
-        // Validate WhatsApp (Numeric, 8-20 chars)
-        const phoneRegex = /^\+?[0-9]{8,20}$/;
-        if (!whatsapp || !phoneRegex.test(whatsapp)) {
-            return new Response(
-                JSON.stringify({ success: false, message: "Invalid phone number format." }),
-                { status: 400, headers: { "Content-Type": "application/json" } }
-            );
-        }
+        } = parsed.data;
 
         // === 3. Verify with Google reCAPTCHA ===
         const secretKey = import.meta.env.RECAPTCHA_SECRET_KEY;

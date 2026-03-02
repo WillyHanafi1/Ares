@@ -36,8 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 # rate limit data backups
-data/rate-limit-backup.json
-data/auth-rate-limit-backup.json
+/data/
 
 # build logs
 build-log.txt

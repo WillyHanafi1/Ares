@@ -49,8 +49,8 @@ try {
             }
         }
     }
-} catch {
-    // Ignore errors, start fresh
+} catch (error) {
+    console.error("Failed to load rate limit backup:", error instanceof Error ? error.message : error);
 }
 
 // Backup to file every minute
@@ -66,8 +66,8 @@ setInterval(() => {
         }
 
         writeFileSync(BACKUP_FILE, JSON.stringify(data), 'utf-8');
-    } catch {
-        // Ignore backup errors
+    } catch (error) {
+        console.error("Failed to save rate limit backup:", error instanceof Error ? error.message : error);
     }
 }, 60 * 1000);
 
