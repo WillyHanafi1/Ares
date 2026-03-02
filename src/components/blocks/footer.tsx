@@ -75,13 +75,6 @@ export function Footer() {
         </ul>
       </nav>
 
-      <div className="mt-10 flex w-full justify-center md:mt-14 lg:mt-20">
-        <img
-          src="/logo.png"
-          alt="Seriaflow"
-          className="h-24 w-auto rounded-md object-contain opacity-80 transition-opacity hover:opacity-100"
-        />
-      </div>
     </footer>
   );
 }

@@ -175,7 +175,7 @@ function LeadForm({ onSuccess }: { onSuccess: () => void }) {
   const handleSubmit = form.handleSubmit(async (data: Schema) => {
     setIsSubmitting(true);
     try {
-      const WEBHOOK_URL = "";
+      const WEBHOOK_URL = import.meta.env.PUBLIC_RESOURCES_WEBHOOK_URL || "";
       if (WEBHOOK_URL) {
         await fetch(WEBHOOK_URL, {
           method: "POST",
@@ -448,8 +448,8 @@ function AdminPanel({ token }: { token: string }) {
         {/* Upload Zone */}
         <div
           className={`relative mb-8 cursor-pointer rounded-2xl border-2 border-dashed p-10 text-center transition-all ${isDragging
-              ? "border-primary bg-primary/5 scale-[1.01]"
-              : "border-border hover:border-primary/50 hover:bg-muted/50"
+            ? "border-primary bg-primary/5 scale-[1.01]"
+            : "border-border hover:border-primary/50 hover:bg-muted/50"
             }`}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
@@ -481,8 +481,8 @@ function AdminPanel({ token }: { token: string }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className={`mt-4 rounded-xl px-4 py-2.5 text-sm font-medium ${uploadStatus.type === "success"
-                    ? "bg-green-500/10 text-green-600 dark:text-green-400"
-                    : "bg-red-500/10 text-red-600 dark:text-red-400"
+                  ? "bg-green-500/10 text-green-600 dark:text-green-400"
+                  : "bg-red-500/10 text-red-600 dark:text-red-400"
                   }`}
               >
                 {uploadStatus.type === "success" ? "✅" : "❌"} {uploadStatus.message}
