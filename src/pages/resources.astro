@@ -6,11 +6,27 @@ import { Resources as ResourcesSection } from "@/components/blocks/resources";
 
 import { Background } from "@/components/background";
 
-// Server-side validation (secure, never sent to client bundle)
-// We support both "?admin=form" (to show the login form) AND an active cookie session
+// Server-side: exchange query param for cookie, then clean redirect
+const adminToken = Astro.url.searchParams.get("admin");
 const expectedToken = import.meta.env.ADMIN_TOKEN;
+
+// 1. If URL has the correct token, set cookie and redirect
+if (adminToken && expectedToken && adminToken === expectedToken) {
+  Astro.cookies.set("admin_session", expectedToken, {
+    path: "/",
+    httpOnly: true,
+    secure: import.meta.env.PROD, // secure only in production so localhost works
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24, // 1 day
+  });
+  
+  // Clean redirect to hide the token from browser history/URL bar
+  return Astro.redirect("/resources?admin_mode=1", 302);
+}
+
+// 2. Check if user is already authenticated via Cookie OR simply wants to see the login page
 const adminSession = Astro.cookies.get("admin_session")?.value;
-const showAdminPanel = Astro.url.searchParams.has("admin") || adminSession === expectedToken;
+const showAdminPanel = Astro.url.searchParams.has("admin") || Astro.url.searchParams.has("admin_mode") || adminSession === expectedToken;
 
 ---
 
