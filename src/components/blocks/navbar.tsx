@@ -94,7 +94,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-3">
           {/* Non-clickable Image */}
           <img
-            src="/favicon.png"
+            src="/logo.svg"
             alt="Seriaflow"
             className="h-7 w-auto -translate-y-px rounded-md object-contain"
           />
