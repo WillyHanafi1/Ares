@@ -20,7 +20,6 @@ import {
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
-  { label: "Home", href: "/" },
   {
     label: "Features",
     href: "#features",
@@ -94,7 +93,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-3">
           {/* Non-clickable Image */}
           <img
-            src="/favicon.png"
+            src="/favicon/favicon.png"
             alt="Seriaflow"
             className="h-7 w-auto -translate-y-px rounded-md object-contain"
           />
@@ -198,6 +197,17 @@ export const Navbar = () => {
         )}
       >
         <nav className="divide-border flex flex-1 flex-col divide-y">
+          {/* Home Mobile Link */}
+          <a
+            href="/"
+            className={cn(
+              "text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0",
+              pathname === "/" && "text-foreground font-bold",
+            )}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Home
+          </a>
           {ITEMS.map((link) =>
             link.dropdownItems ? (
               <div key={link.label} className="py-4 first:pt-0 last:pb-0">
