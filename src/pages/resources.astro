@@ -26,7 +26,7 @@ if (adminToken && expectedToken && adminToken === expectedToken) {
 
 // 2. Check if user is already authenticated via Cookie OR simply wants to see the login page
 const adminSession = Astro.cookies.get("admin_session")?.value;
-const showAdminPanel = Astro.url.searchParams.has("admin") || Astro.url.searchParams.has("admin_mode") || adminSession === expectedToken;
+const isAdmin = !!expectedToken && adminSession === expectedToken;
 
 ---
 
@@ -40,7 +40,7 @@ const showAdminPanel = Astro.url.searchParams.has("admin") || Astro.url.searchPa
         <div data-reveal>
             <ResourcesSection
                 client:visible
-                isAdmin={showAdminPanel}
+                isAdmin={isAdmin}
             />
         </div>
     </Background>
