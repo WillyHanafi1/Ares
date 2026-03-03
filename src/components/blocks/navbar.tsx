@@ -20,6 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
+  { label: "Home", href: "/" },
   {
     label: "Features",
     href: "#features",
@@ -97,16 +98,6 @@ export const Navbar = () => {
             alt="Seriaflow"
             className="h-7 w-auto -translate-y-px rounded-md object-contain"
           />
-          {/* Home Nav Item */}
-          <a
-            href="/"
-            className={cn(
-              "flex h-9 items-center justify-center rounded-md px-1.5 text-sm font-medium transition-opacity hover:opacity-75 max-lg:hidden",
-              pathname === "/" ? "text-foreground font-semibold" : "text-muted-foreground"
-            )}
-          >
-            Home
-          </a>
         </div>
 
         {/* Desktop Navigation */}
@@ -197,17 +188,6 @@ export const Navbar = () => {
         )}
       >
         <nav className="divide-border flex flex-1 flex-col divide-y">
-          {/* Home Mobile Link */}
-          <a
-            href="/"
-            className={cn(
-              "text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0",
-              pathname === "/" && "text-foreground font-bold",
-            )}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-          </a>
           {ITEMS.map((link) =>
             link.dropdownItems ? (
               <div key={link.label} className="py-4 first:pt-0 last:pb-0">
