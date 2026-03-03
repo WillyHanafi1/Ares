@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/select";
 import { resourceFormSchema } from "@/lib/resource-form-schema";
 import { ReCaptchaProvider } from "@/components/recaptcha-provider";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 type Schema = z.infer<typeof resourceFormSchema>;
 
@@ -170,6 +171,7 @@ export function Resources({ isAdmin = false }: { isAdmin?: boolean }) {
 // Lead Capture Form
 // ============================================================
 function LeadForm({ onSuccess }: { onSuccess: () => void }) {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<Schema>({
     resolver: zodResolver(resourceFormSchema),
     defaultValues: { name: "", email: "", whatsapp: "", type: undefined },
@@ -179,16 +181,22 @@ function LeadForm({ onSuccess }: { onSuccess: () => void }) {
   const handleSubmit = form.handleSubmit(async (data: Schema) => {
     setIsSubmitting(true);
     try {
-      const WEBHOOK_URL = import.meta.env.PUBLIC_RESOURCES_WEBHOOK_URL || "";
-      if (WEBHOOK_URL) {
-        await fetch(WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...data, source: "resources-page", timestamp: new Date().toISOString() }),
-        });
+      let token = "";
+      if (executeRecaptcha) {
+        token = await executeRecaptcha("submit_resource");
+      }
+
+      const res = await fetch("/api/submit-resource", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, token, source: "resources-page", timestamp: new Date().toISOString() }),
+      });
+
+      if (!res.ok) {
+        console.warn("API rejected the submission");
       }
     } catch {
-      console.warn("Webhook failed, unlocking anyway");
+      console.warn("Submission failed, unlocking anyway");
     }
 
     if (typeof window !== "undefined" && "gtag" in window) {
