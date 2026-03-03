@@ -7,28 +7,29 @@ import { Resources as ResourcesSection } from "@/components/blocks/resources";
 import { Background } from "@/components/background";
 
 // Server-side: exchange query param for cookie, then clean redirect
+Astro.response.headers.set("Cache-Control", "no-store");
+
 const adminToken = Astro.url.searchParams.get("admin");
 const expectedToken = import.meta.env.ADMIN_TOKEN;
 
 // 1. If URL has the correct token, set cookie and redirect
 if (adminToken && expectedToken && adminToken === expectedToken) {
-  Astro.cookies.set("admin_session", expectedToken, {
-    path: "/",
-    httpOnly: true,
-    secure: import.meta.env.PROD, // secure only in production so localhost works
-    sameSite: "strict",
-    maxAge: 60 * 60 * 24, // 1 day
-  });
-  
-  // Clean redirect to hide the token from browser history/URL bar
-  return Astro.redirect("/resources?admin_mode=1", 302);
+    Astro.cookies.set("admin_session", expectedToken, {
+        path: "/",
+        httpOnly: true,
+        secure: import.meta.env.PROD, // secure only in production so localhost works
+        sameSite: "strict",
+        maxAge: 60 * 60 * 24, // 1 day
+    });
+
+    // Clean redirect to hide the token from browser history/URL bar
+    return Astro.redirect("/resources", 302);
 }
 
 // 2. Check if user is already authenticated via Cookie OR simply wants to see the login page
 const adminSession = Astro.cookies.get("admin_session")?.value;
 const hasValidCookie = !!expectedToken && adminSession === expectedToken;
 const showAdminLogin = Astro.url.searchParams.has("admin") || hasValidCookie;
-
 ---
 
 <Layout
@@ -39,10 +40,7 @@ const showAdminLogin = Astro.url.searchParams.has("admin") || hasValidCookie;
 
     <Background className="via-muted to-muted/80">
         <div data-reveal>
-            <ResourcesSection
-                client:visible
-                isAdmin={showAdminLogin}
-            />
+            <ResourcesSection client:visible isAdmin={showAdminLogin} />
         </div>
     </Background>
 

@@ -465,7 +465,7 @@ function AdminPanel() {
             </Button>
             <Button variant="destructive" size="sm" onClick={async () => {
               await fetch("/api/logout", { method: "POST" });
-              window.location.href = "/resources";
+              window.location.replace("/resources");
             }}>
               Logout
             </Button>
@@ -599,13 +599,20 @@ function AdminPanel() {
         </div>
 
         {/* Back to public view hint */}
-        <div className="text-muted-foreground mt-8 text-center text-sm">
-          <a href="/resources" className="underline underline-offset-4 hover:text-foreground transition-colors">
-            ← Lihat tampilan publik
-          </a>
+        <div className="text-muted-foreground mt-8 flex flex-col items-center gap-2 text-sm">
+          <Button
+            variant="link"
+            className="text-muted-foreground hover:text-foreground p-0 h-auto"
+            onClick={async () => {
+              await fetch("/api/logout", { method: "POST" });
+              window.location.replace("/resources");
+            }}
+          >
+            ← Kembali ke tampilan publik
+          </Button>
         </div>
       </div>
-    </section>
+    </section >
   );
 }
 
@@ -671,9 +678,16 @@ function AdminLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
           </form>
 
           <div className="mt-6 text-center text-sm">
-            <a href="/resources" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            <Button
+              variant="link"
+              className="text-muted-foreground hover:text-foreground p-0 h-auto underline underline-offset-4"
+              onClick={async () => {
+                await fetch("/api/logout", { method: "POST" });
+                window.location.href = "/resources";
+              }}
+            >
               Kembali ke publik
-            </a>
+            </Button>
           </div>
         </CardContent>
       </Card>

@@ -7,7 +7,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   output: 'server',
   site: 'https://seriaflow.com',
-  integrations: [react(), sitemap()],
+  integrations: [react(), sitemap({
+    filter: (page) => !page.includes('/resources'),
+  })],
 
   vite: {
     plugins: [tailwindcss()],
