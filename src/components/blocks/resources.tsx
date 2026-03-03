@@ -683,7 +683,7 @@ function AdminLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
               className="text-muted-foreground hover:text-foreground p-0 h-auto underline underline-offset-4"
               onClick={async () => {
                 await fetch("/api/logout", { method: "POST" });
-                window.location.href = "/resources";
+                window.location.replace("/resources");
               }}
             >
               Kembali ke publik
