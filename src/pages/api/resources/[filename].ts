@@ -5,7 +5,7 @@ import path from "path";
 const RESOURCES_DIR = path.join(process.cwd(), "public/resources");
 
 export const DELETE: APIRoute = async ({ params, request }) => {
-    const filename = params.filename;
+    const rawFilename = params.filename;
     const url = new URL(request.url);
     const token = url.searchParams.get("admin");
     const expectedToken = import.meta.env.ADMIN_TOKEN;
@@ -17,15 +17,24 @@ export const DELETE: APIRoute = async ({ params, request }) => {
         });
     }
 
-    if (!filename || !filename.endsWith(".pdf")) {
+    if (!rawFilename || !rawFilename.endsWith(".pdf")) {
         return new Response(JSON.stringify({ error: "Nama file tidak valid" }), {
             status: 400,
             headers: { "Content-Type": "application/json" }
         });
     }
 
+    // 1. Path Traversal Prevention: Ensure basename is identical and does not climb the directory tree.
+    const filename = path.basename(rawFilename);
+
     try {
         const filePath = path.join(RESOURCES_DIR, filename);
+
+        // Security check: Make doubly sure the resolved path operates inside our directory
+        if (!filePath.startsWith(RESOURCES_DIR)) {
+            return new Response(JSON.stringify({ error: "Akses Ditolak." }), { status: 403 });
+        }
+
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
             return new Response(JSON.stringify({ success: true }), {

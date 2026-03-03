@@ -71,17 +71,36 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
+        // Limit size to 20MB directly in backend to prevent memory exhaustion
+        if (file.size > 20 * 1024 * 1024) {
+            return new Response(JSON.stringify({ error: "File terlalu besar. Maksimal 20MB." }), { status: 413 });
+        }
+
         if (!fs.existsSync(RESOURCES_DIR)) {
             fs.mkdirSync(RESOURCES_DIR, { recursive: true });
         }
 
         // Convert arrayBuffer to Buffer (Node.js)
         const buffer = Buffer.from(await file.arrayBuffer());
-        const filePath = path.join(RESOURCES_DIR, file.name);
+
+        // --- Security checks ---
+        // 1. Magic Bytes Validation (PDF signature: %PDF-)
+        if (buffer.length < 5 || buffer.toString('utf8', 0, 5) !== "%PDF-") {
+            return new Response(JSON.stringify({ error: "File signature invalid. Ini bukan file PDF asli." }), { status: 400 });
+        }
+
+        // 2. Path Traversal Prevention for New Uploads
+        const safeFilename = path.basename(file.name);
+        const filePath = path.join(RESOURCES_DIR, safeFilename);
+
+        // Third check to ensure strict prefix constraint
+        if (!filePath.startsWith(RESOURCES_DIR)) {
+            return new Response(JSON.stringify({ error: "Akses Ditolak." }), { status: 403 });
+        }
 
         fs.writeFileSync(filePath, buffer);
 
-        return new Response(JSON.stringify({ success: true, filename: file.name }), {
+        return new Response(JSON.stringify({ success: true, filename: safeFilename }), {
             status: 200,
             headers: { "Content-Type": "application/json" }
         });
