@@ -517,4 +517,7 @@ body {
     transform: none;
     transition: none;
   }
+/* Hide reCAPTCHA badge as per Google's terms (attribution added to forms) */
+.grecaptcha-badge {
+  visibility: hidden;
 }

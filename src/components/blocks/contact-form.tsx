@@ -328,10 +328,15 @@ export function ContactForm() {
           </div>
         )}
 
-        <div className="flex w-full items-center justify-end pt-3">
-          <Button disabled={isExecuting || !executeRecaptcha} className="rounded-lg" size="sm">
+        <div className="flex w-full flex-col items-center justify-end pt-3 gap-2">
+          <Button disabled={isExecuting || !executeRecaptcha} className="rounded-lg w-full sm:w-auto" size="sm">
             {isExecuting ? "Mengirim..." : !executeRecaptcha ? "Mempersiapkan..." : "Kirim"}
           </Button>
+          <p className="text-[10px] text-muted-foreground text-center sm:text-right w-full">
+            This site is protected by reCAPTCHA and the Google{" "}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-primary">Privacy Policy</a> and{" "}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline hover:text-primary">Terms of Service</a> apply.
+          </p>
         </div>
       </form>
     </Form>

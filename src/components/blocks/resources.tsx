@@ -262,6 +262,11 @@ function LeadForm({ onSuccess }: { onSuccess: () => void }) {
               <Button type="submit" className="mt-2 w-full gap-2" disabled={isSubmitting}>
                 {isSubmitting ? "Membuka akses..." : (<>Akses Resources Gratis <ArrowRight className="size-4" /></>)}
               </Button>
+              <p className="text-[10px] text-muted-foreground text-center">
+                This site is protected by reCAPTCHA and the Google{" "}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-primary transition-colors">Privacy Policy</a> and{" "}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline hover:text-primary transition-colors">Terms of Service</a> apply.
+              </p>
             </form>
           </Form>
         </CardContent>
