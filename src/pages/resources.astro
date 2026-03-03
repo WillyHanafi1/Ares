@@ -29,7 +29,11 @@ if (adminToken && expectedToken && adminToken === expectedToken) {
 // 2. Check if user is already authenticated via Cookie OR simply wants to see the login page
 const adminSession = Astro.cookies.get("admin_session")?.value;
 const hasValidCookie = !!expectedToken && adminSession === expectedToken;
-const showAdminLogin = hasValidCookie;
+
+// Cek apakah parameter ?admin ada di URL
+const wantsToLogin = Astro.url.searchParams.has("admin");
+// Tampilkan halaman admin jika sudah punya cookie ATAU jika URL meminta ?admin
+const showAdminLogin = hasValidCookie || wantsToLogin;
 ---
 
 <Layout

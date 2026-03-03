@@ -475,7 +475,7 @@ function AdminPanel() {
             </Button>
             <Button variant="destructive" size="sm" onClick={async () => {
               await fetch("/api/logout", { method: "POST" });
-              window.location.replace("/resources");
+              window.location.href = "/resources";
             }}>
               Logout
             </Button>
@@ -615,7 +615,7 @@ function AdminPanel() {
             className="text-muted-foreground hover:text-foreground p-0 h-auto"
             onClick={async () => {
               await fetch("/api/logout", { method: "POST" });
-              window.location.replace("/resources");
+              window.location.href = "/resources";
             }}
           >
             ← Kembali ke tampilan publik
@@ -693,7 +693,7 @@ function AdminLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
               className="text-muted-foreground hover:text-foreground p-0 h-auto underline underline-offset-4"
               onClick={async () => {
                 await fetch("/api/logout", { method: "POST" });
-                window.location.replace("/resources");
+                window.location.href = "/resources";
               }}
             >
               Kembali ke publik
