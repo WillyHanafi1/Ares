@@ -52,14 +52,14 @@ export const Navbar = () => {
   useEffect(() => {
     setPathname(window.location.pathname);
   }, []);
-  
+
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest: number) => {
     const previous = scrollY.getPrevious() ?? 0;
-    
+
     // Check if we passed the top
     if (latest > 50) {
       setScrolled(true);
@@ -91,12 +91,23 @@ export const Navbar = () => {
       )}
     >
       <div className="flex items-center justify-between px-6 py-3">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {/* Non-clickable Image */}
           <img
             src="/favicon.png"
             alt="Seriaflow"
             className="h-7 w-auto -translate-y-px rounded-md object-contain"
           />
+          {/* Home Nav Item */}
+          <a
+            href="/"
+            className={cn(
+              "flex h-9 items-center justify-center rounded-md px-1.5 text-sm font-medium transition-opacity hover:opacity-75 max-lg:hidden",
+              pathname === "/" ? "text-foreground font-semibold" : "text-muted-foreground"
+            )}
+          >
+            Home
+          </a>
         </div>
 
         {/* Desktop Navigation */}
