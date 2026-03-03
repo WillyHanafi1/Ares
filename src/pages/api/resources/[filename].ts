@@ -6,10 +6,14 @@ const RESOURCES_DIR = path.join(process.cwd(), "public/resources");
 
 export const DELETE: APIRoute = async ({ params, request, cookies }) => {
     const rawFilename = params.filename;
+    const url = new URL(request.url);
+    const queryToken = url.searchParams.get("admin");
     const adminSession = cookies.get("admin_session")?.value;
     const expectedToken = import.meta.env.ADMIN_TOKEN;
 
-    if (!expectedToken || adminSession !== expectedToken) {
+    const isAuthorized = expectedToken && (adminSession === expectedToken || queryToken === expectedToken);
+
+    if (!isAuthorized) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" }
