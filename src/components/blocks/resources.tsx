@@ -92,7 +92,7 @@ const STATIC_RESOURCES = [
 // ============================================================
 // Main Component — uses server-validated props for admin mode
 // ============================================================
-export function Resources({ isAdmin = false, adminToken = "" }: { isAdmin?: boolean; adminToken?: string }) {
+export function Resources({ isAdmin = false }: { isAdmin?: boolean }) {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const reCaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -103,7 +103,7 @@ export function Resources({ isAdmin = false, adminToken = "" }: { isAdmin?: bool
   }, []);
 
   if (isAdmin) {
-    return <AdminPanel token={adminToken} />;
+    return <AdminPanel />;
   }
 
   return (
@@ -340,7 +340,7 @@ function ResourceGrid() {
 }
 
 // ============================================================
-// Admin Panel (hanya untuk admin via ?admin=TOKEN)
+// Admin Panel (hanya untuk admin via Cookie Session)
 // ============================================================
 type UploadedFile = {
   filename: string;
@@ -349,7 +349,8 @@ type UploadedFile = {
   uploadedAt: string;
 };
 
-function AdminPanel({ token }: { token: string }) {
+function AdminPanel() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
@@ -362,7 +363,12 @@ function AdminPanel({ token }: { token: string }) {
   const fetchFiles = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/resources?admin=${token}`);
+      const res = await fetch(`/api/resources`);
+      if (res.status === 401) {
+        setIsLoggedIn(false);
+        return;
+      }
+      setIsLoggedIn(true);
       const data = await res.json();
       if (data.files) setFiles(data.files);
     } catch {
@@ -370,7 +376,7 @@ function AdminPanel({ token }: { token: string }) {
     } finally {
       setIsLoading(false);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => { fetchFiles(); }, [fetchFiles]);
 
@@ -384,7 +390,7 @@ function AdminPanel({ token }: { token: string }) {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch(`/api/resources?admin=${token}`, { method: "POST", body: formData });
+      const res = await fetch(`/api/resources`, { method: "POST", body: formData });
       const data = await res.json();
       if (data.success) {
         setUploadStatus({ type: "success", message: `"${file.name}" berhasil diupload!` });
@@ -402,7 +408,7 @@ function AdminPanel({ token }: { token: string }) {
   const handleDelete = async (filename: string) => {
     setDeletingFile(filename);
     try {
-      const res = await fetch(`/api/resources/${encodeURIComponent(filename)}?admin=${token}`, { method: "DELETE" });
+      const res = await fetch(`/api/resources/${encodeURIComponent(filename)}`, { method: "DELETE" });
       const data = await res.json();
       if (data.success) {
         await fetchFiles();
@@ -424,6 +430,10 @@ function AdminPanel({ token }: { token: string }) {
     if (file) handleUpload(file);
   };
 
+  if (!isLoggedIn) {
+    return <AdminLogin onLoginSuccess={() => fetchFiles()} />;
+  }
+
   return (
     <section className="py-16 lg:pt-28 lg:pb-20">
       <div className="container max-w-4xl">
@@ -443,10 +453,18 @@ function AdminPanel({ token }: { token: string }) {
               <p className="text-muted-foreground text-sm">Kelola file resource yang tersedia untuk publik</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={fetchFiles} className="gap-2">
-            <RefreshCw className="size-4" />
-            Refresh
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={fetchFiles} className="gap-2">
+              <RefreshCw className="size-4" />
+              Refresh
+            </Button>
+            <Button variant="destructive" size="sm" onClick={async () => {
+              await fetch("/api/logout", { method: "POST" });
+              window.location.reload();
+            }}>
+              Logout
+            </Button>
+          </div>
         </div>
 
         {/* Upload Zone */}
@@ -582,6 +600,78 @@ function AdminPanel({ token }: { token: string }) {
           </a>
         </div>
       </div>
+    </section>
+  );
+}
+
+// ============================================================
+// Admin Login Component
+// ============================================================
+function AdminLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        onLoginSuccess();
+      } else {
+        setError(data.error || "Password salah");
+      }
+    } catch {
+      setError("Koneksi gagal");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  return (
+    <section className="flex min-h-[60vh] items-center justify-center py-16">
+      <Card className="w-full max-w-sm">
+        <CardContent className="p-8">
+          <div className="mb-6 flex flex-col items-center justify-center text-center">
+            <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-primary/10">
+              <Lock className="size-6 text-primary" />
+            </div>
+            <h2 className="text-xl font-bold">Admin Login</h2>
+            <p className="text-muted-foreground text-sm">Akses dashboard resources</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Masukkan Token Admin"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <Button type="submit" disabled={isLoggingIn} className="w-full">
+              {isLoggingIn ? <RefreshCw className="size-4 animate-spin" /> : "Masuk"}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center text-sm">
+            <a href="/resources" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+              Kembali ke publik
+            </a>
+          </div>
+        </CardContent>
+      </Card>
     </section>
   );
 }

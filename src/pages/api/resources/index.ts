@@ -4,13 +4,12 @@ import path from "path";
 
 const RESOURCES_DIR = path.join(process.cwd(), "public/resources");
 
-export const GET: APIRoute = async ({ request }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get("admin");
+export const GET: APIRoute = async ({ request, cookies }) => {
+    const adminSession = cookies.get("admin_session")?.value;
     const expectedToken = import.meta.env.ADMIN_TOKEN;
 
     // Proteksi akses GET (hanya diperlihatkan di panel admin)
-    if (!expectedToken || token !== expectedToken) {
+    if (!expectedToken || adminSession !== expectedToken) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" }
@@ -48,12 +47,11 @@ export const GET: APIRoute = async ({ request }) => {
     }
 };
 
-export const POST: APIRoute = async ({ request }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get("admin");
+export const POST: APIRoute = async ({ request, cookies }) => {
+    const adminSession = cookies.get("admin_session")?.value;
     const expectedToken = import.meta.env.ADMIN_TOKEN;
 
-    if (!expectedToken || token !== expectedToken) {
+    if (!expectedToken || adminSession !== expectedToken) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" }
@@ -93,9 +91,17 @@ export const POST: APIRoute = async ({ request }) => {
         const safeFilename = path.basename(file.name);
         const filePath = path.join(RESOURCES_DIR, safeFilename);
 
-        // Third check to ensure strict prefix constraint
-        if (!filePath.startsWith(RESOURCES_DIR)) {
+        // Third check to ensure strict prefix constraint (Normalized for Windows vs POSIX)
+        const resolvedResourcesDir = path.resolve(RESOURCES_DIR) + path.sep;
+        const resolvedFilePath = path.resolve(filePath);
+
+        if (!resolvedFilePath.startsWith(resolvedResourcesDir)) {
             return new Response(JSON.stringify({ error: "Akses Ditolak." }), { status: 403 });
+        }
+
+        // Fourth check to prevent accidental overwrites
+        if (fs.existsSync(filePath)) {
+            return new Response(JSON.stringify({ error: "File PDF dengan nama ini sudah ada." }), { status: 409 });
         }
 
         fs.writeFileSync(filePath, buffer);

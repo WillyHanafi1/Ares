@@ -4,13 +4,12 @@ import path from "path";
 
 const RESOURCES_DIR = path.join(process.cwd(), "public/resources");
 
-export const DELETE: APIRoute = async ({ params, request }) => {
+export const DELETE: APIRoute = async ({ params, request, cookies }) => {
     const rawFilename = params.filename;
-    const url = new URL(request.url);
-    const token = url.searchParams.get("admin");
+    const adminSession = cookies.get("admin_session")?.value;
     const expectedToken = import.meta.env.ADMIN_TOKEN;
 
-    if (!expectedToken || token !== expectedToken) {
+    if (!expectedToken || adminSession !== expectedToken) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" }
@@ -30,8 +29,11 @@ export const DELETE: APIRoute = async ({ params, request }) => {
     try {
         const filePath = path.join(RESOURCES_DIR, filename);
 
-        // Security check: Make doubly sure the resolved path operates inside our directory
-        if (!filePath.startsWith(RESOURCES_DIR)) {
+        // Security check: Make doubly sure the resolved path operates inside our directory (Normalized for Windows)
+        const resolvedResourcesDir = path.resolve(RESOURCES_DIR) + path.sep;
+        const resolvedFilePath = path.resolve(filePath);
+
+        if (!resolvedFilePath.startsWith(resolvedResourcesDir)) {
             return new Response(JSON.stringify({ error: "Akses Ditolak." }), { status: 403 });
         }
 

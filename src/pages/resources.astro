@@ -7,11 +7,11 @@ import { Resources as ResourcesSection } from "@/components/blocks/resources";
 import { Background } from "@/components/background";
 
 // Server-side validation (secure, never sent to client bundle)
-const urlToken = Astro.url.searchParams.get("admin") || "";
+// We support both "?admin=form" (to show the login form) AND an active cookie session
 const expectedToken = import.meta.env.ADMIN_TOKEN;
-const isAdmin = Boolean(
-    urlToken && expectedToken && urlToken === expectedToken,
-);
+const adminSession = Astro.cookies.get("admin_session")?.value;
+const showAdminPanel = Astro.url.searchParams.has("admin") || adminSession === expectedToken;
+
 ---
 
 <Layout
@@ -24,8 +24,7 @@ const isAdmin = Boolean(
         <div data-reveal>
             <ResourcesSection
                 client:visible
-                isAdmin={isAdmin}
-                adminToken={isAdmin ? urlToken : ""}
+                isAdmin={showAdminPanel}
             />
         </div>
     </Background>
