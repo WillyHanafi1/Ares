@@ -4,7 +4,7 @@ import path from "path";
 
 const RESOURCES_DIR = path.join(process.cwd(), "public/resources");
 
-export const DELETE: APIRoute = async ({ params, request, cookies }) => {
+export const DELETE: APIRoute = async ({ params, cookies }) => {
     const rawFilename = params.filename;
     const adminSession = cookies.get("admin_session")?.value;
     const expectedToken = import.meta.env.ADMIN_TOKEN;

@@ -617,7 +617,7 @@ function AdminLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
   const [error, setError] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggingIn(true);
     setError("");

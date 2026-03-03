@@ -23,7 +23,8 @@ const useResizeObserver = (callback: () => void, elements: React.RefObject<HTMLE
     return () => {
       observers.forEach(observer => observer?.disconnect());
     };
-  }, [callback, elements, dependencies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [callback, elements, ...dependencies]);
 };
 
 const useImageLoader = (seqRef: React.RefObject<HTMLElement | null>, onLoad: () => void, dependencies: any[]) => {
@@ -53,7 +54,8 @@ const useImageLoader = (seqRef: React.RefObject<HTMLElement | null>, onLoad: () 
         img.removeEventListener('error', handleImageLoad);
       });
     };
-  }, [onLoad, seqRef, dependencies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onLoad, seqRef, ...dependencies]);
 };
 
 const useAnimationLoop = (

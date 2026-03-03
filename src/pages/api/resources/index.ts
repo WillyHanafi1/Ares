@@ -4,7 +4,7 @@ import path from "path";
 
 const RESOURCES_DIR = path.join(process.cwd(), "public/resources");
 
-export const GET: APIRoute = async ({ request, cookies }) => {
+export const GET: APIRoute = async ({ cookies }) => {
     const adminSession = cookies.get("admin_session")?.value;
     const expectedToken = import.meta.env.ADMIN_TOKEN;
 

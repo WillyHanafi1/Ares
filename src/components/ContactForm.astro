@@ -240,7 +240,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
                             <select
                                 id="challenge"
                                 name="challenge"
-                                class="block w-full appearance-none rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer"
+                                class="block w-full appearance-none rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-gray-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer"
                             >
                                 <option value="" disabled selected
                                     >Pilih tantangan Anda</option
@@ -325,6 +325,10 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
 
 <style>
     select option {
+        background-color: white;
+        color: #111;
+    }
+    html.dark select option {
         background-color: #13132b;
         color: white;
     }
@@ -356,5 +360,3 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || "";
     }
 </script>
 
-<!-- External Contact Form Script -->
-<script is:inline src="/scripts/contact-form.js" defer></script>

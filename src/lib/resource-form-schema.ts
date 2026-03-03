@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const resourceFormSchema = z.object({
   name: z.string().min(1, "Nama wajib diisi"),
-  email: z.string().email(),
+  email: z.string().email("Format email tidak valid"),
 
 
   whatsapp: z.string().min(10, "Nomor WhatsApp minimal 10 digit").optional().or(z.literal("")),

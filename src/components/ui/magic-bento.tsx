@@ -15,7 +15,7 @@ export interface BentoCardItem {
   icon?: string;
 }
 
-const cardData: BentoCardItem[] = [
+const DEFAULT_CARDS: BentoCardItem[] = [
   {
     color: '#0a0015',
     title: 'Chatbot WhatsApp AI',
@@ -232,7 +232,7 @@ const GlobalSpotlight = ({ gridRef, disableAnimations = false, enabled = true, s
   const spotlightRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (disableAnimations || !gridRef?.current || !enabled) return;
+    if (disableAnimations || !gridRef?.current || !enabled || typeof document === 'undefined') return;
 
     const spotlight = document.createElement('div');
     spotlight.className = 'global-spotlight';
@@ -288,6 +288,7 @@ const GlobalSpotlight = ({ gridRef, disableAnimations = false, enabled = true, s
 };
 
 export interface MagicBentoProps {
+  cards?: BentoCardItem[];
   textAutoHide?: boolean;
   enableStars?: boolean;
   enableSpotlight?: boolean;
@@ -302,6 +303,7 @@ export interface MagicBentoProps {
 }
 
 const MagicBento = ({
+  cards = DEFAULT_CARDS,
   textAutoHide = true,
   enableStars = true,
   enableSpotlight = true,
@@ -344,7 +346,7 @@ const MagicBento = ({
         />
       )}
       <div className="card-grid bento-section" ref={gridRef}>
-        {cardData.map((card, index) => {
+        {cards.map((card, index) => {
           const cardStyle: React.CSSProperties = {
             ['--glow-color' as string]: glowColor,
           };

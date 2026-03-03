@@ -508,6 +508,30 @@ body {
   transform: none;
 }
 
+[data-reveal-stagger].revealed>*:nth-child(7) {
+  transition-delay: 480ms;
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal-stagger].revealed>*:nth-child(8) {
+  transition-delay: 560ms;
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal-stagger].revealed>*:nth-child(9) {
+  transition-delay: 640ms;
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal-stagger].revealed>*:nth-child(10) {
+  transition-delay: 720ms;
+  opacity: 1;
+  transform: none;
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
 

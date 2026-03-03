@@ -5,7 +5,7 @@
  */
 
 import { randomBytes } from 'crypto';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 // ============================================
@@ -64,7 +64,7 @@ setInterval(() => {
                 data[key] = value;
             }
         }
-
+        mkdirSync(join(process.cwd(), 'data'), { recursive: true });
         writeFileSync(BACKUP_FILE, JSON.stringify(data), 'utf-8');
     } catch (error) {
         console.error("Failed to save rate limit backup:", error instanceof Error ? error.message : error);

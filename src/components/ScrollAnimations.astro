@@ -110,4 +110,18 @@
         filter: blur(0);
         transform: translateY(0);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .animate-on-scroll,
+        .animate-from-left,
+        .animate-from-right,
+        .animate-scale,
+        .animate-from-bottom,
+        .animate-blur-in {
+            opacity: 1 !important;
+            transform: none !important;
+            filter: none !important;
+            transition: none !important;
+        }
+    }
 </style>

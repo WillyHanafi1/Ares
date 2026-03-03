@@ -9,10 +9,12 @@ export interface ActionResponse<T = unknown> {
   inputs?: T;
 }
 export const formSchema = z.object({
-  name: z.string({ message: "This field is required" }),
-  email: z.string({ message: "This field is required" }),
-  company: z.string({ message: "This field is required" }).optional(),
-  employees: z.string().min(1, "Please select an item").optional(),
-  message: z.string({ message: "This field is required" }),
-  agree: z.literal(true, { message: "This field is required" }),
+  name: z.string().min(2, "Nama minimal 2 karakter"),
+  email: z.string().email("Email tidak valid"),
+  company: z.string().optional(),
+  employees: z.string().min(1, "Pilih salah satu").optional(),
+  message: z.string().min(5, "Pesan terlalu singkat"),
+  agree: z.boolean().refine((val) => val === true, {
+    message: "Anda harus menyetujui kebijakan ini",
+  }),
 });

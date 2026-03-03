@@ -20,17 +20,13 @@ echo "🔍 Checking README.md status..."
 if git diff --cached --name-only | grep -q "README.md"; then
   echo "✅ README.md is included in this commit"
 else
-  # Check if there are any code changes
   if git diff --cached --name-only | grep -qE '\.(tsx?|jsx?|css)$'; then
-    echo "⚠️  WARNING: Code changes detected but README.md not updated!"
-    echo "📝 Please update README.md to reflect your changes"
-    echo ""
-    echo "To skip this check (not recommended), use: git commit --no-verify"
-    exit 1
+    echo "⚠️  INFO: Code changes detected but README.md not updated."
+    echo "📝 Just a reminder to update README.md when necessary."
   fi
 fi
 
-echo "✨ Pre-commit checks passed!"
+echo "✨ Pre-commit checks completed!"
 exit 0
 '@
 

@@ -85,7 +85,7 @@ const {
         "description": "AI Automation Agency Indonesia - Hemat waktu dan biaya operasional bisnis Anda.",
         "contactPoint": {
           "@type": "ContactPoint",
-          "telephone": "+62-851-1762-3819",
+          "telephone": "+62-823-1940-1259",
           "contactType": "sales",
           "areaServed": "ID",
           "availableLanguage": ["Indonesian", "English"]
@@ -96,6 +96,11 @@ const {
     <!-- Google Fonts: Inter (body) + Plus Jakarta Sans (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -108,13 +113,19 @@ const {
 
     <!-- Scroll Reveal Observer — re-runs after every Astro View Transition -->
     <script>
+      let currentObserver: IntersectionObserver | null = null;
+
       function initScrollReveal() {
         const targets = document.querySelectorAll(
           "[data-reveal], [data-reveal-stagger]",
         );
         if (!targets.length) return;
 
-        const observer = new IntersectionObserver(
+        if (currentObserver) {
+          currentObserver.disconnect();
+        }
+
+        currentObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               const el = entry.target;
@@ -134,11 +145,17 @@ const {
           { threshold: [0, 0.12, 0.5], rootMargin: "0px 0px -40px 0px" },
         );
 
-        targets.forEach((el) => observer.observe(el));
+        targets.forEach((el) => currentObserver?.observe(el));
       }
 
       initScrollReveal();
       document.addEventListener("astro:page-load", initScrollReveal);
+      document.addEventListener("astro:before-swap", () => {
+        if (currentObserver) {
+          currentObserver.disconnect();
+          currentObserver = null;
+        }
+      });
     </script>
   </body>
 </html>

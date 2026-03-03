@@ -30,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Nama minimal 2 karakter" }),
-  email: z.string().email({ message: "Email tidak valid" }),
+  email: z.string().email("Email tidak valid"),
   company: z.string().optional(),
   whatsapp: z.string().regex(/^\+?[0-9]{8,20}$/, { message: "Format nomor WhatsApp tidak valid" }),
   employees: z.string().optional(),
