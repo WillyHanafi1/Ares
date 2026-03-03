@@ -355,7 +355,8 @@ type UploadedFile = {
 };
 
 function AdminPanel() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
@@ -380,6 +381,7 @@ function AdminPanel() {
       console.error("Failed to fetch files");
     } finally {
       setIsLoading(false);
+      setIsAuthChecking(false);
     }
   }, []);
 
@@ -434,6 +436,14 @@ function AdminPanel() {
     const file = e.dataTransfer.files[0];
     if (file) handleUpload(file);
   };
+
+  if (isAuthChecking) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <RefreshCw className="text-muted-foreground size-8 animate-spin" />
+      </div>
+    );
+  }
 
   if (!isLoggedIn) {
     return <AdminLogin onLoginSuccess={() => fetchFiles()} />;
