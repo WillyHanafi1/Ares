@@ -2,6 +2,7 @@ import React from "react";
 
 import { ContactForm } from "@/components/blocks/contact-form";
 import { DashedLine } from "@/components/dashed-line";
+import { ReCaptchaProvider } from "@/components/recaptcha-provider";
 
 const contactInfo = [
   {
@@ -33,6 +34,8 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  const reCaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+
   return (
     <section id="contact" className="py-28 lg:py-32">
       <div className="container max-w-2xl">
@@ -58,7 +61,9 @@ export default function Contact() {
         {/* Inquiry Form */}
         <div className="mx-auto">
           <h3 className="mb-4 text-lg font-semibold">Kirim Pesan</h3>
-          <ContactForm />
+          <ReCaptchaProvider reCaptchaKey={reCaptchaSiteKey}>
+            <ContactForm />
+          </ReCaptchaProvider>
         </div>
       </div>
     </section>
