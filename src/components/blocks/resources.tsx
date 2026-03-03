@@ -177,9 +177,11 @@ function LeadForm({ onSuccess }: { onSuccess: () => void }) {
     defaultValues: { name: "", email: "", whatsapp: "", type: undefined },
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = form.handleSubmit(async (data: Schema) => {
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
       let token = "";
       if (executeRecaptcha) {
@@ -193,20 +195,23 @@ function LeadForm({ onSuccess }: { onSuccess: () => void }) {
       });
 
       if (!res.ok) {
-        console.warn("API rejected the submission");
+        const errorData = await res.json().catch(() => null);
+        throw new Error(errorData?.message || "Terjadi kesalahan sistem. Silakan coba lagi.");
       }
-    } catch {
-      console.warn("Submission failed, unlocking anyway");
-    }
 
-    if (typeof window !== "undefined" && "gtag" in window) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).gtag("event", "generate_lead", { event_category: "resources", event_label: data.type });
-    }
+      if (typeof window !== "undefined" && "gtag" in window) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).gtag("event", "generate_lead", { event_category: "resources", event_label: data.type });
+      }
 
-    localStorage.setItem("seriaflow_lead", JSON.stringify(data));
-    setIsSubmitting(false);
-    onSuccess();
+      localStorage.setItem("seriaflow_lead", JSON.stringify(data));
+      setIsSubmitting(false);
+      onSuccess();
+    } catch (err: any) {
+      console.error("Submission failed:", err);
+      setSubmitError(err.message || "Gagal mengirim data. Silakan coba lagi nanti.");
+      setIsSubmitting(false);
+    }
   });
 
   return (
@@ -270,6 +275,11 @@ function LeadForm({ onSuccess }: { onSuccess: () => void }) {
               <Button type="submit" className="mt-2 w-full gap-2" disabled={isSubmitting}>
                 {isSubmitting ? "Membuka akses..." : (<>Akses Resources Gratis <ArrowRight className="size-4" /></>)}
               </Button>
+              {submitError && (
+                <p className="text-sm font-medium text-red-500 text-center bg-red-500/10 py-2 rounded-md">
+                  {submitError}
+                </p>
+              )}
               <p className="text-[10px] text-muted-foreground text-center">
                 This site is protected by reCAPTCHA and the Google{" "}
                 <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-primary transition-colors">Privacy Policy</a> and{" "}
