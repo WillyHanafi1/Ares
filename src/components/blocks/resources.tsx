@@ -46,6 +46,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { resourceFormSchema } from "@/lib/resource-form-schema";
+import { ReCaptchaProvider } from "@/components/recaptcha-provider";
 
 type Schema = z.infer<typeof resourceFormSchema>;
 
@@ -93,6 +94,7 @@ const STATIC_RESOURCES = [
 // ============================================================
 export function Resources({ isAdmin = false, adminToken = "" }: { isAdmin?: boolean; adminToken?: string }) {
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const reCaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 
   useEffect(() => {
     // Check localStorage for returning visitors
@@ -105,60 +107,62 @@ export function Resources({ isAdmin = false, adminToken = "" }: { isAdmin?: bool
   }
 
   return (
-    <section className="py-28 lg:pt-44 lg:pb-32">
-      <div className="container max-w-5xl">
-        {/* Header */}
-        <div className="mb-16 space-y-4 text-center">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-primary font-mono text-sm font-medium tracking-wider uppercase"
-          >
-            Free Resources
-          </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl tracking-tight md:text-4xl lg:text-5xl"
-          >
-            Belajar Automasi Gratis
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed"
-          >
-            Download panduan, checklist, dan studi kasus dari project nyata.
-            Cukup isi form singkat di bawah untuk mengakses semua resource.
-          </motion.p>
-        </div>
+    <ReCaptchaProvider reCaptchaKey={reCaptchaSiteKey}>
+      <section className="py-28 lg:pt-44 lg:pb-32">
+        <div className="container max-w-5xl">
+          {/* Header */}
+          <div className="mb-16 space-y-4 text-center">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-primary font-mono text-sm font-medium tracking-wider uppercase"
+            >
+              Free Resources
+            </motion.span>
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl tracking-tight md:text-4xl lg:text-5xl"
+            >
+              Belajar Automasi Gratis
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed"
+            >
+              Download panduan, checklist, dan studi kasus dari project nyata.
+              Cukup isi form singkat di bawah untuk mengakses semua resource.
+            </motion.p>
+          </div>
 
-        <AnimatePresence mode="wait">
-          {!isUnlocked ? (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <LeadForm onSuccess={() => setIsUnlocked(true)} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="resources"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <ResourceGrid />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
+          <AnimatePresence mode="wait">
+            {!isUnlocked ? (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <LeadForm onSuccess={() => setIsUnlocked(true)} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="resources"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+              >
+                <ResourceGrid />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+    </ReCaptchaProvider>
   );
 }
 
