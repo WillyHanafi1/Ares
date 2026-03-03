@@ -460,7 +460,7 @@ function AdminPanel() {
             </Button>
             <Button variant="destructive" size="sm" onClick={async () => {
               await fetch("/api/logout", { method: "POST" });
-              window.location.reload();
+              window.location.href = "/resources";
             }}>
               Logout
             </Button>
