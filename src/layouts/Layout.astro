@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "@/styles/global.css";
+import { ReCaptchaProvider } from "@/components/recaptcha-provider";
 
 export interface Props {
   title?: string;
@@ -11,6 +12,9 @@ const {
   title = "Seriaflow — AI Automation Agency",
   description = "Hemat waktu dan biaya operasional bisnis Anda dengan AI automation dari Seriaflow.",
 } = Astro.props;
+
+// Get your reCAPTCHA site key from env
+const reCaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <!doctype html>
@@ -103,7 +107,9 @@ const {
   <body
     class="min-h-screen bg-background font-sans antialiased overflow-x-hidden"
   >
-    <slot />
+    <ReCaptchaProvider client:load reCaptchaKey={reCaptchaSiteKey}>
+        <slot />
+    </ReCaptchaProvider>
 
     <!-- Scroll Reveal Observer — re-runs after every Astro View Transition -->
     <script>
