@@ -329,8 +329,8 @@ export function ContactForm() {
         )}
 
         <div className="flex w-full items-center justify-end pt-3">
-          <Button disabled={isExecuting} className="rounded-lg" size="sm">
-            {isExecuting ? "Mengirim..." : "Kirim"}
+          <Button disabled={isExecuting || !executeRecaptcha} className="rounded-lg" size="sm">
+            {isExecuting ? "Mengirim..." : !executeRecaptcha ? "Mempersiapkan..." : "Kirim"}
           </Button>
         </div>
       </form>
