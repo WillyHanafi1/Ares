@@ -18,7 +18,7 @@ const resourceSchema = z.object({
     token: z.string().min(1, "Missing reCAPTCHA token."),
     name: z.string().min(1, "Nama wajib diisi").transform(sanitizeHtml),
     email: z.string().email("Format email tidak valid").transform(sanitizeHtml),
-    whatsapp: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
+    whatsapp: z.string().min(10, "Nomor WhatsApp minimal 10 digit").optional().or(z.literal("")),
     type: z.enum(["company", "freelancer", "student", "other"]),
     timestamp: z.string().optional(),
 });
@@ -28,7 +28,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const ip = clientAddress || "unknown-ip";
 
         // === 1. Rate Limiting ===
-        const rateLimit = checkRateLimit(ip);
+        const rateLimit = checkRateLimit(ip, "submit-resource");
 
         if (!rateLimit.allowed) {
             const waitSeconds = Math.ceil(rateLimit.resetIn / 1000);

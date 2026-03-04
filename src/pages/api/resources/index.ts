@@ -58,6 +58,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     try {
+        // Fix #4: Early rejection berdasarkan Content-Length sebelum body di-parse ke memori
+        const contentLength = request.headers.get("content-length");
+        if (contentLength && parseInt(contentLength, 10) > 20 * 1024 * 1024) {
+            return new Response(JSON.stringify({ error: "File terlalu besar. Maksimal 20MB." }), {
+                status: 413,
+                headers: { "Content-Type": "application/json" }
+            });
+        }
+
         const data = await request.formData();
         const file = data.get("file") as File;
 
@@ -68,9 +77,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             });
         }
 
-        // Limit size to 20MB directly in backend to prevent memory exhaustion
+        // Fix #4: Cek ukuran aktual setelah parse (untuk kasus tanpa Content-Length header)
         if (file.size > 20 * 1024 * 1024) {
-            return new Response(JSON.stringify({ error: "File terlalu besar. Maksimal 20MB." }), { status: 413 });
+            return new Response(JSON.stringify({ error: "File terlalu besar. Maksimal 20MB." }), {
+                status: 413,
+                headers: { "Content-Type": "application/json" } // Fix #9
+            });
         }
 
         if (!fs.existsSync(RESOURCES_DIR)) {
@@ -90,7 +102,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         const safeFilename = path.basename(file.name);
         const filePath = path.join(RESOURCES_DIR, safeFilename);
 
-        // Third check to ensure strict prefix constraint (Normalized for Windows vs POSIX)
+        // 3. Strict prefix constraint (Normalized for Windows vs POSIX)
         const resolvedResourcesDir = path.resolve(RESOURCES_DIR) + path.sep;
         const resolvedFilePath = path.resolve(filePath);
 
@@ -98,7 +110,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             return new Response(JSON.stringify({ error: "Akses Ditolak." }), { status: 403 });
         }
 
-        // Fourth check to prevent accidental overwrites
+        // 4. Prevent accidental overwrites
         if (fs.existsSync(filePath)) {
             return new Response(JSON.stringify({ error: "File PDF dengan nama ini sudah ada." }), { status: 409 });
         }

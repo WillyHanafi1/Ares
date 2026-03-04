@@ -22,7 +22,7 @@ const leadSchema = z.object({
     country: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
     challenge: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
     challenge_label: z.string().optional().transform(v => v ? sanitizeHtml(v) : ""),
-    submitted_at: z.string().optional(),
+    // submitted_at diabaikan dari client — akan di-generate server-side
 });
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const ip = clientAddress || "unknown-ip";
 
         // === 1. Rate Limiting (Persistent with file backup) ===
-        const rateLimit = checkRateLimit(ip);
+        const rateLimit = checkRateLimit(ip, "submit-lead");
 
         if (!rateLimit.allowed) {
             const waitSeconds = Math.ceil(rateLimit.resetIn / 1000);
@@ -72,7 +72,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             country,
             challenge,
             challenge_label,
-            submitted_at,
         } = parsed.data;
 
         // === 3. Verify with Google reCAPTCHA ===
@@ -138,7 +137,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             challenge: challenge || "",
             challenge_label: challenge_label || "",
             source: "website",
-            submitted_at,
+            submitted_at: new Date().toISOString(), // Fix #8: selalu dari server
             recaptcha_score: score,
             ip_address: ip,
             user_agent: request.headers.get("user-agent") || "",

@@ -75,16 +75,17 @@ setInterval(() => {
  * Check if an IP is rate limited
  * Returns: { allowed: boolean, remaining: number, resetIn: number }
  */
-export function checkRateLimit(ip: string): {
+export function checkRateLimit(ip: string, action: string = "default"): {
     allowed: boolean;
     remaining: number;
     resetIn: number;
 } {
+    const key = `${ip}:${action}`;
     const now = Date.now();
-    const entry = rateLimitStore.get(ip);
+    const entry = rateLimitStore.get(key);
 
     if (!entry || (now - entry.windowStart >= RATE_LIMIT_WINDOW)) {
-        rateLimitStore.set(ip, { count: 1, windowStart: now });
+        rateLimitStore.set(key, { count: 1, windowStart: now });
         return {
             allowed: true,
             remaining: MAX_REQUESTS_PER_WINDOW - 1,
@@ -99,8 +100,8 @@ export function checkRateLimit(ip: string): {
         return { allowed: false, remaining: 0, resetIn };
     }
 
-    entry.count++;
-    rateLimitStore.set(ip, entry);
+    // Fix #6: Gunakan spread untuk immutable update
+    rateLimitStore.set(key, { ...entry, count: entry.count + 1 });
 
     return {
         allowed: true,
@@ -112,6 +113,6 @@ export function checkRateLimit(ip: string): {
 /**
  * Reset rate limit for an IP (useful for testing)
  */
-export function resetRateLimit(ip: string): void {
-    rateLimitStore.delete(ip);
+export function resetRateLimit(ip: string, action: string = "default"): void {
+    rateLimitStore.delete(`${ip}:${action}`);
 }

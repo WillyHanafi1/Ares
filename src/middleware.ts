@@ -49,7 +49,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: https: blob:",
-            "connect-src 'self' https://www.google.com https://www.gstatic.com",
+            "connect-src 'self' https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com",
             "frame-src 'self' https://www.google.com",
             "object-src 'none'",
             "base-uri 'self'",

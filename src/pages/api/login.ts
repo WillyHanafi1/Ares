@@ -1,7 +1,23 @@
 import type { APIRoute } from "astro";
+import { checkRateLimit } from "../../lib/security";
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
     try {
+        const ip = clientAddress || "unknown-ip";
+
+        // === Rate Limiting: Max 5 percobaan per 15 menit ===
+        const rateLimit = checkRateLimit(ip, "login");
+        if (!rateLimit.allowed) {
+            const waitSeconds = Math.ceil(rateLimit.resetIn / 1000);
+            return new Response(JSON.stringify({ error: `Terlalu banyak percobaan. Coba lagi dalam ${waitSeconds} detik.` }), {
+                status: 429,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Retry-After": String(waitSeconds),
+                },
+            });
+        }
+
         const body = await request.json();
         const expectedToken = import.meta.env.ADMIN_TOKEN;
 
