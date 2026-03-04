@@ -30,8 +30,9 @@ if (adminToken && expectedToken && adminToken === expectedToken) {
 const adminSession = Astro.cookies.get("admin_session")?.value;
 const hasValidCookie = !!expectedToken && adminSession === expectedToken;
 
-// Hanya tampilkan Admin Panel jika cookie session valid
-const showAdminLogin = hasValidCookie;
+// Tampilkan admin panel jika cookie valid ATAU jika user ingin login via ?admin
+const wantsToLogin = Astro.url.searchParams.has("admin");
+const showAdminLogin = hasValidCookie || wantsToLogin;
 ---
 
 <Layout
