@@ -2,7 +2,7 @@
 
 // ============================================================
 // 📁 PANDUAN UPLOAD FILE BARU (sebagai Admin)
-// Akses: /resources?admin=seriaflow-admin-2025
+// Akses: /resources?admin=<ADMIN_TOKEN dari file .env>
 // Upload & delete langsung dari panel admin di halaman tersebut.
 // Ubah token di file .env (ADMIN_TOKEN)
 // ============================================================
